@@ -1,0 +1,23 @@
+# Copy to projects.yaml and replace each path with a canonical absolute path.
+# This owner-controlled file is the authority for path grants and decision receipts.
+schema_version: 1
+state_root: /Users/YOUR_NAME/AIWorkspace/state
+max_depth: 2
+max_issues: 30
+max_source_bytes: 1048576
+budget_tokens: 24000
+# Provider-specific prompt budgets can be added after local measurement.
+# These are conservative estimator limits, not declared provider context windows.
+context_profiles: {}
+projects:
+  - project_id: example-web
+    root: /Users/YOUR_NAME/AIWorkspace/projects/example-web
+    worktree_roots:
+      - /Users/YOUR_NAME/AIWorkspace/worktrees/example-web
+    artifact_roots:
+      - /Users/YOUR_NAME/AIWorkspace/state/artifacts
+    documents:
+      - AGENTS.md
+      - docs/adr/001-architecture.md
+    # Add only after a genuine approval. No comment tag can manufacture a receipt.
+    decisions: []

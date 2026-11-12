@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "epic": "probe-87y",
+  "prerequisite": "probe-87y.1",
+  "dependent": "probe-87y.2",
+  "repository": "/Users/m4pro/Desktop/cadenda/state/beads-smoke/20261112T081631976602Z"
+}

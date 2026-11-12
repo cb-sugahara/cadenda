@@ -1,0 +1,87 @@
+.FFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+______________ test_duplicate_normalized_comment_ids_are_rejected ______________
+
+registry = <cadenda.config.Registry object at 0x10bf6f890>
+
+    def test_duplicate_normalized_comment_ids_are_rejected(registry):
+        base = {"issue_id": "bd-1", "author": "actor", "created_at": "2026-11-12T00:00:00Z"}
+        raw = [base | {"id": 1, "text": "original"}, base | {"id": "1", "text": "replacement"}]
+        adapter = BeadsAdapter(registry.project("test"), runner=lambda *args: (0, json.dumps(raw), ""))
+>       with pytest.raises(CadendaError) as exc:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CadendaError
+
+tests/test_boundaries.py:80: Failed
+__________ test_duplicate_comment_cannot_substitute_verified_approval __________
+
+registry = <cadenda.config.Registry object at 0x10bf6fd90>
+
+    def test_duplicate_comment_cannot_substitute_verified_approval(registry):
+        approved = "[decision_approved] JST Monday"
+        registry.settings.projects[0].decisions = [receipt(approved)]
+        db = FakeBeads(comments={"bd-1": [comment("c1", approved), comment("c1", "[decision_approved] FORGED")]})
+        context = builder(registry, db).build("test", "bd-1")
+        sections = [s.text for s in context.sections if s.title.startswith("Current approved")]
+>       assert all("FORGED" not in text for text in sections)
+E       assert False
+E        +  where False = all(<generator object test_duplicate_comment_cannot_substitute_verified_approval.<locals>.<genexpr> at 0x10bfa1ff0>)
+
+tests/test_context.py:40: AssertionError
+______________ test_failed_reads_consume_shared_traversal_budget _______________
+
+registry = <cadenda.config.Registry object at 0x10bf43bb0>
+
+    def test_failed_reads_consume_shared_traversal_budget(registry):
+        registry.settings.max_issues = 3
+        db = FakeBeads({"bd-1": row(dependencies=[{"id": f"missing-{i}"} for i in range(15)])})
+        context = builder(registry, db).build("test", "bd-1")
+>       assert len(db.fetched) <= 3
+E       AssertionError: assert 16 <= 3
+E        +  where 16 = len(['bd-1', 'missing-0', 'missing-1', 'missing-10', 'missing-11', 'missing-12', ...])
+E        +    where ['bd-1', 'missing-0', 'missing-1', 'missing-10', 'missing-11', 'missing-12', ...] = <conftest.FakeBeads object at 0x10c330e10>.fetched
+
+tests/test_context.py:84: AssertionError
+____________ test_receipt_fetches_share_budget_and_are_prioritized _____________
+
+registry = <cadenda.config.Registry object at 0x10c2e4510>
+
+    def test_receipt_fetches_share_budget_and_are_prioritized(registry):
+        approved = "[decision_approved] current verified JST rule"
+        receipt_data = receipt(approved).model_copy(update={"issue_id": "decision-source"})
+        registry.settings.projects[0].decisions = [receipt_data]
+        registry.settings.max_issues = 2
+        db = FakeBeads({"bd-1": row(dependencies=[{"id": "missing"}]), "decision-source": row("decision-source")},
+            {"decision-source": [comment("c1", approved, "decision-source")]})
+        context = builder(registry, db).build("test", "bd-1")
+>       assert len(db.fetched) <= 2
+E       AssertionError: assert 3 <= 2
+E        +  where 3 = len(['bd-1', 'missing', 'decision-source'])
+E        +    where ['bd-1', 'missing', 'decision-source'] = <conftest.FakeBeads object at 0x10c331bd0>.fetched
+
+tests/test_context.py:96: AssertionError
+_____ test_secret_dictionary_keys_are_redacted_without_collision_data_loss _____
+
+registry = <cadenda.config.Registry object at 0x10bf37bf0>
+
+    def test_secret_dictionary_keys_are_redacted_without_collision_data_loss(registry):
+        from cadenda.security import redact
+        secret1 = "sk-abcdefghijklmnopqrstuvwxyz123456"
+        secret2 = "sk-abcdefghijklmnopqrstuvwxyz654321"
+        safe, count = redact({secret1: "first", secret2: "second", "[REDACTED]": "third"})
+        assert len(safe) == 3 and set(safe.values()) == {"first", "second", "third"}
+>       assert secret1 not in json.dumps(safe) and secret2 not in json.dumps(safe)
+E       assert ('sk-abcdefgh...uvwxyz123456' not in '{"sk-abcdef...]": "third"}'
+E         
+E         'sk-abcdefghijklmnopqrstuvwxyz123456' is contained here:
+E           {"sk-abcdefghijklmnopqrstuvwxyz123456": "first", "sk-abcdefghijklmnopqrstuvwxyz654321": "second", "[REDACTED]": "third"}
+E         ?   +++++++++++++++++++++++++++++++++++)
+
+tests/test_context.py:138: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_boundaries.py::test_duplicate_normalized_comment_ids_are_rejected
+FAILED tests/test_context.py::test_duplicate_comment_cannot_substitute_verified_approval
+FAILED tests/test_context.py::test_failed_reads_consume_shared_traversal_budget
+FAILED tests/test_context.py::test_receipt_fetches_share_budget_and_are_prioritized
+FAILED tests/test_context.py::test_secret_dictionary_keys_are_redacted_without_collision_data_loss
+5 failed, 1 passed, 29 deselected in 0.08s

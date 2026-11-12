@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "argv": [
+    "fm",
+    "serve",
+    "--socket",
+    "/private/tmp/cadenda-fm-047780182f7b.sock"
+  ],
+  "responses": {
+    "/health": "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 207\r\nConnection: close\r\n\r\n{\"models\":[{\"name\":\"system\",\"available\":true},{\"reason\":\"Private Cloud Compute is not available in this context. Please use the Terminal app.\",\"name\":\"pcc\",\"available\":false}],\"status\":\"fm serve is running\"}",
+    "/v1/models": "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 169\r\nConnection: close\r\n\r\n{\"object\":\"list\",\"data\":[{\"created\":1794471592,\"id\":\"system\",\"object\":\"model\",\"owned_by\":\"Apple\"},{\"created\":1794471592,\"id\":\"pcc\",\"object\":\"model\",\"owned_by\":\"Apple\"}]}"
+  },
+  "process_stopped": true
+}

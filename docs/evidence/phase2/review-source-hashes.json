@@ -1,0 +1,19 @@
+{
+  "packages/cadenda/__init__.py": "4b128510ea4d93e5dd11e9539fb0d3b7074bb5bc79e62754f34cf903006136ae",
+  "packages/cadenda/beads_adapter.py": "609d0cca06d7a132db0d79c6346ca088792d613546383aa66dc724898dc099f2",
+  "packages/cadenda/cli.py": "8be2a589f1682c5a04ae663e2d3b688f400f084dd9e1fe0dab55241cf0d02e77",
+  "packages/cadenda/config.py": "a172359a7fc6debb67f7453161f2e0fee1cd310858390dcbc2c12a29715e74ff",
+  "packages/cadenda/context_builder.py": "e389aaf66f6eec28f45cedae243c46055197b3ca49fe5c5e902859fb982228a3",
+  "packages/cadenda/errors.py": "55b8aa59cffb71fa6824fd5eade8a4cbb7fc84d56a46b1e2d54c8f0eb4fa5ff0",
+  "packages/cadenda/models.py": "2938408772a404cf1fd98fd434f87aff465bdbf126c4816044e6b2cc663c04ae",
+  "packages/cadenda/process.py": "4518b396a3db3fd8cfaaa850e9850f1a358f05bb45fb2e4703a0d760051ec734",
+  "packages/cadenda/security.py": "a8ff95bc0e791baa9ef94cbf87b7bf3c4ded5bf4dea0591763785001c10c92f6",
+  "packages/cadenda/snapshots.py": "df43593f2c95057a673e5a834e8655cbf0d1489d6183d7c9fdb9897b269a9074",
+  "tests/conftest.py": "a25e09cbfc61502cf6a5f858b4175a9a30cf014960b5a2e50f1633fa76936fb7",
+  "tests/integration/test_poc_context.py": "f705a9982e99320472e6fc4d6b7fc4340f2767513f0ca157841f23e1773a8409",
+  "tests/test_boundaries.py": "8c31b4f141e947a33e22900e9862f8ca5cb20742f64e64138d6a669c3851547e",
+  "tests/test_context.py": "76ac395416c15654b74d6394ab7f1e5f5fa806e907c3dc1f7b30b2a8fd5fdb85",
+  "pyproject.toml": "33b360b4c6275691f6f966a10134acc1774bf1c124ed2a72b51af6cd018ee312",
+  "config/projects.example.yaml": "912d807b0bb59cd19fc6bdd877e8abf66a64ea1c4dc3621e1d0b6b3d7464cc96",
+  "scripts/import_poc_evidence.py": "855e3904692c98d78847cc884586d526974fc2ca17cee62c3bff9dca685f8df5"
+}

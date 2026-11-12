@@ -11,6 +11,7 @@ node_modules/
 .pytest_cache/
 build/
 dist/
+config/projects.yaml
 
 # Beads / Dolt files (added by bd init)
 .dolt/

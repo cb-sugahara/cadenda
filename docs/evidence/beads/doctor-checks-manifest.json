@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "doctor-artifacts",
+      "argv": [
+        "bd",
+        "doctor",
+        "--check=artifacts",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:18:43.494647+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:18:43.553450+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "doctor-artifacts.stdout.txt",
+          "sha256": "6d4e58f1afd9b31f6c4f61f41950a360f11f0ebe1e7b5bff2c3a824bc881b3dc"
+        },
+        "stderr": {
+          "path": "doctor-artifacts.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "doctor-conventions",
+      "argv": [
+        "bd",
+        "doctor",
+        "--check=conventions",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:18:43.553465+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:18:43.803754+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "doctor-conventions.stdout.txt",
+          "sha256": "6a31cbc2511711f4741fb7dadbc5bafb848545072a89470c6c054f0a050fa527"
+        },
+        "stderr": {
+          "path": "doctor-conventions.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "doctor-pollution",
+      "argv": [
+        "bd",
+        "doctor",
+        "--check=pollution",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:18:43.803775+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:18:43.936440+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "doctor-pollution.stdout.txt",
+          "sha256": "e6d4a833ebd389228e74f4de05929070fa1ecad38591424a475fa0a3fc78d150"
+        },
+        "stderr": {
+          "path": "doctor-pollution.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  ]
+}

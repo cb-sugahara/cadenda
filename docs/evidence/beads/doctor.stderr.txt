@@ -1,0 +1,22 @@
+{
+  "checks_supported_in_embedded_mode": [
+    "artifacts",
+    "conventions",
+    "pollution"
+  ],
+  "checks_unsupported_in_embedded_mode": [
+    "validate"
+  ],
+  "code": "embedded_unsupported",
+  "command": "doctor",
+  "error": "'bd doctor' is not yet supported in embedded mode",
+  "hints": [
+    "Verify database exists:  ls -la .beads/embeddeddolt/",
+    "Check bd version:        bd version",
+    "Reinitialize if needed:  bd init --reinit-local",
+    "Switch to server mode:   bd init --server"
+  ],
+  "mode": "embedded",
+  "schema_version": 1,
+  "unsupported": true
+}

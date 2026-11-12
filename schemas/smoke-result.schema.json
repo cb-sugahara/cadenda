@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Synthetic connectivity response",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {"status": {"type": "string", "enum": ["CADENDA_OK"]}},
+  "required": ["status"]
+}

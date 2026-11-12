@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "Section": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        },
+        "mandatory": {
+          "default": false,
+          "title": "Mandatory",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "title",
+        "text",
+        "refs"
+      ],
+      "title": "Section",
+      "type": "object"
+    },
+    "SourceIndex": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "ref": {
+          "title": "Ref",
+          "type": "string"
+        },
+        "raw_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Raw Sha256",
+          "type": "string"
+        },
+        "content_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "redactions": {
+          "title": "Redactions",
+          "type": "integer"
+        },
+        "bytes": {
+          "title": "Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_id",
+        "ref",
+        "raw_sha256",
+        "content_sha256",
+        "redactions",
+        "bytes"
+      ],
+      "title": "SourceIndex",
+      "type": "object"
+    },
+    "Warning": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "ref": {
+          "title": "Ref",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "ref",
+        "message"
+      ],
+      "title": "Warning",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "builder_version": {
+      "default": "0.2.0",
+      "title": "Builder Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "project_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "issue_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+      "title": "Issue Id",
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "standard",
+        "debug",
+        "review",
+        "full"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "context_profile": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Context Profile"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "content_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Content Sha256",
+      "type": "string"
+    },
+    "budget_tokens": {
+      "title": "Budget Tokens",
+      "type": "integer"
+    },
+    "estimated_tokens": {
+      "default": 0,
+      "title": "Estimated Tokens",
+      "type": "integer"
+    },
+    "token_estimator": {
+      "default": "UTF-8 bytes (conservative heuristic, not a provider tokenizer)",
+      "title": "Token Estimator",
+      "type": "string"
+    },
+    "sections": {
+      "items": {
+        "$ref": "#/$defs/Section"
+      },
+      "title": "Sections",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/SourceIndex"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "$ref": "#/$defs/Warning"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "project_id",
+    "issue_id",
+    "mode",
+    "generated_at",
+    "content_sha256",
+    "budget_tokens",
+    "sections",
+    "sources",
+    "warnings"
+  ],
+  "title": "Context",
+  "type": "object"
+}

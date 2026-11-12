@@ -1,0 +1,192 @@
+{
+  "$defs": {
+    "DecisionReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "topic": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+          "title": "Topic",
+          "type": "string"
+        },
+        "issue_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+          "title": "Issue Id",
+          "type": "string"
+        },
+        "comment_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+          "title": "Comment Id",
+          "type": "string"
+        },
+        "comment_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Comment Sha256",
+          "type": "string"
+        },
+        "applies_to": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Applies To",
+          "type": "array"
+        },
+        "approved_at": {
+          "format": "date-time",
+          "title": "Approved At",
+          "type": "string"
+        },
+        "approval_ref": {
+          "minLength": 1,
+          "title": "Approval Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "topic",
+        "issue_id",
+        "comment_id",
+        "comment_sha256",
+        "applies_to",
+        "approved_at",
+        "approval_ref"
+      ],
+      "title": "DecisionReceipt",
+      "type": "object"
+    },
+    "Project": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "root": {
+          "format": "path",
+          "title": "Root",
+          "type": "string"
+        },
+        "worktree_roots": {
+          "items": {
+            "format": "path",
+            "type": "string"
+          },
+          "title": "Worktree Roots",
+          "type": "array"
+        },
+        "artifact_roots": {
+          "items": {
+            "format": "path",
+            "type": "string"
+          },
+          "title": "Artifact Roots",
+          "type": "array"
+        },
+        "documents": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Documents",
+          "type": "array"
+        },
+        "evidence_catalog": {
+          "anyOf": [
+            {
+              "format": "path",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Catalog"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/DecisionReceipt"
+          },
+          "maxItems": 64,
+          "title": "Decisions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project_id",
+        "root"
+      ],
+      "title": "Project",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": 1,
+      "maximum": 1,
+      "minimum": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "state_root": {
+      "format": "path",
+      "title": "State Root",
+      "type": "string"
+    },
+    "projects": {
+      "items": {
+        "$ref": "#/$defs/Project"
+      },
+      "title": "Projects",
+      "type": "array"
+    },
+    "max_depth": {
+      "default": 2,
+      "maximum": 8,
+      "minimum": 0,
+      "title": "Max Depth",
+      "type": "integer"
+    },
+    "max_issues": {
+      "default": 30,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Max Issues",
+      "type": "integer"
+    },
+    "max_source_bytes": {
+      "default": 1048576,
+      "maximum": 16777216,
+      "minimum": 4096,
+      "title": "Max Source Bytes",
+      "type": "integer"
+    },
+    "budget_tokens": {
+      "default": 24000,
+      "maximum": 1000000,
+      "minimum": 512,
+      "title": "Budget Tokens",
+      "type": "integer"
+    },
+    "context_profiles": {
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$": {
+          "maximum": 1000000,
+          "minimum": 512,
+          "type": "integer"
+        }
+      },
+      "title": "Context Profiles",
+      "type": "object"
+    }
+  },
+  "required": [
+    "state_root",
+    "projects"
+  ],
+  "title": "Settings",
+  "type": "object"
+}

@@ -1,0 +1,33 @@
+# cadenda
+
+Macで動く、BeadsをIssueの正本とするAI開発オーケストレーション基盤。
+設計は [実装計画書](docs/macmini_ai_development_implementation_plan.md) に従う。
+
+Phase 0（実機・CLI互換性）とPhase 1（Issue引継ぎPoC）を完了。
+Phase 2の読み取り専用Context Builder・`aiops` CLIを実装・検証済み。常駐WorkerとWeb GUIは後続工程。
+
+- [実機互換性と再検証コマンド](docs/compatibility-matrix.md)
+- [Context Builderの導入・使い方・データ境界](docs/context-builder.md)
+- [Phase 2の検証結果と次工程](docs/phase2-results.md)
+- [Issue引継ぎPoCの結果・確認方法・次工程](docs/issue-handoff-poc.md)
+- [未解決制約](docs/risks.md)
+- [承認されたPoCの課題分解](docs/poc-task-proposal.md)
+- [手動引継ぎテンプレート](templates/handoff.md)
+- [公開可能な合成入力の検証証跡](docs/evidence/index.json)
+
+CLI検証スクリプトはPython標準ライブラリのみで実行する。実行ログ、試験用Git/Beads DB、worktreeは `state/` に隔離し、Gitへ含めない。
+独立Nodeテスト・レビュー結果・Issueコメントを照合し、AIの成功申告だけで完了判定しない。
+
+```bash
+# Phase 2（導入手順はContext Builder文書を参照）
+.venv/bin/aiops issue context handoff-poc poc-eye.3 --mode standard
+
+# 実機情報・各CLIヘルプ・利用可能モデルを収集（推論なし）
+python3 scripts/probe_environment.py
+
+# 合成入力による非対話・構造化出力とLocal推論の検証
+python3 scripts/probe_environment.py --agents --fm-local
+```
+
+PCCは現在の実行コンテキストでは利用できないため保留。グローバル認証・権限設定は変更せず、実装試験は個別許可とsandboxを利用する。
+詳細は互換性表を参照。スクリプトの終了0はProviderや実装の合格と同義ではない。

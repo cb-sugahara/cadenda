@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PoC agent report — verify independently",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {"type": "string", "enum": ["implemented", "blocked", "reviewed"]},
+    "summary": {"type": "string"},
+    "current_requirement": {"type": "string"},
+    "previous_requirement": {"type": "string"},
+    "next_actions": {"type": "array", "items": {"type": "string"}},
+    "constraints": {"type": "array", "items": {"type": "string"}},
+    "source_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["status", "summary", "current_requirement", "previous_requirement", "next_actions", "constraints", "source_refs"]
+}

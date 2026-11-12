@@ -1,0 +1,414 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "git-init",
+      "argv": [
+        "git",
+        "init",
+        "--initial-branch=main"
+      ],
+      "executable": "/usr/bin/git",
+      "started_at": "2026-11-12T08:16:31.976864+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:31.993880+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "git-init.stdout.txt",
+          "sha256": "a272d1abcafec7a4217c0b2edd102dc853245388018a2c7307a3e75fee3eaac0"
+        },
+        "stderr": {
+          "path": "git-init.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "init",
+      "argv": [
+        "bd",
+        "init",
+        "--prefix",
+        "probe",
+        "--non-interactive",
+        "--skip-hooks",
+        "--skip-agents"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:31.994069+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:35.863537+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "init.stdout.txt",
+          "sha256": "1c00db5a583cc94d9b7fba4c12f118c27d39f9c2cd249f9237ca65c297ccc0b5"
+        },
+        "stderr": {
+          "path": "init.stderr.txt",
+          "sha256": "33a4f8d5dcaabbddf5f3cc1af5b05b11eec4d305096ca0f9facf93219d41ee74"
+        }
+      }
+    },
+    {
+      "name": "engine",
+      "argv": [
+        "bd",
+        "dolt",
+        "status",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:35.863683+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:35.922665+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "engine.stdout.txt",
+          "sha256": "8fe9d12bd2f84a879830e33247d2e93dc2a4f06913655cafdbe20640c940833f"
+        },
+        "stderr": {
+          "path": "engine.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "doctor",
+      "argv": [
+        "bd",
+        "doctor",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:35.922880+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:35.982464+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "doctor.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "doctor.stderr.txt",
+          "sha256": "641c7f9d82c1195073d207947cf2798ca1d2797f757a6a5a4dd009ecaa9a2806"
+        }
+      }
+    },
+    {
+      "name": "create-epic",
+      "argv": [
+        "bd",
+        "create",
+        "Phase 0 CLI fixture (not development work)",
+        "--type",
+        "epic",
+        "--description",
+        "Disposable CLI contract checks only.",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:35.982634+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:36.448716+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "create-epic.stdout.txt",
+          "sha256": "993b868769f816a7ab0196a2fbe6a570e78ccce358a73b6118729b3d3c28d745"
+        },
+        "stderr": {
+          "path": "create-epic.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "create-first",
+      "argv": [
+        "bd",
+        "create",
+        "CLI fixture: prerequisite",
+        "--parent",
+        "probe-87y",
+        "--description",
+        "Verify show, comment and close JSON contracts.",
+        "--acceptance",
+        "Comment can be read; closed issue disappears from ready.",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:36.448999+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:37.109460+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "create-first.stdout.txt",
+          "sha256": "60d0d22f6ddd8e6a23c510d132893733dda2fcad58845af074bea826e93e8ec1"
+        },
+        "stderr": {
+          "path": "create-first.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "create-second",
+      "argv": [
+        "bd",
+        "create",
+        "CLI fixture: dependent",
+        "--parent",
+        "probe-87y",
+        "--description",
+        "Must be blocked until prerequisite closes.",
+        "--acceptance",
+        "Ready includes this issue only after prerequisite closes.",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:37.109757+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:37.776560+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "create-second.stdout.txt",
+          "sha256": "14c4a2f1a3e99547692c1e2c960ec6e749c3d7db57dac388e7cc1214cb7f3ee3"
+        },
+        "stderr": {
+          "path": "create-second.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "dependency",
+      "argv": [
+        "bd",
+        "dep",
+        "add",
+        "probe-87y.2",
+        "probe-87y.1",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:37.776905+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:38.256662+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "dependency.stdout.txt",
+          "sha256": "0e17375119f208cb0b242f26788d1bc6ce58782ad2e142c3c53f897fcb544c4a"
+        },
+        "stderr": {
+          "path": "dependency.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "add-comment",
+      "argv": [
+        "bd",
+        "comments",
+        "add",
+        "probe-87y.1",
+        "[comment] Phase 0 synthetic fixture; no specification approval is claimed.",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:38.256979+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:38.593478+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "add-comment.stdout.txt",
+          "sha256": "dad632123f9d7b1ff523da3ac8520c99f61008223cffcc7d0c4af92019923194"
+        },
+        "stderr": {
+          "path": "add-comment.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "read-comments",
+      "argv": [
+        "bd",
+        "comments",
+        "probe-87y.1",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:38.593794+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:38.799880+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "read-comments.stdout.txt",
+          "sha256": "e82bf55790fe2029474e702c2db285221d37c4d225d2f2333da8b2737fc575f0"
+        },
+        "stderr": {
+          "path": "read-comments.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "ready-before",
+      "argv": [
+        "bd",
+        "ready",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:38.800225+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:39.018868+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "ready-before.stdout.txt",
+          "sha256": "5eb882f0b5e8ebcc323f8db4c8d3dd7b38682e5743fe7fdec4af2df1ea920552"
+        },
+        "stderr": {
+          "path": "ready-before.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "show-first",
+      "argv": [
+        "bd",
+        "show",
+        "probe-87y.1",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:39.019194+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:39.358192+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "show-first.stdout.txt",
+          "sha256": "6536f7f306185f79c3d25f4b8b677fe2bb73f646e6163b80079fd71d3407e513"
+        },
+        "stderr": {
+          "path": "show-first.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "close-first",
+      "argv": [
+        "bd",
+        "close",
+        "probe-87y.1",
+        "--reason",
+        "CLI fixture assertions passed; not product completion.",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:39.358536+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:39.864727+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "close-first.stdout.txt",
+          "sha256": "97f18397f1e7703f96e35f8d851ddf4f1847a3bcb0b2cdf91a911b2e4965e643"
+        },
+        "stderr": {
+          "path": "close-first.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "ready-after",
+      "argv": [
+        "bd",
+        "ready",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:39.865050+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:40.085195+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "ready-after.stdout.txt",
+          "sha256": "e29c46b045efaf6b84d22a7e49d0d0ac45eda56b327072a70b3a18f2018924c2"
+        },
+        "stderr": {
+          "path": "ready-after.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "close-second",
+      "argv": [
+        "bd",
+        "close",
+        "probe-87y.2",
+        "--reason",
+        "Dependency readiness assertion passed.",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:40.085520+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:40.544418+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "close-second.stdout.txt",
+          "sha256": "e9f430140cb1dc0816c5ac40d1612cb369f85dc4e294ca4bafff7ed663437757"
+        },
+        "stderr": {
+          "path": "close-second.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "close-epic",
+      "argv": [
+        "bd",
+        "close",
+        "probe-87y",
+        "--reason",
+        "CLI contract fixture complete.",
+        "--json"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:16:40.544798+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:16:41.021189+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "close-epic.stdout.txt",
+          "sha256": "918b194e495fd66cb59a2c2cf212fa5be1931872856c8ef2161659f351c13d0d"
+        },
+        "stderr": {
+          "path": "close-epic.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "id": "8185abe9-4070-5303-958a-8d9bb41585f4",
+    "issue_id": "probe-87y.1",
+    "author": "cb-sugahara",
+    "text": "[comment] Phase 0 synthetic fixture; no specification approval is claimed.",
+    "created_at": "2026-11-12T08:16:38Z"
+  }
+]

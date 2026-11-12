@@ -1,0 +1,70 @@
+▶ HTTP API - GET /week-start
+  ▶ 200 OK responses
+    ✔ returns canonical UTC week start for valid JST ISO datetime (8.872666ms)
+    ✔ preserves JST boundary instant 2026-11-15T15:00:00Z (1.383417ms)
+    ✔ preserves JST boundary instant 2026-11-15T14:59:59Z rolling back to previous week (2.044292ms)
+  ✔ 200 OK responses (12.595084ms)
+  ▶ 400 Bad Request responses
+    ✔ returns 400 when "at" query parameter is missing (2.730833ms)
+    ✔ returns 400 for naive ISO datetime without timezone (0.673709ms)
+    ✔ returns 400 for invalid calendar date (1.891292ms)
+    ✔ returns 400 for non-ISO string (1.947375ms)
+  ✔ 400 Bad Request responses (7.445292ms)
+  ▶ 404 Not Found responses
+    ✔ returns 404 for unknown route (2.064833ms)
+    ✔ returns 404 for root path (2.013542ms)
+    ✔ returns 404 for non-GET method on /week-start (0.758625ms)
+  ✔ 404 Not Found responses (4.973417ms)
+✔ HTTP API - GET /week-start (29.418125ms)
+▶ weekStart - JST Monday 00:00 (Asia/Tokyo UTC+09:00)
+  ▶ JST Sunday and Monday boundaries
+    ✔ returns Sunday 15:00:00.000Z for exact JST Monday 00:00:00 (1.454708ms)
+    ✔ returns Sunday 15:00:00.000Z for exact boundary instant in UTC (2026-11-15T15:00:00Z) (0.093291ms)
+    ✔ returns previous week start for instant just before JST Monday 00:00:00 (2026-11-15T14:59:59Z) (0.045833ms)
+    ✔ returns previous week start for JST Sunday 23:59:59.999+09:00 (0.050916ms)
+    ✔ returns same week start for JST Monday afternoon (0.042083ms)
+    ✔ returns same week start for JST Sunday (end of week) (0.035125ms)
+    ✔ handles negative offsets properly relative to JST week boundary (0.039791ms)
+  ✔ JST Sunday and Monday boundaries (2.170167ms)
+  ▶ Year boundary handling in JST
+    ✔ rolls back across year boundary when JST year begins mid-week (0.065375ms)
+    ✔ handles UTC year boundary vs JST year boundary (0.053208ms)
+  ✔ Year boundary handling in JST (0.207125ms)
+  ▶ Leap dates and calendar validation
+    ✔ accepts February 29 in a standard leap year (0.129792ms)
+    ✔ accepts February 29 in a 400-year century leap year (0.044916ms)
+    ✔ accepts February 28 in a non-leap century year (0.053875ms)
+    ✔ rejects February 29 in a non-leap year (0.169667ms)
+    ✔ rejects February 29 in a non-leap century year (0.028875ms)
+    ✔ rejects February 30 (0.029209ms)
+    ✔ rejects April 31 (month with 30 days) (0.023208ms)
+    ✔ rejects day 0 (0.023083ms)
+    ✔ rejects month 0 (0.023333ms)
+    ✔ rejects month 13 (0.024125ms)
+  ✔ Leap dates and calendar validation (0.653042ms)
+  ▶ Invalid inputs and naive timestamp rejection
+    ✔ rejects naive datetimes without timezone offset (0.051208ms)
+    ✔ rejects datetimes formatted with space instead of T (0.024584ms)
+    ✔ rejects date-only input without time components (0.033042ms)
+    ✔ rejects invalid hour (>= 24) (0.031ms)
+    ✔ rejects invalid minute (>= 60) (0.032625ms)
+    ✔ rejects invalid second (>= 60) (0.031792ms)
+    ✔ rejects timezone offset hour out of range (>= 24) (0.036833ms)
+    ✔ rejects timezone offset minute out of range (>= 60) (0.029333ms)
+    ✔ rejects arbitrary non-ISO strings (0.0375ms)
+    ✔ rejects empty string (0.0255ms)
+    ✔ rejects input with trailing newline (0.021333ms)
+    ✔ rejects non-string argument (0.037375ms)
+  ✔ Invalid inputs and naive timestamp rejection (0.488375ms)
+✔ weekStart - JST Monday 00:00 (Asia/Tokyo UTC+09:00) (3.728708ms)
+✔ independent HTTP contract with real loopback requests (19.75975ms)
+✔ independent JST Monday exact boundary supersedes UTC baseline (1.3285ms)
+✔ independent invalid input rejection remains in place (0.137541ms)
+ℹ tests 44
+ℹ suites 9
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 116.166375

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "source": "state/phase2/tests.txt",
+      "export": "docs/evidence/phase2/tests.txt",
+      "sha256": "706d2ce08ad9056073dd167acab946fdb87885e19976f502bca09f71a1a8bbff"
+    },
+    {
+      "source": "state/phase2/tests.xml",
+      "export": "docs/evidence/phase2/tests.xml",
+      "sha256": "351b1ec2497ed6b8619b41973cbc3c91ed5236dd4a9f8d8f75219351179273f6"
+    },
+    {
+      "source": "state/phase2/build.txt",
+      "export": "docs/evidence/phase2/build.txt",
+      "sha256": "436a02cb95c43190d4b91dceb305b363374c79b3b8da23a38045135c4417c516"
+    },
+    {
+      "source": "state/phase2/review-result.json",
+      "export": "docs/evidence/phase2/review-result.json",
+      "sha256": "6a73eb77becfc0f756d3900e9960f927432bcd1ffc1821eccb51485d69406757"
+    },
+    {
+      "source": "state/phase2/review-source-hashes.json",
+      "export": "docs/evidence/phase2/review-source-hashes.json",
+      "sha256": "99c35c483c991bc473416948c32c949312bed9953be5073edc413f6f317bf718"
+    },
+    {
+      "source": "state/phase2/verification.json",
+      "export": "docs/evidence/phase2/verification.json",
+      "sha256": "135010f6d130d6b1720c9e7c9c9fe375fb987f62de43925da7c554d0464cabca"
+    },
+    {
+      "source": "state/phase2/context-standard.md",
+      "export": "docs/evidence/phase2/context-standard.md",
+      "sha256": "69766f5f882b3516ef3d2833864c61a1d4e263a47baefd05dcbdd328717721a2"
+    },
+    {
+      "source": "state/phase2/review-regressions-before.txt",
+      "export": "docs/evidence/phase2/review-regressions-before.txt",
+      "sha256": "ff344ed96ba51f2d9dbd2b110940898d1460e0aec726aabae094776ec2cb7b89"
+    },
+    {
+      "source": "state/phase2/malformed-status-before.txt",
+      "export": "docs/evidence/phase2/malformed-status-before.txt",
+      "sha256": "9e63113e88c2445f510f4efe765a2ff0955ef4c316dfbe6982415bd0d96cbaa0"
+    },
+    {
+      "source": "state/phase2/reviews/attempt-1/review-result.json",
+      "export": "docs/evidence/phase2/review-attempt-1.json",
+      "sha256": "698a76686077efcb0eaa3edd8f6ae510270b9ef6745a092551aa9d734ff9174e"
+    },
+    {
+      "source": "state/phase2/reviews/attempt-2/review-result.json",
+      "export": "docs/evidence/phase2/review-attempt-2.json",
+      "sha256": "2f9838ca5d76865f4f523bd98ffd32b23066a1beeb67bc74bd0b975acb1212ae"
+    }
+  ]
+}

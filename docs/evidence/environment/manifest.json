@@ -1,0 +1,544 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "os",
+      "argv": [
+        "sw_vers"
+      ],
+      "executable": "/usr/bin/sw_vers",
+      "started_at": "2026-11-12T08:15:10.320758+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.329230+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "os.stdout.txt",
+          "sha256": "9a0ac4f6ff4ef7fb704c66da4bcc1b59033e6b94e239443d95910eeaa9bb8d45"
+        },
+        "stderr": {
+          "path": "os.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "arch",
+      "argv": [
+        "uname",
+        "-m"
+      ],
+      "executable": "/usr/bin/uname",
+      "started_at": "2026-11-12T08:15:10.329261+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.332382+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "arch.stdout.txt",
+          "sha256": "c1669e1d8edca98769c37d494b76442a1d6e5ffffd7b4da1fb63aef8ebaf6f01"
+        },
+        "stderr": {
+          "path": "arch.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "memory",
+      "argv": [
+        "sysctl",
+        "-n",
+        "hw.memsize"
+      ],
+      "executable": "/usr/sbin/sysctl",
+      "started_at": "2026-11-12T08:15:10.332417+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.335068+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "memory.stdout.txt",
+          "sha256": "1a4675111e2b0f970616c374fc0a90aad997171ca22da371c998275950af4481"
+        },
+        "stderr": {
+          "path": "memory.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "xcode",
+      "argv": [
+        "xcode-select",
+        "-p"
+      ],
+      "executable": "/usr/bin/xcode-select",
+      "started_at": "2026-11-12T08:15:10.335093+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.338723+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "xcode.stdout.txt",
+          "sha256": "a8044fec385da5d3d686b9c06000917f00d0f27ca72b7db5b47bfc277f748301"
+        },
+        "stderr": {
+          "path": "xcode.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "python",
+      "argv": [
+        "python3",
+        "--version"
+      ],
+      "executable": "/opt/homebrew/bin/python3",
+      "started_at": "2026-11-12T08:15:10.338754+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.347308+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "python.stdout.txt",
+          "sha256": "0366d77cc1f1ac88ea458231ba4f639323d5caf34de0d50b7618277fd4395f1f"
+        },
+        "stderr": {
+          "path": "python.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "node",
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "executable": "/opt/homebrew/bin/node",
+      "started_at": "2026-11-12T08:15:10.347344+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.368936+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "node.stdout.txt",
+          "sha256": "bd17489adcddbc8ed526bf6dedb22de2e677bbae176b977aa7f7c0408999248c"
+        },
+        "stderr": {
+          "path": "node.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "git",
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "executable": "/usr/bin/git",
+      "started_at": "2026-11-12T08:15:10.368978+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.380389+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "git.stdout.txt",
+          "sha256": "0a72a762b37a3800276a1004e2c169aed0610d4a3ba601ba59e70e1c4d9f3200"
+        },
+        "stderr": {
+          "path": "git.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "brew",
+      "argv": [
+        "brew",
+        "--version"
+      ],
+      "executable": "/opt/homebrew/bin/brew",
+      "started_at": "2026-11-12T08:15:10.380430+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.484124+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "brew.stdout.txt",
+          "sha256": "9c583f96b897abb5873692fd6d6b0ef8226c3c0bd4723a729ec5f6afa42e519a"
+        },
+        "stderr": {
+          "path": "brew.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "beads",
+      "argv": [
+        "bd",
+        "--version"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:15:10.484161+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.550594+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "beads.stdout.txt",
+          "sha256": "f970d90e655e4b07b3eba67c3ef53cc2c874d6e2b842378b39ccd4086b7de43b"
+        },
+        "stderr": {
+          "path": "beads.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "beads-init-help",
+      "argv": [
+        "bd",
+        "init",
+        "--help"
+      ],
+      "executable": "/opt/homebrew/bin/bd",
+      "started_at": "2026-11-12T08:15:10.550643+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:10.590520+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "beads-init-help.stdout.txt",
+          "sha256": "263e0fe677991d58c22fc56e742812e3f537e206c94b00346a66f65ce31ff175"
+        },
+        "stderr": {
+          "path": "beads-init-help.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "dolt",
+      "argv": [
+        "dolt",
+        "version"
+      ],
+      "executable": "/opt/homebrew/bin/dolt",
+      "started_at": "2026-11-12T08:15:10.590570+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:11.129659+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "dolt.stdout.txt",
+          "sha256": "dddc01ce46d5c6c36af787b90065a0cb49c191959102fb3a663caf238dedcf68"
+        },
+        "stderr": {
+          "path": "dolt.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "codex",
+      "argv": [
+        "codex",
+        "--version"
+      ],
+      "executable": "/Users/m4pro/.local/bin/codex",
+      "started_at": "2026-11-12T08:15:11.129708+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:11.141249+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "codex.stdout.txt",
+          "sha256": "ff63aca76f41814af0725bba286b7311709b1cfd7fbb17df9e17d18eaa3c5e62"
+        },
+        "stderr": {
+          "path": "codex.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "codex-exec-help",
+      "argv": [
+        "codex",
+        "exec",
+        "--help"
+      ],
+      "executable": "/Users/m4pro/.local/bin/codex",
+      "started_at": "2026-11-12T08:15:11.141327+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:11.155383+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "codex-exec-help.stdout.txt",
+          "sha256": "df0d864ca2076f7654288c6a1e3394e3eaa2ea8f15021df2524efdd90c70986c"
+        },
+        "stderr": {
+          "path": "codex-exec-help.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "antigravity",
+      "argv": [
+        "agy",
+        "--version"
+      ],
+      "executable": "/Users/m4pro/.local/bin/agy",
+      "started_at": "2026-11-12T08:15:11.155440+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:11.215742+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "antigravity.stdout.txt",
+          "sha256": "dab64e06c0817d77b4f887261832cbb34ba023cac7c74d72d81068553652d0c5"
+        },
+        "stderr": {
+          "path": "antigravity.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "antigravity-help",
+      "argv": [
+        "agy",
+        "--help"
+      ],
+      "executable": "/Users/m4pro/.local/bin/agy",
+      "started_at": "2026-11-12T08:15:11.215799+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:11.267677+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "antigravity-help.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "antigravity-help.stderr.txt",
+          "sha256": "e92946f85cec63eca61f93014ca49f53b1e84277eac7954e7fac7d8d712940fd"
+        }
+      }
+    },
+    {
+      "name": "fm-respond-help",
+      "argv": [
+        "fm",
+        "respond",
+        "--help"
+      ],
+      "executable": "/usr/bin/fm",
+      "started_at": "2026-11-12T08:15:11.267741+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:11.279374+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "fm-respond-help.stdout.txt",
+          "sha256": "2e59d161e9d73f4c0bbbf4a239bc608b23829e6baa6108d5af4ff48e24802c61"
+        },
+        "stderr": {
+          "path": "fm-respond-help.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "fm-serve-help",
+      "argv": [
+        "fm",
+        "serve",
+        "--help"
+      ],
+      "executable": "/usr/bin/fm",
+      "started_at": "2026-11-12T08:15:11.279423+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:11.291759+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "fm-serve-help.stdout.txt",
+          "sha256": "974891a443880871025ab99d808d808313f0329790a6ff649b606f2aa589168b"
+        },
+        "stderr": {
+          "path": "fm-serve-help.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "fm-models",
+      "argv": [
+        "fm",
+        "models"
+      ],
+      "executable": "/usr/bin/fm",
+      "started_at": "2026-11-12T08:15:11.291821+00:00",
+      "status": "exited",
+      "exit_code": 1,
+      "ended_at": "2026-11-12T08:15:11.325203+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "fm-models.stdout.txt",
+          "sha256": "3bb29e7fb8971cc83a54ef046a731410da2403307ae904672961a69c629c252c"
+        },
+        "stderr": {
+          "path": "fm-models.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "fm-quota",
+      "argv": [
+        "fm",
+        "quota-usage"
+      ],
+      "executable": "/usr/bin/fm",
+      "started_at": "2026-11-12T08:15:11.325276+00:00",
+      "status": "exited",
+      "exit_code": 1,
+      "ended_at": "2026-11-12T08:15:11.338102+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "fm-quota.stdout.txt",
+          "sha256": "6c61f23cec2fafd95c90815089ca704fc3bff746db5797b061d94bb3252e189d"
+        },
+        "stderr": {
+          "path": "fm-quota.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "codex-smoke",
+      "argv": [
+        "codex",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--sandbox",
+        "read-only",
+        "--json",
+        "--output-schema",
+        "/Users/m4pro/Desktop/cadenda/schemas/smoke-result.schema.json",
+        "-o",
+        "/Users/m4pro/Desktop/cadenda/state/probes/20261112T081510320346Z/codex-result.json",
+        "Do not use tools or read any files. Return a JSON object with status equal to CADENDA_OK. This is a synthetic connectivity test."
+      ],
+      "executable": "/Users/m4pro/.local/bin/codex",
+      "started_at": "2026-11-12T08:15:11.338149+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:17.896898+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "codex-smoke.stdout.txt",
+          "sha256": "b65e0c68f669f61b490d9ed8fa115b4b73207e541661f050210a0eaedba406a9"
+        },
+        "stderr": {
+          "path": "codex-smoke.stderr.txt",
+          "sha256": "51c15c461ed1b57488882cd72402e7031837d4578f1968a10b4e1352f0042815"
+        }
+      }
+    },
+    {
+      "name": "antigravity-smoke",
+      "argv": [
+        "agy",
+        "--sandbox",
+        "--mode",
+        "plan",
+        "-p",
+        "Do not use tools or read any files. Return a JSON object with status equal to CADENDA_OK. This is a synthetic connectivity test.",
+        "--output-format",
+        "json",
+        "--json-schema",
+        "/Users/m4pro/Desktop/cadenda/schemas/smoke-result.schema.json",
+        "--print-timeout",
+        "40s"
+      ],
+      "executable": "/Users/m4pro/.local/bin/agy",
+      "started_at": "2026-11-12T08:15:17.897014+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:34.933306+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "antigravity-smoke.stdout.txt",
+          "sha256": "14b048c51fe3594960f819b9fffffaab8854dc9d1960343195fdcb0bf68e904c"
+        },
+        "stderr": {
+          "path": "antigravity-smoke.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "fm-system-smoke",
+      "argv": [
+        "fm",
+        "respond",
+        "--model",
+        "system",
+        "--no-stream",
+        "Reply with the literal text CADENDA_OK. This is a synthetic connectivity test."
+      ],
+      "executable": "/usr/bin/fm",
+      "started_at": "2026-11-12T08:15:34.933427+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:15:35.603968+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "fm-system-smoke.stdout.txt",
+          "sha256": "4426ee53c326a75054be2032c40c6f86b313538e045cc9351111824b91f8ea21"
+        },
+        "stderr": {
+          "path": "fm-system-smoke.stderr.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "fm-pcc-smoke",
+      "argv": [
+        "fm",
+        "respond",
+        "--model",
+        "pcc",
+        "--no-stream",
+        "Reply with the literal text CADENDA_OK. This is a synthetic connectivity test."
+      ],
+      "executable": "/usr/bin/fm",
+      "started_at": "2026-11-12T08:15:35.604015+00:00",
+      "status": "exited",
+      "exit_code": 1,
+      "ended_at": "2026-11-12T08:15:35.617763+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "fm-pcc-smoke.stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "fm-pcc-smoke.stderr.txt",
+          "sha256": "44c211207cd715240d52397e1b944a364c419a1cf640538b969022e72f90da5d"
+        }
+      }
+    }
+  ]
+}

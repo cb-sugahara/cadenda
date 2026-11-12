@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Issue decomposition proposal (requires human review)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "summary": {"type": "string"},
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proposal_id": {"type": "string"},
+          "title": {"type": "string"},
+          "description": {"type": "string"},
+          "acceptance_criteria": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "depends_on": {"type": "array", "items": {"type": "string"}},
+          "risk_class": {"type": "string", "enum": ["read_only", "workspace_write", "staging", "production"]}
+        },
+        "required": ["proposal_id", "title", "description", "acceptance_criteria", "depends_on", "risk_class"]
+      }
+    }
+  },
+  "required": ["schema_version", "summary", "tasks"]
+}

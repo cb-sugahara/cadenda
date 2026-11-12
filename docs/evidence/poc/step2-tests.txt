@@ -1,0 +1,51 @@
+▶ weekStart - JST Monday 00:00 (Asia/Tokyo UTC+09:00)
+  ▶ JST Sunday and Monday boundaries
+    ✔ returns Sunday 15:00:00.000Z for exact JST Monday 00:00:00 (0.9805ms)
+    ✔ returns Sunday 15:00:00.000Z for exact boundary instant in UTC (2026-11-15T15:00:00Z) (0.106375ms)
+    ✔ returns previous week start for instant just before JST Monday 00:00:00 (2026-11-15T14:59:59Z) (0.050583ms)
+    ✔ returns previous week start for JST Sunday 23:59:59.999+09:00 (0.06175ms)
+    ✔ returns same week start for JST Monday afternoon (0.056084ms)
+    ✔ returns same week start for JST Sunday (end of week) (0.037959ms)
+    ✔ handles negative offsets properly relative to JST week boundary (0.044333ms)
+  ✔ JST Sunday and Monday boundaries (2.048333ms)
+  ▶ Year boundary handling in JST
+    ✔ rolls back across year boundary when JST year begins mid-week (0.06325ms)
+    ✔ handles UTC year boundary vs JST year boundary (0.049292ms)
+  ✔ Year boundary handling in JST (0.204208ms)
+  ▶ Leap dates and calendar validation
+    ✔ accepts February 29 in a standard leap year (0.118125ms)
+    ✔ accepts February 29 in a 400-year century leap year (0.060083ms)
+    ✔ accepts February 28 in a non-leap century year (0.043958ms)
+    ✔ rejects February 29 in a non-leap year (0.1605ms)
+    ✔ rejects February 29 in a non-leap century year (0.033917ms)
+    ✔ rejects February 30 (0.035875ms)
+    ✔ rejects April 31 (month with 30 days) (0.024084ms)
+    ✔ rejects day 0 (0.022584ms)
+    ✔ rejects month 0 (0.022708ms)
+    ✔ rejects month 13 (0.022292ms)
+  ✔ Leap dates and calendar validation (0.651292ms)
+  ▶ Invalid inputs and naive timestamp rejection
+    ✔ rejects naive datetimes without timezone offset (0.048625ms)
+    ✔ rejects datetimes formatted with space instead of T (0.028917ms)
+    ✔ rejects date-only input without time components (0.032458ms)
+    ✔ rejects invalid hour (>= 24) (0.035417ms)
+    ✔ rejects invalid minute (>= 60) (0.027292ms)
+    ✔ rejects invalid second (>= 60) (0.035667ms)
+    ✔ rejects timezone offset hour out of range (>= 24) (0.029167ms)
+    ✔ rejects timezone offset minute out of range (>= 60) (0.035041ms)
+    ✔ rejects arbitrary non-ISO strings (0.03675ms)
+    ✔ rejects empty string (0.022583ms)
+    ✔ rejects input with trailing newline (0.021167ms)
+    ✔ rejects non-string argument (0.03775ms)
+  ✔ Invalid inputs and naive timestamp rejection (0.48325ms)
+✔ weekStart - JST Monday 00:00 (Asia/Tokyo UTC+09:00) (3.606334ms)
+✔ independent JST Monday exact boundary supersedes UTC baseline (1.28225ms)
+✔ independent invalid input rejection remains in place (0.132125ms)
+ℹ tests 33
+ℹ suites 5
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 81.725542

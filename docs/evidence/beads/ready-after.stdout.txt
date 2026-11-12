@@ -1,0 +1,52 @@
+[
+  {
+    "id": "probe-87y",
+    "title": "Phase 0 CLI fixture (not development work)",
+    "description": "Disposable CLI contract checks only.",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "epic",
+    "owner": "sugahara@class-blue.com",
+    "created_at": "2026-11-12T08:16:36Z",
+    "created_by": "cb-sugahara",
+    "updated_at": "2026-11-12T08:16:36Z",
+    "dependency_count": 0,
+    "dependent_count": 0,
+    "comment_count": 0
+  },
+  {
+    "id": "probe-87y.2",
+    "title": "CLI fixture: dependent",
+    "description": "Must be blocked until prerequisite closes.",
+    "acceptance_criteria": "Ready includes this issue only after prerequisite closes.",
+    "status": "open",
+    "priority": 2,
+    "issue_type": "task",
+    "owner": "sugahara@class-blue.com",
+    "created_at": "2026-11-12T08:16:38Z",
+    "created_by": "cb-sugahara",
+    "updated_at": "2026-11-12T08:16:38Z",
+    "dependencies": [
+      {
+        "issue_id": "probe-87y.2",
+        "depends_on_id": "probe-87y.1",
+        "type": "blocks",
+        "created_at": "2026-11-12T08:16:38Z",
+        "created_by": "cb-sugahara",
+        "metadata": "{}"
+      },
+      {
+        "issue_id": "probe-87y.2",
+        "depends_on_id": "probe-87y",
+        "type": "parent-child",
+        "created_at": "2026-11-12T08:16:38Z",
+        "created_by": "cb-sugahara",
+        "metadata": "{}"
+      }
+    ],
+    "dependency_count": 1,
+    "dependent_count": 0,
+    "comment_count": 0,
+    "parent": "probe-87y"
+  }
+]

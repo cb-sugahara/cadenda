@@ -1,0 +1,16 @@
+{
+  "verdict": "approved",
+  "findings": [],
+  "requirements_checked": [
+    "Exports weekStart(iso: string): string and calculates Monday 00:00 UTC after applying the input offset.",
+    "Validates calendar dates, time components, and offsets; rejects naive and malformed input.",
+    "Independent tests cover Sunday/Monday boundaries, year rollover, invalid dates, and missing offsets; supplied results show 38 passing tests.",
+    "Uses Node built-in TypeScript stripping and node:test with no dependencies.",
+    "Supplied worktree context and Git evidence identify the dedicated child commit; latest diff matches the supplied source.",
+    "The prior newline finding is unsupported; the explicit full-match guard is defensive redundancy."
+  ],
+  "source_refs": [
+    "beads://handoff-poc/poc-eye.1",
+    "git://017153ee5e4bbc1f8efede6d7f9473b194d85040"
+  ]
+}

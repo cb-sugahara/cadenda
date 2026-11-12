@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Execution event draft — not an approval credential",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "issue_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": ["string", "null"]},
+    "actor": {"type": "string"},
+    "event_type": {"type": "string", "enum": ["comment", "decision_proposed", "decision_approved", "requirement_changed", "run_started", "run_finished", "test_passed", "test_failed", "approval_requested", "approved", "rejected", "human_needed", "handoff_written"]},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "payload": {"type": "object"}
+  },
+  "required": ["schema_version", "event_id", "project_id", "issue_id", "run_id", "actor", "event_type", "occurred_at", "payload"]
+}

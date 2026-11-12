@@ -1,7 +1,7 @@
 # cadenda 作業規約
 
 - 設計の基準は `docs/macmini_ai_development_implementation_plan.md`。工程ごとの完了条件を検証し、未合格のまま後工程を大量実装しない。
-- Phase 0・Phase 1の初回ゲートは `docs/issue-handoff-poc.md` を参照。次工程はPhase 2（Project Registry / BeadsAdapter / Context Builder）。実測と推測、未検証を明確に区別する。
+- Phase 0・Phase 1は `docs/issue-handoff-poc.md`、Phase 2は `docs/phase2-results.md` を参照。次工程はPhase 3（Execution Recorder / 単一エージェントOrchestrator）。実測と推測、未検証を明確に区別する。
 - Issueの正本はBeads。実行ログ・成果物は `state/` に保存し、公開可能な検証結果のみ `docs/` に記録する。代替Issue DBを作らない。
 - PoCのソース編集は試験リポジトリのworktree内に限定する。Control Planeの検証スクリプト・スキーマ・文書はこのリポジトリで管理する。
 - CLIは実機の版とヘルプを確認する。Shell文字列で外部入力を実行せず、引数配列・タイムアウトを使用する。

@@ -1,0 +1,56 @@
+▶ weekStart - UTC Monday 00:00 Baseline
+  ▶ Sunday and Monday boundaries
+    ✔ returns the same day at 00:00:00.000Z for UTC Monday start of day (1.349542ms)
+    ✔ returns Monday 00:00:00.000Z for UTC Monday afternoon (0.085375ms)
+    ✔ returns Monday 00:00:00.000Z for UTC Monday late night (0.042416ms)
+    ✔ returns previous Monday 00:00:00.000Z for UTC Sunday start of day (0.051791ms)
+    ✔ returns previous Monday 00:00:00.000Z for UTC Sunday end of day (0.047125ms)
+    ✔ returns Monday 00:00:00.000Z for mid-week days (e.g. Wednesday) (0.031791ms)
+    ✔ correctly shifts to previous week when positive offset puts local Monday in UTC Sunday (0.045125ms)
+    ✔ correctly shifts to current week when positive offset reaches UTC Monday (0.042542ms)
+    ✔ correctly shifts forward when negative offset puts local Sunday in UTC Monday (0.046584ms)
+  ✔ Sunday and Monday boundaries (2.174208ms)
+  ▶ Year boundary handling
+    ✔ rolls back to previous year Monday when year begins on Sunday (0.094792ms)
+    ✔ stays in current year when year begins on Monday (0.039125ms)
+    ✔ calculates week start correctly on the last day of the year (0.032959ms)
+    ✔ handles year boundary transition across timezone offsets (0.025666ms)
+  ✔ Year boundary handling (0.265ms)
+  ▶ Leap dates and calendar validation
+    ✔ accepts February 29 in a standard leap year (0.075958ms)
+    ✔ accepts February 29 in a 400-year century leap year (0.041625ms)
+    ✔ accepts February 28 in a non-leap century year (0.022666ms)
+    ✔ rejects February 29 in a non-leap year (0.1225ms)
+    ✔ rejects February 29 in a non-leap century year (0.026125ms)
+    ✔ rejects February 30 (0.029333ms)
+    ✔ rejects April 31 (month with 30 days) (0.023084ms)
+    ✔ rejects day 0 (0.024208ms)
+    ✔ rejects month 0 (0.023125ms)
+    ✔ rejects month 13 (0.021708ms)
+  ✔ Leap dates and calendar validation (0.489958ms)
+  ▶ Invalid inputs and naive timestamp rejection
+    ✔ rejects naive datetimes without timezone offset (0.05325ms)
+    ✔ rejects datetimes formatted with space instead of T (0.025667ms)
+    ✔ rejects date-only input without time components (0.026166ms)
+    ✔ rejects invalid hour (>= 24) (0.027667ms)
+    ✔ rejects invalid minute (>= 60) (0.025209ms)
+    ✔ rejects invalid second (>= 60) (0.024292ms)
+    ✔ rejects timezone offset hour out of range (>= 24) (0.025333ms)
+    ✔ rejects timezone offset minute out of range (>= 60) (0.028375ms)
+    ✔ rejects arbitrary non-ISO strings (0.02725ms)
+    ✔ rejects empty string (0.03425ms)
+    ✔ rejects input with trailing newline (0.025ms)
+    ✔ rejects non-string argument (0.038042ms)
+  ✔ Invalid inputs and naive timestamp rejection (0.475667ms)
+✔ weekStart - UTC Monday 00:00 Baseline (3.62425ms)
+✔ independent UTC boundary and year rollover (1.251041ms)
+✔ independent rejection and leap day (0.134709ms)
+✔ independent strict ISO rejects trailing newline (0.049958ms)
+ℹ tests 38
+ℹ suites 5
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 81.54125

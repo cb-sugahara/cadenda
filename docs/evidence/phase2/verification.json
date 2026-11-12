@@ -1,0 +1,53 @@
+{
+  "project_id": "handoff-poc",
+  "issue_id": "poc-eye.3",
+  "modes": {
+    "full": {
+      "snapshot_id": "ctx_3e70031f861b497e8026ea4392136619",
+      "content_sha256": "79202db4b6e63078a6b0bbdfc89cee57f9a61ba87ddf990548d673a5db7165d2",
+      "sources": 46,
+      "estimated_tokens": 20922,
+      "budget_tokens": 24000,
+      "warnings": [
+        "BUDGET_TRUNCATED",
+        "SOURCE_EXCERPT",
+        "SOURCE_EXCERPT",
+        "SOURCE_EXCERPT"
+      ]
+    },
+    "review": {
+      "snapshot_id": "ctx_741ebdf60afd4219b4e458e2ee9a9c3a",
+      "content_sha256": "082588028a053543ba573196678d24fde2181502ca022a1efda497943e73f15b",
+      "sources": 46,
+      "estimated_tokens": 23972,
+      "budget_tokens": 24000,
+      "warnings": [
+        "BUDGET_TRUNCATED",
+        "SOURCE_EXCERPT"
+      ]
+    },
+    "debug": {
+      "snapshot_id": "ctx_f33e61033c834659bbf8f1cd2cb3d9be",
+      "content_sha256": "9ca4ea614d86442ad656fbde78f4d43236da95f93452db9ae42cdd55d07bd90c",
+      "sources": 46,
+      "estimated_tokens": 22953,
+      "budget_tokens": 24000,
+      "warnings": [
+        "BUDGET_TRUNCATED",
+        "SOURCE_EXCERPT",
+        "SOURCE_EXCERPT",
+        "SOURCE_EXCERPT"
+      ]
+    },
+    "standard": {
+      "snapshot_id": "ctx_075d99a1f6304824b2e74e7981168a30",
+      "content_sha256": "104303766f733eb919c20acfda2edf2f3cbf93f7900811a73d4a0e13685ad4ab",
+      "sources": 45,
+      "estimated_tokens": 23661,
+      "budget_tokens": 24000,
+      "warnings": [
+        "BUDGET_TRUNCATED"
+      ]
+    }
+  }
+}

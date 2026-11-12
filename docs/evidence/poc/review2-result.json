@@ -1,0 +1,16 @@
+{
+  "verdict": "approved",
+  "findings": [],
+  "requirements_checked": [
+    "Fresh-session output explicitly identifies the previous UTC Monday rule and approved JST Monday rule.",
+    "Recorded launches show POC-01 processes ended before the new JST sessions began, without continuation or resume arguments.",
+    "Source and commit diff implement JST Monday 00:00 and return canonical UTC ISO.",
+    "Both required boundary cases are covered and pass in the supplied independent test results.",
+    "All 33 tests pass, including calendar validation, naive-input rejection, offsets, and year boundaries.",
+    "Historical UTC implementation remains referenced by its prior Git commit."
+  ],
+  "source_refs": [
+    "beads://handoff-poc/poc-eye.2",
+    "git://8518935a8bfddd1a8b842a7fe4250adafe50697a"
+  ]
+}

@@ -1,0 +1,61 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_________ test_malformed_status_is_classified_not_a_typeerror[status0] _________
+
+registry = <cadenda.config.Registry object at 0x109d8c980>, status = []
+
+    @pytest.mark.parametrize("status", [[], {"unexpected": "object"}])
+    def test_malformed_status_is_classified_not_a_typeerror(registry, status):
+        adapter = BeadsAdapter(registry.project("test"), runner=lambda *args: (0, json.dumps({"status": status}), ""))
+        with pytest.raises(CadendaError) as exc:
+>           adapter.issue("bd-1")
+
+tests/test_boundaries.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+packages/cadenda/beads_adapter.py:82: in issue
+    raw = self._json("show", f"--id={issue_id}", "--brief-deps", "--include-dependents")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/cadenda/beads_adapter.py:59: in _json
+    failure = next((item for item in (payload, error_payload) if isinstance(item, dict) and
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+.0 = <tuple_iterator object at 0x1096ff9a0>
+
+    failure = next((item for item in (payload, error_payload) if isinstance(item, dict) and
+>       (item.get("unsupported") or item.get("error") or item.get("status") in {"ERROR", "INVALID"})), None)
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: cannot use 'list' as a set element (unhashable type: 'list')
+
+packages/cadenda/beads_adapter.py:60: TypeError
+_________ test_malformed_status_is_classified_not_a_typeerror[status1] _________
+
+registry = <cadenda.config.Registry object at 0x109e0fc50>
+status = {'unexpected': 'object'}
+
+    @pytest.mark.parametrize("status", [[], {"unexpected": "object"}])
+    def test_malformed_status_is_classified_not_a_typeerror(registry, status):
+        adapter = BeadsAdapter(registry.project("test"), runner=lambda *args: (0, json.dumps({"status": status}), ""))
+        with pytest.raises(CadendaError) as exc:
+>           adapter.issue("bd-1")
+
+tests/test_boundaries.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+packages/cadenda/beads_adapter.py:82: in issue
+    raw = self._json("show", f"--id={issue_id}", "--brief-deps", "--include-dependents")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+packages/cadenda/beads_adapter.py:59: in _json
+    failure = next((item for item in (payload, error_payload) if isinstance(item, dict) and
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+.0 = <tuple_iterator object at 0x1096ffaf0>
+
+    failure = next((item for item in (payload, error_payload) if isinstance(item, dict) and
+>       (item.get("unsupported") or item.get("error") or item.get("status") in {"ERROR", "INVALID"})), None)
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: cannot use 'dict' as a set element (unhashable type: 'dict')
+
+packages/cadenda/beads_adapter.py:60: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_boundaries.py::test_malformed_status_is_classified_not_a_typeerror[status0]
+FAILED tests/test_boundaries.py::test_malformed_status_is_classified_not_a_typeerror[status1]
+2 failed, 15 deselected in 0.03s

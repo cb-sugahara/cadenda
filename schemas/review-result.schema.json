@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Independent PoC review",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "verdict": {"type": "string", "enum": ["approved", "changes_requested"]},
+    "findings": {"type": "array", "items": {"type": "string"}},
+    "requirements_checked": {"type": "array", "items": {"type": "string"}},
+    "source_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["verdict", "findings", "requirements_checked", "source_refs"]
+}

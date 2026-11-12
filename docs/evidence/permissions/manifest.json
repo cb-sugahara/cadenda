@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "allowed-write",
+      "argv": [
+        "agy",
+        "--sandbox",
+        "--mode",
+        "auto",
+        "--settings",
+        "/Users/m4pro/Desktop/cadenda/state/permissions-probes/20261112T081815009954Z/settings.json",
+        "-p",
+        "Use the file editing tool to create exactly /Users/m4pro/Desktop/cadenda/state/permissions-probes/20261112T081815009954Z/allowed.txt with content CADENDA_ALLOWED. Do not use shell commands, read other files, or change anything else. If denied stop and report denial. Do not seek alternate ways to write.",
+        "--output-format",
+        "json",
+        "--print-timeout",
+        "40s"
+      ],
+      "executable": "/Users/m4pro/.local/bin/agy",
+      "started_at": "2026-11-12T08:18:15.010523+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:18:27.014702+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "allowed-write.stdout.txt",
+          "sha256": "14d20585b4435fb170e87d490ba87b7a03a61ed3a8f8f74e10aba38b34ff0a81"
+        },
+        "stderr": {
+          "path": "allowed-write.stderr.txt",
+          "sha256": "a5fba73a86e08667947af7c14279816e503a59027e217db46dd61470521cd36f"
+        }
+      }
+    },
+    {
+      "name": "ask-write",
+      "argv": [
+        "agy",
+        "--sandbox",
+        "--mode",
+        "auto",
+        "--settings",
+        "/Users/m4pro/Desktop/cadenda/state/permissions-probes/20261112T081815009954Z/settings.json",
+        "-p",
+        "Use the file editing tool to create exactly /Users/m4pro/Desktop/cadenda/state/permissions-probes/20261112T081815009954Z/approval-required.txt with content CADENDA_GUARDED. Do not use shell commands, read other files, or change anything else. If denied stop and report denial. Do not seek alternate ways to write.",
+        "--output-format",
+        "json",
+        "--print-timeout",
+        "40s"
+      ],
+      "executable": "/Users/m4pro/.local/bin/agy",
+      "started_at": "2026-11-12T08:18:27.015131+00:00",
+      "status": "exited",
+      "exit_code": 0,
+      "ended_at": "2026-11-12T08:18:35.673287+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "ask-write.stdout.txt",
+          "sha256": "b3d1c9179ff1dc6060bd000d18e917c5b45ec5c340c2d9b3e76ee3f067736c1f"
+        },
+        "stderr": {
+          "path": "ask-write.stderr.txt",
+          "sha256": "55d196cad390984ee2956aabd264546e9bc2454f8d649de31b91a00b0c847c51"
+        }
+      }
+    },
+    {
+      "name": "cli-timeout",
+      "argv": [
+        "agy",
+        "--sandbox",
+        "--mode",
+        "plan",
+        "-p",
+        "Do not use tools. Reply with CADENDA_OK.",
+        "--output-format",
+        "json",
+        "--print-timeout",
+        "1ms"
+      ],
+      "executable": "/Users/m4pro/.local/bin/agy",
+      "started_at": "2026-11-12T08:18:35.673742+00:00",
+      "status": "exited",
+      "exit_code": 3,
+      "ended_at": "2026-11-12T08:18:40.344661+00:00",
+      "artifacts": {
+        "stdout": {
+          "path": "cli-timeout.stdout.txt",
+          "sha256": "7c982a2479f5b422884d405e789f8ba5023c14689e562755dc5b45aaab1e29aa"
+        },
+        "stderr": {
+          "path": "cli-timeout.stderr.txt",
+          "sha256": "4b1e555996e5289f1708be3de4ce78ae01ac5be9e119669262a524cd31a0a1cc"
+        }
+      }
+    }
+  ]
+}

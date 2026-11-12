@@ -1,0 +1,11 @@
+{
+  "issue_id": "poc-eye.1",
+  "commit": "017153ee5e4bbc1f8efede6d7f9473b194d85040",
+  "worktree": "/Users/m4pro/Desktop/cadenda/state/worktrees/handoff-poc/poc-eye.1",
+  "agent_conversation_id": "ef890be7-7372-4fc2-99da-8dfa49863338",
+  "tests_sha256": "14fe73311707f282cb49d339cecc55e90ce4aa8ac9b5ada828763cbed2ed29de",
+  "state": "review_approved",
+  "session_ended": true,
+  "previous_commit": "e7834d8d462d7fdec8d69a2cd67b249a904dc7b4",
+  "review_result": "state/handoff-poc/review1-result.json"
+}

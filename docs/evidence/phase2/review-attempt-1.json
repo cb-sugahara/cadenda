@@ -1,0 +1,27 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "[P1] Duplicate comment IDs can promote unapproved text. packages/cadenda/beads_adapter.py accepts duplicate IDs; context_builder.py fetch() overwrites sources[ref] for each duplicate. Receipt verification uses next(), checking the first matching comment, but renders sources[ref], containing the last matching comment. A valid approved comment followed by an unapproved comment with the same ID therefore renders the latter as current approved requirements. Reject duplicate normalized comment IDs (including integer/string collisions), and render the exact comment whose hash was verified.",
+    "[P1] Failed graph reads bypass the traversal limit. packages/cadenda/context_builder.py limits its loop using len(issues), which increases only after successful issue retrieval. An issue containing many distinct nonexistent dependencies causes every dependency to be queried despite max_issues; each process can consume its own 20-second timeout. Count attempted issue reads against a shared traversal budget, including receipt-driven fetches, and report remaining references when exhausted.",
+    "[P2] Secret-bearing JSON keys bypass redaction and are persisted. packages/cadenda/security.py redact() sanitizes dictionary values but preserves keys unless a key exactly matches a credential field name. Beads models permit extra fields, and context_builder.py retains the complete raw payload. An extra field such as metadata={\"sk-abcdefghijklmnopqrstuvwxyz123456\":\"value\"} therefore persists that credential verbatim in snapshot sources and exposes it through paging. Sanitize arbitrary dictionary keys before persistence, handling resulting key collisions explicitly."
+  ],
+  "requirements_checked": [
+    "Reviewed only the supplied evidence; no tools or files were accessed.",
+    "Checked approval provenance against Python next() selection, dictionary overwrite semantics, and normalized comment IDs.",
+    "Checked bounded traversal and subprocess timeout behavior; individual subprocess limits do not bound total failed graph reads.",
+    "Checked secret removal before snapshot persistence and paging.",
+    "Reviewed four-mode selection, source references and hashes, replay integrity checks, budget enforcement, and read-only argument-array commands.",
+    "The supplied 31-pass result does not cover the failure cases above and was not independently executed.",
+    "Did not require later-phase execution, GUI, authentication, or SQLite recording features."
+  ],
+  "source_refs": [
+    "packages/cadenda/beads_adapter.py: Comment and BeadsAdapter.comments",
+    "packages/cadenda/context_builder.py: fetch, traversal loop, receipt verification, add",
+    "packages/cadenda/security.py: redact",
+    "packages/cadenda/process.py: capture",
+    "packages/cadenda/snapshots.py: save, load, page",
+    "tests/test_context.py",
+    "tests/test_boundaries.py",
+    "tests/integration/test_poc_context.py"
+  ]
+}

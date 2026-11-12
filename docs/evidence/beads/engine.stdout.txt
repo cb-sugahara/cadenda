@@ -1,0 +1,7 @@
+{
+  "data_dir": "/Users/m4pro/Desktop/cadenda/state/beads-smoke/20261112T081631976602Z/.beads/embeddeddolt",
+  "data_dir_exists": true,
+  "mode": "embedded",
+  "schema_version": 1,
+  "server_running": false
+}

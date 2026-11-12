@@ -1,0 +1,16 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "src/week-start.ts:31: The regex uses `$`, which also matches before a final newline. Consequently, weekStart('2026-11-09T00:00:00Z\\n') accepts malformed input and returns '2026-11-09T00:00:00.000Z'. Require the match to consume the entire input and add a regression test."
+  ],
+  "requirements_checked": [
+    "UTC Monday calculation, timezone conversion, year rollover, calendar validation, and naive-input rejection match the requirements.",
+    "Source and commit diff agree; package.json uses node:test with no dependencies.",
+    "Supplied independent results show 36 passing tests, but omit trailing-newline rejection.",
+    "The supplied worktree context and commit identify the dedicated child implementation. No tools were used."
+  ],
+  "source_refs": [
+    "beads://handoff-poc/poc-eye.1",
+    "git://e7834d8d462d7fdec8d69a2cd67b249a904dc7b4"
+  ]
+}

@@ -1,0 +1,13 @@
+Processing ./.
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: cadenda
+  Building wheel for cadenda (pyproject.toml): started
+  Building wheel for cadenda (pyproject.toml): finished with status 'done'
+  Created wheel for cadenda: filename=cadenda-0.2.0-py3-none-any.whl size=20813 sha256=b3d7fe98940a7d092108a5ca1e073dc206ce540870fb05454a03f919a9c484cd
+  Stored in directory: /private/var/folders/05/zt75kp590hvbh5gbkzhq9dtm0000gn/T/pip-ephem-wheel-cache-8hpf1nds/wheels/0d/c6/2c/7a8f9a88b98511ab8d5d47ba7c11ea9ac6facdcc177ff7f150
+Successfully built cadenda

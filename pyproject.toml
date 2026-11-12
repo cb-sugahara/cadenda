@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cadenda"
+version = "0.2.0"
+description = "Beads-driven local AI development control plane"
+requires-python = ">=3.12"
+dependencies = ["pydantic>=2.12,<3", "PyYAML>=6.0.3,<7"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+aiops = "cadenda.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["packages"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = ["integration: reads the explicitly configured local Phase 1 PoC"]

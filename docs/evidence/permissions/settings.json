@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "write_file(/Users/m4pro/Desktop/cadenda/state/permissions-probes/20261112T081815009954Z/allowed.txt)"
+    ],
+    "ask": [
+      "write_file(/Users/m4pro/Desktop/cadenda/state/permissions-probes/20261112T081815009954Z/approval-required.txt)"
+    ],
+    "deny": [
+      "command(*)",
+      "read_url(*)",
+      "execute_url(*)",
+      "download_url(*)",
+      "mcp(*)"
+    ]
+  }
+}

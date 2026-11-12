@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "category": "Conventions",
+      "message": "all 0 open issues pass template checks",
+      "name": "conventions.lint",
+      "status": "ok"
+    },
+    {
+      "category": "Conventions",
+      "message": "no issues inactive for 14+ days",
+      "name": "conventions.stale",
+      "status": "ok"
+    },
+    {
+      "category": "Conventions",
+      "message": "no orphaned issues found",
+      "name": "conventions.orphans",
+      "status": "ok"
+    }
+  ],
+  "overall_ok": true,
+  "path": "/Users/m4pro/Desktop/cadenda/state/beads-smoke/20261112T081631976602Z",
+  "schema_version": 1
+}

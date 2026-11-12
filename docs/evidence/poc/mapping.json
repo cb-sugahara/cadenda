@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "project_id": "handoff-poc",
+  "epic": "poc-eye",
+  "issues": {
+    "POC-01": "poc-eye.1",
+    "POC-02": "poc-eye.2",
+    "POC-03": "poc-eye.3"
+  },
+  "approval": {
+    "received_at": "2026-11-12T08:21:19.466671+00:00",
+    "source": "Current Codex chat: request_user_input_async reply",
+    "text": "この3子Issueで進める",
+    "proposal": "docs/poc-task-proposal.md"
+  },
+  "worktree": "/Users/m4pro/Desktop/cadenda/state/worktrees/handoff-poc/poc-eye.1"
+}

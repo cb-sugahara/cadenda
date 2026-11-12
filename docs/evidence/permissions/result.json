@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "allowed_file_correct": true,
+  "guarded_file_absent": true,
+  "soft_deny_notice": true,
+  "timeout_exit_code": 3,
+  "timeout_capture_status": "exited"
+}
