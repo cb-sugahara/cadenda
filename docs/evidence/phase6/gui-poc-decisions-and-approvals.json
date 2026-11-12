@@ -1,0 +1,167 @@
+{
+  "synthetic_only": true,
+  "receipts": [
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-7qh",
+      "comment_id": "cf52b8a1-3e76-57f1-8a27-d028070c452f",
+      "comment_sha256": "b81d4c6f87e3e56268aee05cbe0e3a14b85f36965408d5720c5d133ee74ada1e",
+      "applies_to": [
+        "gui-7qh"
+      ],
+      "approved_at": "2026-11-12T17:16:05.403775Z",
+      "approval_ref": "owner:7688c94ba62ffb4b016ce0dd",
+      "issue_sha256": "7d0d0776b7381097efc156a84151cff787894067edb48d1131e88e735594d773"
+    },
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-9u7",
+      "comment_id": "75b9156f-6875-5dba-94ec-a22a188f60c7",
+      "comment_sha256": "61c8838811590cfd17a8f31e21c6cce0a4c669ec85f336cd9ff859e7888713fb",
+      "applies_to": [
+        "gui-9u7"
+      ],
+      "approved_at": "2026-11-12T17:01:41.762471Z",
+      "approval_ref": "owner:84b1c9b46c21a3de638d7ef4",
+      "issue_sha256": "33fa5dce1ad9b1e779cb63cae104a9f733dd3efddc003d8e62dd9a3ba21995d9"
+    },
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-jz2",
+      "comment_id": "bc3de72b-9a52-5a32-bb92-1b1a54d43bba",
+      "comment_sha256": "c8f5850c502ddbcd79b804713926f2d763ec8892241b8c00f24cf6db18e14c14",
+      "applies_to": [
+        "gui-jz2"
+      ],
+      "approved_at": "2026-11-12T16:55:05.537837Z",
+      "approval_ref": "owner:24b284900f3143b520725ee0",
+      "issue_sha256": "0ce5bfb2a0febfa35b78cdab1037f606a8f5fa14b244398424e4e05482239e8c"
+    },
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-kar",
+      "comment_id": "ed5ba7ec-b564-5c96-8978-7802ce789680",
+      "comment_sha256": "630eae5b8828f424e5586349bf695cf7c795a9a09f7d978c858671632bd15244",
+      "applies_to": [
+        "gui-kar"
+      ],
+      "approved_at": "2026-11-12T17:07:11.417230Z",
+      "approval_ref": "owner:f8408258fb632d61590b94da",
+      "issue_sha256": "502ffcfb107a6614d4ff3a98a863b780f13a9ada999a807d065be2be3cb0d05e"
+    },
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-qtr",
+      "comment_id": "0c86fbd6-b3f8-5fc6-b0ab-da1da507187d",
+      "comment_sha256": "69aced0517bc26a2a2be40dc8627879a9dfb4bd54c91aaea30dd6a26a7e98053",
+      "applies_to": [
+        "gui-qtr"
+      ],
+      "approved_at": "2026-11-12T17:51:18.324515Z",
+      "approval_ref": "owner:352d848f7bd6fef0c05dd246",
+      "issue_sha256": "db8a234a2de1c881979f0647c7256f98cd30990aa0ca4e16e866fde9c49c88a6"
+    },
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-sfl",
+      "comment_id": "99224667-fc71-5ad9-a00a-b2477defe839",
+      "comment_sha256": "99961206ef60adeeb4708fb35019c87acc8e0aca081de707bc970eeecd06a7e7",
+      "applies_to": [
+        "gui-sfl"
+      ],
+      "approved_at": "2026-11-12T17:11:25.542110Z",
+      "approval_ref": "owner:77e23ad1dd3f82f0cf6aa2f9",
+      "issue_sha256": "db34c7232810556dfd216b99aadf34a4cc2d8bdadf8119034ca3ab7db3850cf2"
+    },
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-y2v",
+      "comment_id": "1f6066b2-563f-5461-a3ab-d15c1a5e966b",
+      "comment_sha256": "4020971f7c497250393de0d7e13edb2c37021badc7d459cd3039aa3392f6c28c",
+      "applies_to": [
+        "gui-y2v"
+      ],
+      "approved_at": "2026-11-12T17:36:35.049317Z",
+      "approval_ref": "owner:afa2e3817d961de5920af9cb",
+      "issue_sha256": "49a289e847e6f2e3e8401564f05ac6943d073555dba906571175ca94ddedd960"
+    },
+    {
+      "topic": "acceptance",
+      "issue_id": "gui-y74",
+      "comment_id": "09c75005-088e-54dd-92c0-29d43d782d85",
+      "comment_sha256": "a8d927ce10451cbaf715b786c733ca5f8e671ed4903693a54fbb12037579f306",
+      "applies_to": [
+        "gui-y74"
+      ],
+      "approved_at": "2026-11-12T17:25:39.085380Z",
+      "approval_ref": "owner:dd4dd39dfa7afab682e67963",
+      "issue_sha256": "2d6d652b5f02e6e1ef796ea5114987a2c75ae2dd2a3ba3a4ec2df4da0a306983"
+    }
+  ],
+  "approvals": [
+    {
+      "approval_id": "approval_c3e972cc623a459894f579341cb15766",
+      "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+      "action_hash": "ca7d5f1aebd721de41caded08557fc4e653e63c6fa0641dfbc194c18f616b7bd",
+      "status": "approved",
+      "actor_ref": "owner:24b284900f3143b520725ee0",
+      "decided_at": 1794502529.471382
+    },
+    {
+      "approval_id": "approval_96c06208778c456eb690d7cb1bfe0dfa",
+      "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+      "action_hash": "05317c5f2d31ca8c39cee85544b177ad7a130b321adb68298befdab0503e652f",
+      "status": "approved",
+      "actor_ref": "owner:84b1c9b46c21a3de638d7ef4",
+      "decided_at": 1794502930.186311
+    },
+    {
+      "approval_id": "approval_51afdb52945c40b1badac9c02f8583fe",
+      "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+      "action_hash": "2b1363e8040f4bec76eed7d640f706cd7c9bcb104b52719449875d39926fc7e9",
+      "status": "approved",
+      "actor_ref": "owner:f8408258fb632d61590b94da",
+      "decided_at": 1794503261.7827861
+    },
+    {
+      "approval_id": "approval_34aac14bff0d48d8b39b95d8c3ebfc39",
+      "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+      "action_hash": "8167bfd806a1c65482395d80af581575ee1e7d7d87f4167c4e0c7324012b7836",
+      "status": "approved",
+      "actor_ref": "owner:77e23ad1dd3f82f0cf6aa2f9",
+      "decided_at": 1794503517.399442
+    },
+    {
+      "approval_id": "approval_b4d78f9dcb804bf99117174a93e507c7",
+      "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+      "action_hash": "fc00ad804262837701f61901c4460548b82f4e2b13b618d96b66910a78dde956",
+      "status": "approved",
+      "actor_ref": "owner:7688c94ba62ffb4b016ce0dd",
+      "decided_at": 1794503795.294147
+    },
+    {
+      "approval_id": "approval_fbc01c3bb80844bab18061471ab37195",
+      "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+      "action_hash": "9314526b7a914d06c761707affe3ce8149968a30ac58a49d8735bdc28f8e6a94",
+      "status": "approved",
+      "actor_ref": "owner:dd4dd39dfa7afab682e67963",
+      "decided_at": 1794504368.191416
+    },
+    {
+      "approval_id": "approval_5f91292b19ef4766bfa733f549259909",
+      "run_id": "run_e537c7205d844730964a76c97efc99cf",
+      "action_hash": "ff4d542dd5ed5997ae9cb44d7b9e340642a2a3bd75fd3db1c497b5a72c92a6a5",
+      "status": "approved",
+      "actor_ref": "owner:afa2e3817d961de5920af9cb",
+      "decided_at": 1794505024.796879
+    },
+    {
+      "approval_id": "approval_bae1f4996e054920b82d90700a531ac6",
+      "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+      "action_hash": "0eaec7c236340982eb1bc5fecafd978fcf63a817d68f9fa21dd7d732993dccaa",
+      "status": "approved",
+      "actor_ref": "owner:352d848f7bd6fef0c05dd246",
+      "decided_at": 1794505905.8007271
+    }
+  ]
+}

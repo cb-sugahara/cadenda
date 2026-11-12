@@ -1,0 +1,20 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "[P1] packages/cadenda/server.py: decide_approval() validates the run and latest approval before opening its write transaction, then updates only the approval's pending status. A concurrently running Pipeline.review() can move the run from Review to Verifying, or finish a newer review, between those steps; the old approval can still be recorded as approved. Revalidate the run state, latest review/approval identity and binding inside the same SQLite transaction that records the decision. Add a concurrency test that starts a new review after approval_target() returns and verifies the old confirmation is rejected.",
+    "[P2] packages/cadenda/server.py: start_job() has an unrecoverable restart window after releasing a NeedsHuman run but before durably registering the child PID. A server crash there leaves the original run Abandoned and gui_jobs in launching with worker_pid=NULL. reconcile_jobs() never considers that job ended, recover() ignores Abandoned runs, and retryable_resume() does not recognize gui_resume_launch_pending. Persist a recoverable launch protocol and reconcile interrupted admission on startup without assuming an unregistered child is absent. Test restarting from this durable intermediate state and verify the owner can safely recover and retry."
+  ],
+  "requirements_checked": [
+    "Reviewed supplied source only, without tools; supplied test results were not independently verified.",
+    "Checked pairing possession, single use, session expiry/logout, HttpOnly/SameSite cookies, Host/Origin enforcement and CSRF; actor names and AI verdicts were not treated as authentication.",
+    "Checked request bounds, routing, fixed launch arguments, cancellation/resume, SSE cursors and React asynchronous state/UI integrity.",
+    "Checked artifact integrity, approval freshness, challenge expiry/replay and ContextBuilder receipt verification.",
+    "The two prior findings have corresponding fixes in the supplied source.",
+    "Excluded simultaneous external Beads writes and Phase 7 requirements as specified."
+  ],
+  "source_refs": [
+    "packages/cadenda/server.py: approval_target(), decide_approval(), start_job(), reconcile_jobs(), retryable_resume()",
+    "packages/cadenda/pipeline.py: Pipeline.review()",
+    "packages/cadenda/recorder.py: recover(), release(), transition()"
+  ]
+}

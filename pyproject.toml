@@ -7,10 +7,10 @@ name = "cadenda"
 version = "0.3.0"
 description = "Beads-driven local AI development control plane"
 requires-python = ">=3.12"
-dependencies = ["pydantic>=2.12,<3", "PyYAML>=6.0.3,<7"]
+dependencies = ["pydantic>=2.12,<3", "PyYAML>=6.0.3,<7", "fastapi>=0.120,<1", "uvicorn>=0.38,<1"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<10"]
+dev = ["pytest>=8,<10", "httpx>=0.28,<1"]
 
 [project.scripts]
 aiops = "cadenda.cli:main"
@@ -19,7 +19,7 @@ aiops = "cadenda.cli:main"
 where = ["packages"]
 
 [tool.setuptools.package-data]
-cadenda = ["*.schema.json"]
+cadenda = ["*.schema.json", "gui/*", "gui/assets/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

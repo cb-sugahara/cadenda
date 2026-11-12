@@ -26,6 +26,7 @@ def parser():
     plan=run.add_parser('plan');plan.add_argument('project_id');plan.add_argument('issue_id')
     policy=run.add_parser('policy');policy.add_argument('project_id');policy.add_argument('issue_id')
     local=run.add_parser('local');local.add_argument('project_id');local.add_argument('issue_id');local.add_argument('task',choices=['classify','extract','names','clamp']);local.add_argument('text');local.add_argument('--model',choices=['system','pcc'],default='system');local.add_argument('--classification',choices=['public','internal','secret'],default='internal')
+    serve = commands.add_parser("serve");serve.add_argument("--port",type=int,default=8765)
     project = commands.add_parser("projects")
     project.add_argument("--format", choices=["json", "text"], default="text")
     issue = commands.add_parser("issue").add_subparsers(dest="issue_command", required=True)
@@ -54,6 +55,9 @@ def main(argv=None):
     args = parser().parse_args(argv)
     try:
         registry = Registry.load(args.config)
+        if args.command=="serve":
+            from .server import serve
+            serve(registry,args.port);return 0
         store = SnapshotStore(registry.settings.state_root)
         if args.command=='run':
             from .recorder import Recorder

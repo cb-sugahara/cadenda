@@ -32,6 +32,11 @@ class ContextBuilder:
             raise CadendaError("MODE_INVALID", "Mode must be standard, debug, review, or full")
         project = self.registry.project(project_id)
         settings = self.registry.settings
+        if (settings.state_root/"orchestrator.sqlite3").is_file():
+            from .recorder import Recorder
+            from .human_store import receipts
+            registered=receipts(Recorder(settings.state_root,initialize=False),project_id)
+            project=project.model_copy(update={"decisions":[*project.decisions,*registered]})
         budget = budget_tokens if budget_tokens is not None else settings.budget_tokens
         if not 512 <= budget <= 1_000_000:
             raise CadendaError("BUDGET_INVALID", "budget_tokens must be between 512 and 1000000")
@@ -182,6 +187,9 @@ class ContextBuilder:
                 # Approved requirements are fetched even outside ordinary graph depth.
                 if receipt.issue_id not in comments:
                     fetch(receipt.issue_id)
+                from .human_store import issue_fingerprint
+                if receipt.issue_sha256 and issue_fingerprint(issues[receipt.issue_id])!=receipt.issue_sha256:
+                    raise CadendaError("DECISION_UNVERIFIED","Requirements changed after the authenticated decision")
                 comment = next((item for item in comments[receipt.issue_id] if str(item.id) == receipt.comment_id), None)
                 if comment is None or digest(comment.text.encode()) != receipt.comment_sha256:
                     raise CadendaError("DECISION_UNVERIFIED", "Approved comment missing or its content changed")
@@ -200,7 +208,8 @@ class ContextBuilder:
         for current, rows in comments.items():
             for row in rows:
                 ref = f"beads://{project_id}/{current}/comments/{row.id}"
-                if row.text.startswith(("[decision_approved]", "[approved]")) and ref not in approved_refs:
+                historical_receipt=any(r.issue_id==current and r.comment_id==str(row.id) and r.comment_sha256==digest(row.text.encode()) for r in project.decisions)
+                if row.text.startswith(("[decision_approved]", "[approved]")) and ref not in approved_refs and not historical_receipt:
                     warn("UNTRUSTED_APPROVAL_TAG", ref, "Approval-like comment is historical or lacks an applicable verified receipt; not promoted")
         sections += [
             Section(title="Mission", text=f"{root.title}\n\n{root.description}", refs=[issue_ref], mandatory=True),

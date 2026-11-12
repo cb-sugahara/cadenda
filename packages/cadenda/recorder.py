@@ -2,6 +2,7 @@
 from contextlib import contextmanager, closing
 from datetime import datetime, timezone
 import json
+import fcntl
 import os
 from pathlib import Path
 import sqlite3
@@ -103,6 +104,14 @@ class Recorder:
                 db.execute('INSERT INTO runs(run_id,project_id,issue_id,state,owner,attempt,created_at,updated_at,heartbeat_at,lease_expires_at,worker_pid) VALUES(?,?,?,\'Claimed\',?,?,?,?,?,?,?)',
                     (key,project_id,issue_id,owner,attempt,now,now,now,now+30,os.getpid()))
                 db.execute('UPDATE runs SET provider=? WHERE run_id=?',(provider,key))
+                gui_job=os.environ.get('CADENDA_GUI_JOB_ID')
+                if gui_job:
+                    identifier(gui_job)
+                    job=db.execute('SELECT * FROM gui_jobs WHERE job_id=?',(gui_job,)).fetchone()
+                    if not job or job['project_id']!=project_id or job['issue_id']!=issue_id or job['state'] not in {'launching','launched','claimed'} or job['worker_pid'] not in {None,os.getpid()}:
+                        raise CadendaError('GUI_JOB_STALE','GUI admission no longer permits this worker')
+                    db.execute("UPDATE gui_jobs SET replacement_run_id=?,worker_pid=?,state='claimed' WHERE job_id=?",(key,os.getpid(),gui_job))
+                    self._event(db,key,'gui_job_claimed',{'job_id':gui_job,'prior_run_id':job['prior_run_id']})
                 self._event(db,key,'run_claimed',{'attempt':attempt})
         except sqlite3.IntegrityError as exc:
             raise CadendaError('RUN_CONFLICT', 'A developer run is already active on this host') from exc
@@ -200,17 +209,19 @@ class Recorder:
         except ProcessLookupError: return False
         except PermissionError: return True
 
-    def recover(self):
+    def recover(self, *, project_ids=None):
         recovered=[]
         with self.transaction() as db:
             rows=db.execute("SELECT * FROM runs WHERE state IN('Claimed','Running','Verifying','Interrupted')").fetchall()
             for row in rows:
+                if project_ids is not None and row['project_id'] not in project_ids:continue
                 # A stale lease never justifies restarting or killing a possibly reused PID.
                 if self.alive(row['worker_pid']): continue
                 db.execute("UPDATE runs SET state='NeedsHuman',owner=?,updated_at=? WHERE run_id=?",(uuid4().hex,time.time(),row['run_id']))
                 self._event(db,row['run_id'],'orphan_detected',{'pgid':row['pgid'],'worktree':row['worktree']})
                 recovered.append(row['run_id'])
             for row in db.execute("SELECT * FROM runs WHERE state='Review'").fetchall():
+                if project_ids is not None and row['project_id'] not in project_ids:continue
                 event=db.execute("SELECT payload FROM run_events WHERE run_id=? AND event_type='state_changed' ORDER BY occurred_at DESC LIMIT 1",(row['run_id'],)).fetchone()
                 binding=json.loads(event['payload']).get('review_binding') if event else None
                 # Preserve the immutable review-time snapshot even if later reports were added.
@@ -252,9 +263,14 @@ class Recorder:
             return result
 
     def flush(self, registry, runner):
-        # Single writer transaction spans send+ack. After a crash, reconcile by exact event marker.
-        with self.transaction() as db:
-            for event in db.execute('SELECT e.*,r.project_id,r.issue_id FROM outbox o JOIN run_events e USING(event_id) JOIN runs r USING(run_id) WHERE o.delivered_at IS NULL ORDER BY e.occurred_at').fetchall():
+        # A separate process lock serializes sends without holding SQLite while invoking Beads.
+        fd=os.open(self.root/'outbox.lock',os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+        with os.fdopen(fd,'w') as guard:
+            try:fcntl.flock(guard,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            except BlockingIOError:raise CadendaError('OUTBOX_BUSY','Another sender is reconciling Beads events')
+            with closing(self.connect()) as db:
+                events=db.execute('SELECT e.*,r.project_id,r.issue_id FROM outbox o JOIN run_events e USING(event_id) JOIN runs r USING(run_id) WHERE o.delivered_at IS NULL ORDER BY e.occurred_at').fetchall()
+            for event in events:
                 project=registry.project(event['project_id']); marker=f"[cadenda-event:{event['event_id']}]"
                 prefix=['bd','--sandbox','--directory',str(project.root)]
                 code,out,_=runner(prefix+['comments',event['issue_id'],'--json'],project.root)
@@ -273,4 +289,4 @@ class Recorder:
                     except ValueError as exc: raise CadendaError('OUTBOX_FAILED','Invalid Beads acknowledgement') from exc
                     if not isinstance(body,dict) or body.get('text')!=text or body.get('issue_id')!=event['issue_id']:
                         raise CadendaError('OUTBOX_FAILED','Beads did not acknowledge this exact event')
-                db.execute('UPDATE outbox SET delivered_at=?,attempts=attempts+1 WHERE event_id=?',(time.time(),event['event_id']))
+                with self.transaction() as db:db.execute('UPDATE outbox SET delivered_at=?,attempts=attempts+1 WHERE event_id=?',(time.time(),event['event_id']))

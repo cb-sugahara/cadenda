@@ -1,0 +1,53 @@
+{
+  "synthetic_only": true,
+  "jobs": [
+    {
+      "job_id": "job_ff66bc4fed9946959ac908489ec132cc",
+      "project_id": "gui-poc",
+      "issue_id": "gui-y2v",
+      "prior_run_id": null,
+      "worker_pid": 33762,
+      "replacement_run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+      "state": "completed",
+      "created_at": 1794504999.7334678,
+      "exit_code": 2,
+      "output_path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/gui-jobs/job_ff66bc4fed9946959ac908489ec132cc.txt"
+    },
+    {
+      "job_id": "job_e8534322a19e4e1681fd2309f38a7df0",
+      "project_id": "gui-poc",
+      "issue_id": "gui-y2v",
+      "prior_run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+      "worker_pid": 33943,
+      "replacement_run_id": "run_e537c7205d844730964a76c97efc99cf",
+      "state": "completed",
+      "created_at": 1794505008.128623,
+      "exit_code": 0,
+      "output_path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/gui-jobs/job_e8534322a19e4e1681fd2309f38a7df0.txt"
+    },
+    {
+      "job_id": "job_5387243353644179ad0f7de7b9597d38",
+      "project_id": "gui-poc",
+      "issue_id": "gui-qtr",
+      "prior_run_id": null,
+      "worker_pid": 39049,
+      "replacement_run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+      "state": "completed",
+      "created_at": 1794505881.517052,
+      "exit_code": 2,
+      "output_path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/gui-jobs/job_5387243353644179ad0f7de7b9597d38.txt"
+    },
+    {
+      "job_id": "job_2165b8d6b99546068e8e78cdb9e7fa34",
+      "project_id": "gui-poc",
+      "issue_id": "gui-qtr",
+      "prior_run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+      "worker_pid": 39231,
+      "replacement_run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+      "state": "completed",
+      "created_at": 1794505890.262366,
+      "exit_code": 0,
+      "output_path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/gui-jobs/job_2165b8d6b99546068e8e78cdb9e7fa34.txt"
+    }
+  ]
+}

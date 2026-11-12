@@ -24,6 +24,7 @@ class DecisionReceipt(StrictModel):
     applies_to: list[ID] = Field(min_length=1)
     approved_at: datetime
     approval_ref: str = Field(min_length=1)
+    issue_sha256: SHA | None = None
 
     @field_validator("approved_at")
     @classmethod

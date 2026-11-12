@@ -19,3 +19,6 @@ config/projects.yaml
 .beads-credential-key
 .beads/proxieddb/
 *.gate.lock*
+
+web/test-results/
+web/playwright-report/

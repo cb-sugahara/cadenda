@@ -1,0 +1,13 @@
+
+> cadenda-gui@0.6.0 test
+> playwright test
+
+
+Running 2 tests using 1 worker
+
+(node:38726) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/gui.spec.js:5:1 › owner browses, edits, decides, checks, stops, resumes and reviews (39.1s)
+  ✓  2 tests/gui.spec.js:89:1 › stale edit and delayed closed-run responses are rejected (5.8s)
+
+  2 passed (45.5s)

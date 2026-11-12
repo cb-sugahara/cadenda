@@ -1,0 +1,136 @@
+import {test,expect} from '@playwright/test';
+
+const dir='../state/phase6';
+
+test('owner browses, edits, decides, checks, stops, resumes and reviews',async({page})=>{
+ const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.log('PAGEERROR',e.message)});
+ await page.goto('/');await expect(page.getByRole('heading',{name:'開発の続きを、ここから。'})).toBeVisible();
+ await page.getByLabel('ペアリングコード').fill('fixture-pairing');await page.getByRole('button',{name:'ワークスペースを開く'}).click();
+ await expect(page.getByRole('heading',{name:'開発の現在地'})).toBeVisible();
+ await page.screenshot({path:dir+'/dashboard-desktop.png',fullPage:true});
+ await page.getByRole('button',{name:'Issueボード',exact:true}).click();
+ await page.getByRole('button',{name:'Issueを作成',exact:true}).click();
+ await page.getByLabel('タイトル',{exact:true}).fill('画面から検証するタスク');
+ await page.getByLabel('要件',{exact:true}).fill('合成GUI試験。<img src=x onerror="window.bad=true">');
+ await page.getByLabel('受け入れ条件',{exact:true}).fill('GUI_CHECK_OKが記録され、承認対象を確認できる。');
+ await page.getByRole('button',{name:'保存する',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'画面から検証するタスク',exact:true,level:1})).toBeVisible();
+ await page.getByRole('button',{name:'要件を編集'}).click();
+ await expect(page.getByRole('dialog')).toBeVisible();
+ await page.getByLabel('要件',{exact:true}).fill('合成GUI試験。**更新後の要件**。<script>window.bad=true</script>');
+ await page.getByRole('button',{name:'保存する',exact:true}).click();
+ await expect(page.getByText('更新後の要件',{exact:true})).toBeVisible();
+ expect(await page.evaluate(()=>window.bad)).toBeUndefined();
+ await page.getByLabel('コメント本文').fill('型付きコメントをGUIから記録。');
+ await page.getByRole('button',{name:'コメントを投稿'}).click();
+ await expect(page.getByText('型付きコメントをGUIから記録。',{exact:false})).toBeVisible();
+ await page.getByLabel('判断のトピック').fill('acceptance');
+ await page.getByLabel('決定する内容').fill('この隔離試験だけの正式判断。GUI_CHECK_OKを確認する。');
+ await page.getByRole('button',{name:'内容を確認して決定へ'}).click();
+ await page.getByRole('button',{name:'この内容で決定する'}).click();
+ await expect(page.getByRole('status')).toContainText('正式な判断');
+ await page.getByRole('button',{name:'Contextを確認',exact:true}).click();
+ await expect(page.locator('.drawer .markdown')).toContainText('Current approved requirements: acceptance');
+ await page.screenshot({path:dir+'/context-desktop.png'});
+ await page.getByRole('button',{name:'Contextを閉じる'}).click();
+ await page.getByRole('button',{name:'実行する',exact:true}).click();
+ await page.getByRole('button',{name:'確認して実行する',exact:true}).click();
+ await expect(page.locator('.run-link')).toHaveCount(1,{timeout:15000});
+ await page.locator('.run-link').first().click();
+ await expect(page.getByRole('button',{name:'このRunを停止'})).toBeVisible();
+ await page.getByRole('button',{name:'このRunを停止'}).click();
+ await page.getByRole('button',{name:'停止を要求する'}).click();
+ await expect(page.getByRole('button',{name:'内容を確認して再開'})).toBeVisible({timeout:15000});
+ // Worker process must exit before explicit recovery.
+ await page.waitForTimeout(800);
+ await page.getByRole('button',{name:'内容を確認して再開'}).click();
+ await page.getByRole('button',{name:'確認して実行する',exact:true}).click();
+ await expect(page.getByRole('status')).toContainText('新しいRun');
+ await page.getByRole('button',{name:'Runを閉じる'}).click();
+ await expect(page.locator('.run-link')).toHaveCount(2,{timeout:15000});
+ await expect(page.locator('.run-link').first()).toContainText('レビュー待ち',{timeout:20000});
+ await page.locator('.run-link').first().click();
+ await page.getByRole('button',{name:/check-gui-stdout/}).click();
+ await expect(page.locator('.artifact-preview')).toContainText('GUI_CHECK_OK');
+ await page.screenshot({path:dir+'/run-desktop.png'});
+ await page.getByRole('button',{name:'Runを閉じる'}).click();
+ await expect(page.locator('.job-history-link')).toHaveCount(2);
+ await page.locator('.job-history-link').first().click();
+ await expect(page.locator('.detail-grid aside')).toContainText('run_id');
+ await page.getByRole('button',{name:'承認インボックス',exact:false}).click();
+ await page.getByRole('button',{name:'対象を確認',exact:false}).first().click();
+ await expect(page.getByRole('dialog')).toContainText('GUI_CHECK_OK');
+ await expect(page.getByRole('dialog')).toContainText('この隔離試験だけの正式判断。');
+ await expect(page.getByRole('dialog')).toContainText('更新後の要件');
+ await page.screenshot({path:dir+'/approval-desktop.png'});
+ await page.getByRole('button',{name:'この成果物を承認'}).click();
+ await expect(page.getByRole('status')).toContainText('レビューを承認');
+ await page.getByRole('button',{name:'ダッシュボード',exact:true}).click();
+ await page.screenshot({path:dir+'/dashboard-final-desktop.png',fullPage:true});
+ await page.getByRole('button',{name:'設定と接続',exact:true}).click();
+ await page.getByRole('button',{name:'停止した実行を確認'}).click();
+ await expect(page.getByRole('status')).toContainText('復旧確認');
+ await page.getByRole('button',{name:'ダッシュボード',exact:true}).click();
+ const mobileContext=await page.context().browser().newContext({viewport:{width:390,height:844},storageState:await page.context().storageState()});
+ const mobile=await mobileContext.newPage();await mobile.goto('/');await expect(mobile.getByRole('heading',{name:'開発の現在地'})).toBeVisible();
+ await mobile.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ await mobile.screenshot({path:dir+'/dashboard-mobile.png',fullPage:true});
+ expect(await mobile.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+ await mobile.getByRole('button',{name:'Issueボード',exact:true}).click();
+ await mobile.screenshot({path:dir+'/board-mobile.png',fullPage:true});
+ expect(await mobile.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+ await mobileContext.close();
+ expect(errors).toEqual([]);
+
+});
+
+test.afterEach(async({page},testInfo)=>{if(testInfo.status!==testInfo.expectedStatus)await page.screenshot({path:dir+'/browser-failure.png',fullPage:true})});
+
+test('stale edit and delayed closed-run responses are rejected',async({page})=>{
+ const a='a'.repeat(64),b='b'.repeat(64);let fingerprint=a,lastPut=null,lastStart=null,releaseRun,runReads=0,acceptStart=false,jobReads=0,releaseJob;const delayedJob=new Promise(r=>releaseJob=r);const delayed=new Promise(r=>releaseRun=r);
+ const issue={id:'bd-1',title:'非同期の境界試験',description:'元の要件',acceptance_criteria:'checked',status:'open',dependencies:[]};
+ const r={run_id:'run_A',project_id:'fixture',issue_id:'bd-1',state:'Review',provider:'executor',updated_at:1};
+ await page.addInitScript(()=>{window.EventSource=class{constructor(){window.testEvents=this;setTimeout(()=>this.onopen?.(),0)}addEventListener(){}close(){}}});
+ await page.route('**/api/**',async route=>{
+  const path=new URL(route.request().url()).pathname;let value={};let status=200;
+  if(path==='/api/session')value={actor:'fixture-owner',csrf:'fixture-csrf',expires:9999999999};
+  else if(path==='/api/projects')value={projects:[{project_id:'fixture'}],runs:[r],cursor:1};
+  else if(path==='/api/approvals')value={approvals:[]};
+  else if(path.endsWith('/issues'))value={issues:[issue,{...issue,id:'bd-2',title:'別のIssue'}]};
+  else if(path.endsWith('/issues/bd-1')){
+   if(route.request().method()==='PUT'){lastPut=route.request().postDataJSON();status=409;value={error:{message:'要件が変更されました。再読込してください。'}};}
+   else value={issue,fingerprint,comments:[],runs:[]};
+  } else if(path.endsWith('/issues/bd-1/runs')){lastStart=route.request().postDataJSON();if(acceptStart)value={job_id:'job_A'};else{status=409;value={error:{message:'開始前に要件を再確認してください。'}};}} else if(path==='/api/jobs/job_A'){jobReads++;await delayedJob;value={job_id:'job_A',exit_code:0,output:'THIS_IS_OLD_JOB'};} else if(path.endsWith('/issues/bd-2')){value={issue:{...issue,id:'bd-2',title:'別のIssue'},fingerprint,comments:[],runs:[]};} else if(path==='/api/runs/run_A'){runReads++;if(runReads>1)await delayed;value={run:r,artifacts:[],events:[],approvals:[]};}
+  await route.fulfill({status,contentType:'application/json',body:JSON.stringify(value)});
+ });
+ await page.goto('/');await expect(page.getByRole('heading',{name:'開発の現在地'})).toBeVisible();
+ await page.getByRole('button',{name:'Run run_A',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Runを閉じる'})).toBeVisible();
+ await expect.poll(()=>runReads).toBeGreaterThan(1);
+ await page.getByRole('button',{name:'Runを閉じる'}).click();releaseRun();
+ await page.waitForTimeout(300);await expect(page.locator('.drawer')).toHaveCount(0);
+ await page.getByRole('button',{name:'Issueボード',exact:true}).click();
+ await page.getByRole('button',{name:/bd-1 非同期の境界試験/}).click();
+ await page.getByRole('button',{name:'要件を編集'}).click();
+ fingerprint=b;issue.description='別の所有者画面で更新された要件';
+ await page.evaluate(()=>window.testEvents.onmessage({data:'{}'}));
+ await expect(page.locator('main')).toContainText('別の所有者画面で更新された要件');
+ await page.getByRole('button',{name:'保存する',exact:true}).click();
+ await expect(page.getByRole('dialog')).toContainText('要件が変更されました');
+ expect(lastPut.expected).toBe(a);
+ await page.getByRole('button',{name:'閉じる',exact:true}).click();
+ await page.getByRole('button',{name:'実行する',exact:true}).click();
+ fingerprint='c'.repeat(64);issue.description='開始確認中に変更された要件';
+ await page.evaluate(()=>window.testEvents.onmessage({data:'{}'}));
+ await expect(page.locator('main')).toContainText('開始確認中に変更された要件');
+ await page.getByRole('button',{name:'確認して実行する',exact:true}).click();
+ await expect(page.getByRole('dialog')).toContainText('開始前に要件を再確認');
+ expect(lastStart.expected).toBe(b);
+ await page.getByRole('button',{name:'閉じる',exact:true}).click();acceptStart=true;
+ await page.getByRole('button',{name:'実行する',exact:true}).click();await page.getByRole('button',{name:'確認して実行する',exact:true}).click();
+ await expect.poll(()=>jobReads).toBeGreaterThan(0);
+ await page.getByRole('button',{name:'Issueボードに戻る'}).click();
+ await page.getByRole('button',{name:/bd-2 別のIssue/}).click();releaseJob();
+ await expect(page.getByRole('heading',{name:'別のIssue',level:1})).toBeVisible();
+ await page.waitForTimeout(300);await expect(page.locator('main')).not.toContainText('THIS_IS_OLD_JOB');
+});

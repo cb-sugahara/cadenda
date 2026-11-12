@@ -1,0 +1,24 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "[P1] Approval confirmation does not bind current approved policy requirements. server.py approval_target hashes the Issue fields but excludes comments and authenticated decision receipts. Recording a new formal decision leaves issue_fingerprint unchanged, so an existing approval preview can still be confirmed against superseded requirements. Bind the applicable verified receipts and requirement sources into the approval fingerprint, and revalidate them on confirmation.",
+    "[P1] An open edit form can silently overwrite newer requirements. In web/src/main.jsx, draft captures the original fields, but submission uses the latest detail.fingerprint. An SSE refresh after another GUI edit updates detail without updating draft, allowing the stale draft to pass the server's concurrency check. Capture the target and expected fingerprint when opening the edit modal; retain that fingerprint until submission.",
+    "[P2] SSE initialization can permanently miss updates. server.py projects reads the runs and then reads the event cursor using a separate connection. An event committed between those reads is absent from the returned runs but already included in the cursor, so the browser never receives it. Read the cursor and initial state in one SQLite read transaction, or capture the cursor before reading state.",
+    "[P2] Pending Run refreshes can reopen a closed drawer or replace a different Run. The tick effect in web/src/main.jsx depends only on tick; closing the drawer or opening another Run does not invalidate its pending response. A delayed response can therefore restore the previous Run and its cancellation controls. Key requests by Run ID and invalidate them on selection changes and closure; apply equivalent guards to artifact and context requests.",
+    "[P2] Request buffering has no completion deadline and occurs before authentication and host/origin checks. server.py RequestLimit waits indefinitely for successive body chunks, allowing unauthenticated connections to retain buffers and connections without completing a request. Add an absolute body-read deadline and reject invalid request metadata before buffering; return a bounded timeout response."
+  ],
+  "requirements_checked": [
+    "Reviewed supplied source only; no tools used and no test results independently verified.",
+    "Pairing possession, single use, session expiry/logout, HttpOnly and SameSite strict cookies.",
+    "Loopback binding, exact Host and Origin checks, CSRF, routing and fixed operation arguments.",
+    "Request bounds, stale/tampered approvals, artifact verification and authenticated SQLite decision receipts.",
+    "Cancellation/resume, SSE consistency and React state/UI integrity.",
+    "Actor names and AI verdicts were not treated as owner authentication; excluded unsupported simultaneous external Beads writes and Phase 7 features."
+  ],
+  "source_refs": [
+    "packages/cadenda/server.py: approval_target, projects, RequestLimit, guard",
+    "packages/cadenda/human_store.py: issue_fingerprint",
+    "packages/cadenda/context_builder.py: applicable decision receipt verification",
+    "web/src/main.jsx: edit modal submission, tick-driven Run refresh, openRun"
+  ]
+}

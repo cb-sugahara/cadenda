@@ -1,0 +1,3275 @@
+[
+  {
+    "run": {
+      "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+      "project_id": "gui-poc",
+      "issue_id": "gui-jz2",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794502509.326883,
+      "updated_at": 1794502517.149477,
+      "heartbeat_at": 1794502512.372393,
+      "lease_expires_at": 1794502542.372393,
+      "worker_pid": 12434,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_2ef7ff6e8bdd4810b1f6766bd5970e25",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T16:55:09.327899+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_c33d508178bf430eb014b6da019cc526",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T16:55:09.329083+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_baf3da765a324183857de15939744dca",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T16:55:09.330047+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e85b503ba2684090991aeaa5e470f9a8",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T16:55:09.331810+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_689f9914ee2e4247b3f2236749c0c53b",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T16:55:12.321523+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_c28efedeeff648af890683b04ab5ccd7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T16:55:12.375418+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_9289e83db6f949388a5f8eb639bc7de7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T16:55:12.386354+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_271595416a1d48d1920f5e0383a19a49",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T16:55:12.387787+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_abe7b4ed2a9e448b97373dcb2415ff5f",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T16:55:12.393544+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_62956f9f2bb64090bd0e715e332b570c",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_38dd551f4c9848908ec46af3d889c7c4",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T16:55:17.149578+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_38dd551f4c9848908ec46af3d889c7c4/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_38dd551f4c9848908ec46af3d889c7c4/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+      "project_id": "gui-poc",
+      "issue_id": "gui-jz2",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794502518.049589,
+      "updated_at": 1794502526.126852,
+      "heartbeat_at": 1794502526.10882,
+      "lease_expires_at": 1794502556.10882,
+      "worker_pid": 12599,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_613a30a414614bd6980599ba0735e510",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T16:55:18.050781+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_71b514037acb4f83a215beaead9fa96b",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T16:55:18.052032+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_419ac61abe594a1bb8af4d44804b8157",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T16:55:18.053016+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_c81798dc4c9d43da83934c7559038b9c",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T16:55:18.055222+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_a1af49c72cc646c19328e719a7896ebb",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T16:55:26.113073+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_33e9ee1baeb74798af49e464de72e2c2",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T16:55:26.114166+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_45b525cad27f421da4b9c15cbb960f6d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T16:55:26.122788+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_818cbf3ad7a74814858cc4bb8d587e68",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T16:55:26.126966+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+            "project_id": "gui-poc",
+            "issue_id": "gui-jz2",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_ee95a6fff75748fc8c8d893689c87cd0",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T16:55:26.127066+00:00",
+        "payload": {
+          "approval_id": "approval_c3e972cc623a459894f579341cb15766",
+          "action_hash": "ca7d5f1aebd721de41caded08557fc4e653e63c6fa0641dfbc194c18f616b7bd"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_fec8228f72fc426695b3233ca72964d6",
+        "project_id": "gui-poc",
+        "issue_id": "gui-jz2",
+        "run_id": "run_f01edb10890b40219ca0aa7d8889cc97",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T16:55:29.471524+00:00",
+        "payload": {
+          "approval_id": "approval_c3e972cc623a459894f579341cb15766",
+          "verdict": "approve",
+          "actor_ref": "owner:24b284900f3143b520725ee0",
+          "fingerprint": "bffb92fb29ef93a3a39fd06d0449a01061ce41b2d6b26cdfe652f1b2dc418b32"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_f01edb10890b40219ca0aa7d8889cc97/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_f01edb10890b40219ca0aa7d8889cc97/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_c3e972cc623a459894f579341cb15766",
+        "action_hash": "ca7d5f1aebd721de41caded08557fc4e653e63c6fa0641dfbc194c18f616b7bd",
+        "status": "approved"
+      }
+    ]
+  },
+  {
+    "run": {
+      "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+      "project_id": "gui-poc",
+      "issue_id": "gui-9u7",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794502907.777156,
+      "updated_at": 1794502914.348398,
+      "heartbeat_at": 1794502910.0931132,
+      "lease_expires_at": 1794502940.0931132,
+      "worker_pid": 15615,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_422a16ca28f447259866b3724ded02ad",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:01:47.778099+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_1bf07f81eea245189a9e838921b00284",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:01:47.779172+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_7d94a0534d024875ae5f713f116243e4",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:01:47.780146+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_386be8dff366435aa4ca851b40fea07f",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:01:47.782130+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_291ccf1cfa614daca4b54490ac2c1580",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T17:01:50.009805+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_048831f647674b8784d4e9a40a0d49fa",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:01:50.098095+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_2c2fc2f8e12f42faa843aeda1bef2e2c",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:01:50.103636+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_41b33c26af9a4b1485119fa6c67d50b9",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:01:50.108123+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e02db09cf32e4a388e082b30baae4421",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:01:50.108997+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_3f6574667efb4b62852ff23faa1c46a5",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_73822c583c7944a7a7a7d10e6ffb2c1a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:01:54.348474+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_73822c583c7944a7a7a7d10e6ffb2c1a/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_73822c583c7944a7a7a7d10e6ffb2c1a/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+      "project_id": "gui-poc",
+      "issue_id": "gui-9u7",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794502915.178972,
+      "updated_at": 1794502923.246645,
+      "heartbeat_at": 1794502923.239278,
+      "lease_expires_at": 1794502953.239278,
+      "worker_pid": 16077,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_a5d492b52a624dc1892690fa9e14f024",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:01:55.180330+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_05e97341b45b48bd9f6803707df5f507",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:01:55.181618+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_c53a39874767426891e98e8e5abcca11",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:01:55.182732+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_2b930c2748824811abbc41f87d7b57c5",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:01:55.184986+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_f90eef3a5cf2445b8d2618688dd0610d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:02:03.243344+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_73e0294a88a142dcaa327bc06003f27e",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:02:03.244325+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_fa4c47493020461981fdffda1067aa62",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:02:03.245787+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_4c5998d382f74431a5fb5b40661bfdac",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:02:03.246750+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+            "project_id": "gui-poc",
+            "issue_id": "gui-9u7",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_1dc5479df35d41ab997c294556c36ae9",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T17:02:03.246839+00:00",
+        "payload": {
+          "approval_id": "approval_96c06208778c456eb690d7cb1bfe0dfa",
+          "action_hash": "05317c5f2d31ca8c39cee85544b177ad7a130b321adb68298befdab0503e652f"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_f7fee11b1ffb45d3928d68fc349e926a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-9u7",
+        "run_id": "run_33bb3643c82f421da4ce5c69658b3d01",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T17:02:10.186422+00:00",
+        "payload": {
+          "approval_id": "approval_96c06208778c456eb690d7cb1bfe0dfa",
+          "verdict": "approve",
+          "actor_ref": "owner:84b1c9b46c21a3de638d7ef4",
+          "fingerprint": "dfa1cad001adfa1c9f4e4b9fe81780ba5bf4aa524ecb6423c7d3d3fff0801156"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_33bb3643c82f421da4ce5c69658b3d01/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_33bb3643c82f421da4ce5c69658b3d01/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_96c06208778c456eb690d7cb1bfe0dfa",
+        "action_hash": "05317c5f2d31ca8c39cee85544b177ad7a130b321adb68298befdab0503e652f",
+        "status": "approved"
+      }
+    ]
+  },
+  {
+    "run": {
+      "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+      "project_id": "gui-poc",
+      "issue_id": "gui-kar",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794503236.3071518,
+      "updated_at": 1794503245.002849,
+      "heartbeat_at": 1794503239.719734,
+      "lease_expires_at": 1794503269.719734,
+      "worker_pid": 19281,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_b3ec436983724d21aa3000317c183879",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:07:16.308458+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_41da213dc22c4c8c9209b37032eaaf06",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:07:16.309928+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_f7c3261991654274872a2dbb1253e9f9",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:07:16.311243+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_55ce87a3c3a74345acba5c0158115b35",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:07:16.313404+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_ea89a6d626e14e1b8bd943e495b0b99b",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T17:07:19.718222+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_b002cb98f8984c7ab1b3c737b9dd7eca",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:07:19.729594+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_6c3d6c469bc04c99a39df5aacbe76b2a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:07:19.733847+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_d21a2177d0ce498883413d1f425fb178",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:07:19.734985+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_39045f59fc044957add5ef4f8fe0b32f",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:07:19.735857+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_b4699a3e640142b7a63e8b9a059e7f5a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_c6238a905a5c46ef862b727293cf510a",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:07:25.002934+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_c6238a905a5c46ef862b727293cf510a/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_c6238a905a5c46ef862b727293cf510a/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+      "project_id": "gui-poc",
+      "issue_id": "gui-kar",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794503246.650789,
+      "updated_at": 1794503254.720837,
+      "heartbeat_at": 1794503254.708375,
+      "lease_expires_at": 1794503284.7083762,
+      "worker_pid": 19466,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_b993fea22b2b4b94b49d1e7bc7439e47",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:07:26.652040+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_947e0ee2d7ed4d44aed3d6acefa796c0",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:07:26.653430+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_6069d8ddf081493c8d095ed7755613d2",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:07:26.654741+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_cf81c227eb314ad2a5144fc41c3bdee1",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:07:26.657074+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_65a99d5e37e34c469c058190091dc41e",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:07:34.715234+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e621024ffd434228b8ae9122cef93e72",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:07:34.717214+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_0f0456cc329a4ea78925c6f0d3414871",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:07:34.719572+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_8a0fe3a7ce95485b9755846b218e3296",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:07:34.720983+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+            "project_id": "gui-poc",
+            "issue_id": "gui-kar",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_750c100e5a124557a2c86868a12f4c2b",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T17:07:34.721106+00:00",
+        "payload": {
+          "approval_id": "approval_51afdb52945c40b1badac9c02f8583fe",
+          "action_hash": "2b1363e8040f4bec76eed7d640f706cd7c9bcb104b52719449875d39926fc7e9"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_926629286f9f4c2fb23434cbdd7fea67",
+        "project_id": "gui-poc",
+        "issue_id": "gui-kar",
+        "run_id": "run_0a28c38574974ac8be75c32faf2f1421",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T17:07:41.782884+00:00",
+        "payload": {
+          "approval_id": "approval_51afdb52945c40b1badac9c02f8583fe",
+          "verdict": "approve",
+          "actor_ref": "owner:f8408258fb632d61590b94da",
+          "fingerprint": "e6eed17f9c8a77312fc4527a361f57c6a053cda5dc3c837075a83590a521ccfc"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_0a28c38574974ac8be75c32faf2f1421/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_0a28c38574974ac8be75c32faf2f1421/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_51afdb52945c40b1badac9c02f8583fe",
+        "action_hash": "2b1363e8040f4bec76eed7d640f706cd7c9bcb104b52719449875d39926fc7e9",
+        "status": "approved"
+      }
+    ]
+  },
+  {
+    "run": {
+      "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+      "project_id": "gui-poc",
+      "issue_id": "gui-sfl",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794503491.475245,
+      "updated_at": 1794503498.68669,
+      "heartbeat_at": 1794503495.3655858,
+      "lease_expires_at": 1794503525.365587,
+      "worker_pid": 22580,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_4435d2f74dba4c3fa6ea2c381eca02a0",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:11:31.476782+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_a9682a03e1eb47fabb92f91598bb997a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:11:31.482560+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_454422b15cd047d19e75a80f95854309",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:11:31.491339+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_5a6dc13cf4804dce89150641742532d4",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:11:31.494814+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_abe05e986c3247b79681e793a3f6a7dc",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T17:11:35.323359+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_8a3071ed17784a5e96314f0db406eba9",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:11:35.368611+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_4ce9582efc31427a8c197c5eb721abd7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:11:35.369566+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_c966bf039bdc4a32b93d5edeab24d9e2",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:11:35.370982+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_20add9fca7ef4c6a828c604d1904e5a9",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:11:35.371933+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_9ce5be4b6e4942019ceb751902cd7ebf",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_e1b0419a9b6c40deb17139258d243483",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:11:38.686795+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_e1b0419a9b6c40deb17139258d243483/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_e1b0419a9b6c40deb17139258d243483/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+      "project_id": "gui-poc",
+      "issue_id": "gui-sfl",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794503502.129017,
+      "updated_at": 1794503510.205735,
+      "heartbeat_at": 1794503510.191871,
+      "lease_expires_at": 1794503540.191872,
+      "worker_pid": 22884,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_bda044a2c8cf48d38ecd83a24d63018d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:11:42.130539+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_0a1193fd61a444269a092f8008eb859e",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:11:42.132049+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_5ef07562f5c24026bbc28779b520fc98",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:11:42.133440+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_4f812b9351f949259b10846e49462b31",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:11:42.136042+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_a97d667795f14898a556c309fda7c942",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:11:50.200024+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_02de85642f264e33a6178c44dc195eb0",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:11:50.202047+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_17c311c3a47c4d7d9b03789190f04b8f",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:11:50.204442+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_9d6a8648aac94de58de539346e8364dd",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:11:50.205884+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+            "project_id": "gui-poc",
+            "issue_id": "gui-sfl",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_3b8a6b75fc3b462e9e6df0caa1db293d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T17:11:50.206035+00:00",
+        "payload": {
+          "approval_id": "approval_34aac14bff0d48d8b39b95d8c3ebfc39",
+          "action_hash": "8167bfd806a1c65482395d80af581575ee1e7d7d87f4167c4e0c7324012b7836"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_c5b8b833ceb24f13ba31c76a725edb6a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-sfl",
+        "run_id": "run_9c63bd87429f4838bf177a8c552c936f",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T17:11:57.399549+00:00",
+        "payload": {
+          "approval_id": "approval_34aac14bff0d48d8b39b95d8c3ebfc39",
+          "verdict": "approve",
+          "actor_ref": "owner:77e23ad1dd3f82f0cf6aa2f9",
+          "fingerprint": "a248b9bcf990f0cbc00cd1d1221e9b7c5906db6924542273048626dbdde482e1"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_9c63bd87429f4838bf177a8c552c936f/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_9c63bd87429f4838bf177a8c552c936f/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_34aac14bff0d48d8b39b95d8c3ebfc39",
+        "action_hash": "8167bfd806a1c65482395d80af581575ee1e7d7d87f4167c4e0c7324012b7836",
+        "status": "approved"
+      }
+    ]
+  },
+  {
+    "run": {
+      "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+      "project_id": "gui-poc",
+      "issue_id": "gui-7qh",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794503770.6559901,
+      "updated_at": 1794503775.8411462,
+      "heartbeat_at": 1794503770.988574,
+      "lease_expires_at": 1794503800.988574,
+      "worker_pid": 25066,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_cafb0d48cdb644789c1d3d9479d894ef",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:16:10.660125+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_4a7bce1449714ca8b081fbc1cb8f0a0d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:16:10.667858+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e3160bb2146c4225aee7c8bd1e2c6418",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:16:10.668707+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_adde8bd12670451e940c670d11c70ce4",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:16:10.670403+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_37ffcddd1f6345539981c2db0070129f",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T17:16:10.944949+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_7df068933ef04926ba9aeb746119a576",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:16:10.991052+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_d0b9e3c6973c4401b36a9ee65bdad2ae",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:16:10.992166+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_5e36deef02464a46add6282e5c0ba620",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:16:10.993361+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_73a551f4340a42aaad4c2a6690f49b2d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:16:10.994181+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_a562ad60d93b43eca7b858b2abd785c1",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_4563c65e6d7c467699081cf1e8b126b8",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:16:15.841256+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_4563c65e6d7c467699081cf1e8b126b8/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_4563c65e6d7c467699081cf1e8b126b8/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+      "project_id": "gui-poc",
+      "issue_id": "gui-7qh",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794503779.922237,
+      "updated_at": 1794503787.984586,
+      "heartbeat_at": 1794503787.9761028,
+      "lease_expires_at": 1794503817.9761028,
+      "worker_pid": 25482,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_39c0d500d525414a99f24adbef2a731c",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:16:19.923794+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_4891481818e445d7a9bb3dacc89f34ec",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:16:19.925547+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e359969f620a48949a225171093f2b94",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:16:19.927142+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_ca0a63b26ed54dd48d04ead4f653ca9e",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:16:19.929588+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_1cff6076db2643388677eca365e4c621",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:16:27.981119+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_b8908353f074478c8d40aa1a56ad57b7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:16:27.982290+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_4ce3f7582608427eaf01ad82c63292ca",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:16:27.983692+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_d8b50776154a439e9675fe4b6afdf5dc",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:16:27.984689+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+            "project_id": "gui-poc",
+            "issue_id": "gui-7qh",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_4228e59004ea4d5a995db102cf267cfb",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T17:16:27.984777+00:00",
+        "payload": {
+          "approval_id": "approval_b4d78f9dcb804bf99117174a93e507c7",
+          "action_hash": "fc00ad804262837701f61901c4460548b82f4e2b13b618d96b66910a78dde956"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_0d3fa64b2b934fafae12e1e5add143c7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-7qh",
+        "run_id": "run_34b4d2ec15f14e2cab34b7666a97ec0f",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T17:16:35.294237+00:00",
+        "payload": {
+          "approval_id": "approval_b4d78f9dcb804bf99117174a93e507c7",
+          "verdict": "approve",
+          "actor_ref": "owner:7688c94ba62ffb4b016ce0dd",
+          "fingerprint": "9abe431b38968f76038ddf9a62874d3e9ae1b7e8382d2c6dc25f4191dc15164b"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_34b4d2ec15f14e2cab34b7666a97ec0f/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_34b4d2ec15f14e2cab34b7666a97ec0f/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_b4d78f9dcb804bf99117174a93e507c7",
+        "action_hash": "fc00ad804262837701f61901c4460548b82f4e2b13b618d96b66910a78dde956",
+        "status": "approved"
+      }
+    ]
+  },
+  {
+    "run": {
+      "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+      "project_id": "gui-poc",
+      "issue_id": "gui-y74",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794504344.984054,
+      "updated_at": 1794504349.753261,
+      "heartbeat_at": 1794504345.952585,
+      "lease_expires_at": 1794504375.952585,
+      "worker_pid": 29244,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_7c53c37c24b54957a8cdb3fe2d8dce77",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:25:44.987386+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_526a9e24f4dc4d319839d6f991ba3104",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:25:44.991043+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_156cf5da93d8437c947603db71bda8e7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:25:44.995619+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_06f36094b176458c8b3392d7a4143740",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:25:44.997373+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_6e33b9308bfb4c7d92e983eefe447d82",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T17:25:45.901094+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_23eb9437e34f4700a0a6f1fe54d4d8af",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:25:45.955408+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_6de8c54f8af547da80cda2b8185d796a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:25:45.956407+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_33c1d5dcfb3c41b1aa6e2be475f0be7a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:25:45.957825+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_b0a4f32bb9b64024a9369c048022ba12",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:25:45.958714+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_1586cd4017074b528d616eaf488b4c53",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "gui_resume_launch_pending",
+        "occurred_at": "2026-11-12T17:25:49.751394+00:00",
+        "payload": {
+          "job_id": "job_4aaad8e592a44ed1acd2aa2ece4b88d6"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_74df1e845a2243439451318f347d4a11",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:25:49.753316+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_3fa8551ffab74cf9a1bea0c1ff5b147d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_b4d82611dd3447c6bcdd11bfca34dc3d",
+        "actor": "orchestrator",
+        "event_type": "gui_resume_launched",
+        "occurred_at": "2026-11-12T17:25:49.757733+00:00",
+        "payload": {
+          "job_id": "job_4aaad8e592a44ed1acd2aa2ece4b88d6",
+          "worker_pid": 29397
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_b4d82611dd3447c6bcdd11bfca34dc3d/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_b4d82611dd3447c6bcdd11bfca34dc3d/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+      "project_id": "gui-poc",
+      "issue_id": "gui-y74",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794504353.033943,
+      "updated_at": 1794504361.0976481,
+      "heartbeat_at": 1794504361.086643,
+      "lease_expires_at": 1794504391.086644,
+      "worker_pid": 29397,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_7af21e82fe1b47b191af9e68f327f33d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:25:53.035194+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_adc61c7928084503bf81790e754c74e0",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:25:53.036454+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_5cde3ad444774c1088547c66c04756c5",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:25:53.037592+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_17c1c7ee05c0489ab176e4ac32296a00",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:25:53.039811+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_bdac13f439544db58679d11762b803fb",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:26:01.093290+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_315edca8f4f54f5d9b902434a1f914ea",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:26:01.094755+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_41c19b6ad21e479cb49344f77c4b37f3",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:26:01.096220+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_ff0c5c9d673e40b38d615be099b8ac72",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:26:01.097778+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+            "project_id": "gui-poc",
+            "issue_id": "gui-y74",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_325139cb86224755a11e68fa7fd28e5e",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T17:26:01.097895+00:00",
+        "payload": {
+          "approval_id": "approval_fbc01c3bb80844bab18061471ab37195",
+          "action_hash": "9314526b7a914d06c761707affe3ce8149968a30ac58a49d8735bdc28f8e6a94"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_41042890338b4de7a976a57d1bef66c8",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y74",
+        "run_id": "run_e655b7598f544beeb6f555a01e824c2c",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T17:26:08.191527+00:00",
+        "payload": {
+          "approval_id": "approval_fbc01c3bb80844bab18061471ab37195",
+          "verdict": "approve",
+          "actor_ref": "owner:dd4dd39dfa7afab682e67963",
+          "fingerprint": "eb99bc93bbefcab71957eb07a135ac567e4d1cdab94eee74057018a7955189e0"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_e655b7598f544beeb6f555a01e824c2c/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_e655b7598f544beeb6f555a01e824c2c/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_fbc01c3bb80844bab18061471ab37195",
+        "action_hash": "9314526b7a914d06c761707affe3ce8149968a30ac58a49d8735bdc28f8e6a94",
+        "status": "approved"
+      }
+    ]
+  },
+  {
+    "run": {
+      "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+      "project_id": "gui-poc",
+      "issue_id": "gui-y2v",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794505001.052507,
+      "updated_at": 1794505008.133009,
+      "heartbeat_at": 1794505003.893523,
+      "lease_expires_at": 1794505033.893523,
+      "worker_pid": 33762,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_c002ab7b06da4f6dbe9ec4345a917f44",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "gui_job_claimed",
+        "occurred_at": "2026-11-12T17:36:41.053667+00:00",
+        "payload": {
+          "job_id": "job_ff66bc4fed9946959ac908489ec132cc",
+          "prior_run_id": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_9353c197218d4be3860ffc659186d2c8",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:36:41.053752+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_9e053f9363d24e2f800b32c0aeb4b00b",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:36:41.055100+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_ddf4da569a404728af766047b9b91c7f",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:36:41.056200+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_d055b797cae046a9bc94ad96104859b4",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:36:41.058102+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_dde85bcf15ae48d092ae79fab8c693a5",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T17:36:43.794248+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_3b8028bdd17749fd89406186ae66793a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:36:43.896229+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_30d91afa92cd4cf9bdacb3cd165b0392",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:36:43.903427+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e62e32157eee4bc6a4d49a34308146ad",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:36:43.908124+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e901719359bb4d98bd419882fbf8ba47",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:36:43.909258+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_f6f62c890d0d4f26b41d8d3265f169e2",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "gui_resume_launch_pending",
+        "occurred_at": "2026-11-12T17:36:48.131115+00:00",
+        "payload": {
+          "job_id": "job_e8534322a19e4e1681fd2309f38a7df0"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_0d3368e2f7274226af278dd2d2b347c7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:36:48.133067+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_3f794a5aeb6147539047a8b54b70e2f8",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_b873ed255b434c029cfa28aa48c1e120",
+        "actor": "orchestrator",
+        "event_type": "gui_resume_launched",
+        "occurred_at": "2026-11-12T17:36:48.138722+00:00",
+        "payload": {
+          "job_id": "job_e8534322a19e4e1681fd2309f38a7df0",
+          "worker_pid": 33943
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_b873ed255b434c029cfa28aa48c1e120/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_b873ed255b434c029cfa28aa48c1e120/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_e537c7205d844730964a76c97efc99cf",
+      "project_id": "gui-poc",
+      "issue_id": "gui-y2v",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794505009.649934,
+      "updated_at": 1794505017.713603,
+      "heartbeat_at": 1794505017.696853,
+      "lease_expires_at": 1794505047.696854,
+      "worker_pid": 33943,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_850262b0261d490e8d546ff660a818f7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "gui_job_claimed",
+        "occurred_at": "2026-11-12T17:36:49.651121+00:00",
+        "payload": {
+          "job_id": "job_e8534322a19e4e1681fd2309f38a7df0",
+          "prior_run_id": "run_b873ed255b434c029cfa28aa48c1e120"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_80210618427749f6b3f63974b8a2f8a4",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:36:49.651184+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_cf193d39710a4e45bfb1cc68c851f4f5",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:36:49.652276+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_1a7c1386368a4a13ac82ff540414a434",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:36:49.653204+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_b4e8722a319d4bec99e980459ae4df64",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:36:49.654828+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_0fe38b52edb3459bb943996aefde4ac5",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:36:57.704258+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e608c063509c4a8680f631751eb7aa63",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:36:57.706099+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_5ca5c5b872ee46a1a17b2fd843bcfab7",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:36:57.710812+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_8609eddba1794bae895c08861f69c8c0",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:36:57.713773+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_e537c7205d844730964a76c97efc99cf",
+            "project_id": "gui-poc",
+            "issue_id": "gui-y2v",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_6fcea79fcc964e80865c7fb88e19b030",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T17:36:57.713923+00:00",
+        "payload": {
+          "approval_id": "approval_5f91292b19ef4766bfa733f549259909",
+          "action_hash": "ff4d542dd5ed5997ae9cb44d7b9e340642a2a3bd75fd3db1c497b5a72c92a6a5"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_6609ce6b9f684855b0f9b5d5a71e72d2",
+        "project_id": "gui-poc",
+        "issue_id": "gui-y2v",
+        "run_id": "run_e537c7205d844730964a76c97efc99cf",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T17:37:04.796987+00:00",
+        "payload": {
+          "approval_id": "approval_5f91292b19ef4766bfa733f549259909",
+          "verdict": "approve",
+          "actor_ref": "owner:afa2e3817d961de5920af9cb",
+          "fingerprint": "84b6e8681c023675297cbf841a95d3e7e030691b342a2f08c3b8b11c506625d6"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_e537c7205d844730964a76c97efc99cf/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_e537c7205d844730964a76c97efc99cf/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_5f91292b19ef4766bfa733f549259909",
+        "action_hash": "ff4d542dd5ed5997ae9cb44d7b9e340642a2a3bd75fd3db1c497b5a72c92a6a5",
+        "status": "approved"
+      }
+    ]
+  },
+  {
+    "run": {
+      "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+      "project_id": "gui-poc",
+      "issue_id": "gui-qtr",
+      "state": "Abandoned",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 1,
+      "created_at": 1794505882.389038,
+      "updated_at": 1794505890.266217,
+      "heartbeat_at": 1794505884.501357,
+      "lease_expires_at": 1794505914.501357,
+      "worker_pid": 39049,
+      "pgid": null,
+      "cancel_requested": 1,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_da68d44e38bf4a45b2809ab80a3bb5e5",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "gui_job_claimed",
+        "occurred_at": "2026-11-12T17:51:22.390132+00:00",
+        "payload": {
+          "job_id": "job_5387243353644179ad0f7de7b9597d38",
+          "prior_run_id": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_d2fa3faf0d274271a126b84ccb5b6444",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:51:22.390202+00:00",
+        "payload": {
+          "attempt": 1
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_325a80cdeccd4e6cb03fbe010b0b4b5d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:51:22.391295+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_9349860d586d40b0a7e5fec3590b314a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:51:22.392308+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_562f25b6d4334ce1829c675d89221416",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:51:22.394510+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_270c9333a6fc45508f6d08cf4e45e928",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "cancel_requested",
+        "occurred_at": "2026-11-12T17:51:24.446802+00:00",
+        "payload": {}
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_82442ee9b39146d4bcea6fce1820ddef",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:51:24.504001+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_da761d415be243798391f8c60a81b825",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:51:24.505074+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_fa343dae92954aab9fd611fc64781d35",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:51:24.506434+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": "CANCELED",
+          "exit_code": -9
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_764f76f283c5487881bebd1f8af624d1",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:51:24.507167+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "NeedsHuman",
+          "pgid": null
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_f7f31f0b07e8478b9f0c78fe7e925d32",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "gui_resume_launch_pending",
+        "occurred_at": "2026-11-12T17:51:30.264527+00:00",
+        "payload": {
+          "job_id": "job_2165b8d6b99546068e8e78cdb9e7fa34"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_edb95424b2cb4638ad2c8bd7850cc3a0",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:51:30.266265+00:00",
+        "payload": {
+          "from": "NeedsHuman",
+          "to": "Abandoned"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_97bf775f430b49f78ee0cfd76e30687a",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2e6bdc6f095b42a0911a461e95747261",
+        "actor": "orchestrator",
+        "event_type": "gui_resume_launched",
+        "occurred_at": "2026-11-12T17:51:30.271032+00:00",
+        "payload": {
+          "job_id": "job_2165b8d6b99546068e8e78cdb9e7fa34",
+          "worker_pid": 39231
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_2e6bdc6f095b42a0911a461e95747261/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_2e6bdc6f095b42a0911a461e95747261/check-gui-stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      }
+    ],
+    "approvals": []
+  },
+  {
+    "run": {
+      "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+      "project_id": "gui-poc",
+      "issue_id": "gui-qtr",
+      "state": "Review",
+      "active": 0,
+      "provider": "executor",
+      "attempt": 2,
+      "created_at": 1794505891.564081,
+      "updated_at": 1794505899.619422,
+      "heartbeat_at": 1794505899.612472,
+      "lease_expires_at": 1794505929.612472,
+      "worker_pid": 39231,
+      "pgid": null,
+      "cancel_requested": 0,
+      "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+      "base_commit": null,
+      "commit_id": null,
+      "snapshot_id": null
+    },
+    "events": [
+      {
+        "schema_version": 1,
+        "event_id": "evt_95a606a5e7ba43e1be77537e1659689f",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "gui_job_claimed",
+        "occurred_at": "2026-11-12T17:51:31.565496+00:00",
+        "payload": {
+          "job_id": "job_2165b8d6b99546068e8e78cdb9e7fa34",
+          "prior_run_id": "run_2e6bdc6f095b42a0911a461e95747261"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_7dae1caee1d844e79278709ec7258728",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "run_claimed",
+        "occurred_at": "2026-11-12T17:51:31.565571+00:00",
+        "payload": {
+          "attempt": 2
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_39df29d5bc934bf2bc609500f83f9317",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:51:31.566693+00:00",
+        "payload": {
+          "from": "Claimed",
+          "to": "Running",
+          "worktree": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_59ce24cdf9344d5aab26758918e98b43",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:51:31.567644+00:00",
+        "payload": {
+          "from": "Running",
+          "to": "Verifying"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_0f0f880202c346d0846176b2fe2ebc6d",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "command_started",
+        "occurred_at": "2026-11-12T17:51:31.569411+00:00",
+        "payload": {
+          "name": "check-gui",
+          "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+          "argv_sha256": "6b1e5eba27e92ed53be35f476f21b4a95c2fb56c124fd1feb337cb75d2c360c2",
+          "cwd": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc",
+          "timeout_seconds": 20,
+          "agent": false
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_e46dcabfaac841988c13ffcc4bb091b6",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:51:39.615637+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stdout",
+          "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_80910e3753fa43bcbde494347abc9c98",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "artifact_recorded",
+        "occurred_at": "2026-11-12T17:51:39.616949+00:00",
+        "payload": {
+          "artifact_id": "check-gui-stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_80dcbd1953ee47ffadc9ef28a21e5922",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "command_finished",
+        "occurred_at": "2026-11-12T17:51:39.618514+00:00",
+        "payload": {
+          "name": "check-gui",
+          "reason": null,
+          "exit_code": 0
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_959b219ba68f4450bebd04c3db434a30",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "state_changed",
+        "occurred_at": "2026-11-12T17:51:39.619533+00:00",
+        "payload": {
+          "from": "Verifying",
+          "to": "Review",
+          "pgid": null,
+          "review_binding": {
+            "action": "review",
+            "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+            "project_id": "gui-poc",
+            "issue_id": "gui-qtr",
+            "commit": null,
+            "artifacts": [
+              {
+                "artifact_id": "check-gui-stderr",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "artifact_id": "check-gui-stdout",
+                "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_9def0506e6354f7fb587983b5b4d6445",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "approval_requested",
+        "occurred_at": "2026-11-12T17:51:39.619626+00:00",
+        "payload": {
+          "approval_id": "approval_bae1f4996e054920b82d90700a531ac6",
+          "action_hash": "0eaec7c236340982eb1bc5fecafd978fcf63a817d68f9fa21dd7d732993dccaa"
+        }
+      },
+      {
+        "schema_version": 1,
+        "event_id": "evt_12c6db661829429daf72b64e887532d8",
+        "project_id": "gui-poc",
+        "issue_id": "gui-qtr",
+        "run_id": "run_2bc2ce091d9944509771db1f090f9d37",
+        "actor": "orchestrator",
+        "event_type": "human_review_decided",
+        "occurred_at": "2026-11-12T17:51:45.800832+00:00",
+        "payload": {
+          "approval_id": "approval_bae1f4996e054920b82d90700a531ac6",
+          "verdict": "approve",
+          "actor_ref": "owner:352d848f7bd6fef0c05dd246",
+          "fingerprint": "65de810e84cfe2dd8776a0b4d49438316092f6eecbe2c556417c67685722b328"
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "check-gui-stderr",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_2bc2ce091d9944509771db1f090f9d37/check-gui-stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "kind": "test"
+      },
+      {
+        "artifact_id": "check-gui-stdout",
+        "path": "/Users/m4pro/Desktop/cadenda/state/phase6/gui-poc-state/artifacts/run_2bc2ce091d9944509771db1f090f9d37/check-gui-stdout.txt",
+        "sha256": "24da92484cf1def8e9a5c8e1a235f5ecb53ba1a50d1b5d728c6409947330b685",
+        "kind": "test"
+      }
+    ],
+    "approvals": [
+      {
+        "approval_id": "approval_bae1f4996e054920b82d90700a531ac6",
+        "action_hash": "0eaec7c236340982eb1bc5fecafd978fcf63a817d68f9fa21dd7d732993dccaa",
+        "status": "approved"
+      }
+    ]
+  }
+]

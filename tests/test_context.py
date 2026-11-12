@@ -256,3 +256,16 @@ def test_all_modes_preserve_source_refs_and_fit_serialized_budget(registry, mode
     assert len((context.model_dump_json() + "\n").encode()) <= context.budget_tokens
     assert len(context.markdown().encode()) <= context.budget_tokens
     assert any("/diff" in source.ref for source in context.sources) == (mode != "standard")
+
+
+def test_plain_text_source_paging_preserves_readable_newlines(registry):
+    from conftest import FakeBeads,git_runner
+    project=registry.project('test');project.documents=['source.md']
+    (project.root/'source.md').write_text('# Heading\nReadable source text\n')
+    builder=ContextBuilder(registry,adapter_factory=lambda p:FakeBeads(),runner=git_runner)
+    context=builder.build('test','bd-1')
+    store=SnapshotStore(registry.settings.state_root)
+    source=next(s for s in context.sources if s.ref.endswith('/source.md'))
+    page=store.page(context.snapshot_id,source.source_id,0)
+    assert page['text']=='# Heading\nReadable source text\n'
+    assert not page['text'].startswith('"')

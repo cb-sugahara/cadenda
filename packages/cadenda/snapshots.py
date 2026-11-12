@@ -97,7 +97,7 @@ class SnapshotStore:
             raise CadendaError("SOURCE_UNKNOWN", "Source ID is not part of this snapshot")
         contents = self._verified(snapshot_id)
         source = Source.model_validate_json(contents[f"sources/{source_id}.json"])
-        text = json.dumps(source.data, ensure_ascii=False, sort_keys=True, indent=2)
+        text = source.data if isinstance(source.data,str) else json.dumps(source.data, ensure_ascii=False, sort_keys=True, indent=2)
         total = max(1, (len(text) + page_chars - 1) // page_chars)
         if page >= total:
             raise CadendaError("PAGE_INVALID", f"Source has {total} pages (zero based)")

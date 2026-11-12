@@ -1,0 +1,30 @@
+{
+  "wheel": "cadenda-0.3.0-py3-none-any.whl",
+  "sha256": "d7dbcee0e97ae1d23cb91377701b67bcfdacd5ce583ce07ee1227ff41e459602",
+  "source_and_gui_matches": {
+    "packages/cadenda/worker.py": true,
+    "packages/cadenda/snapshots.py": true,
+    "packages/cadenda/server.py": true,
+    "packages/cadenda/config.py": true,
+    "packages/cadenda/launch_gate.py": true,
+    "packages/cadenda/models.py": true,
+    "packages/cadenda/fm_adapter.py": true,
+    "packages/cadenda/beads_adapter.py": true,
+    "packages/cadenda/context_builder.py": true,
+    "packages/cadenda/security.py": true,
+    "packages/cadenda/gui_auth.py": true,
+    "packages/cadenda/recorder.py": true,
+    "packages/cadenda/__init__.py": true,
+    "packages/cadenda/intelligence.py": true,
+    "packages/cadenda/codex_adapter.py": true,
+    "packages/cadenda/cli.py": true,
+    "packages/cadenda/pipeline.py": true,
+    "packages/cadenda/process.py": true,
+    "packages/cadenda/errors.py": true,
+    "packages/cadenda/human_store.py": true,
+    "packages/cadenda/agent-result.schema.json": true,
+    "packages/cadenda/gui/index.html": true,
+    "packages/cadenda/gui/assets/index-DDWj7TSH.css": true,
+    "packages/cadenda/gui/assets/index-DqEwRIuZ.js": true
+  }
+}

@@ -53,3 +53,7 @@ PCCの追加試験は明示的な`--pcc`でのみ実行する。各試験は新�
 ## Phase 5追加実測（2026-11-12）
 
 AFM 3 Core Advancedのsystemで構造化出力4タスクを確認。`fm respond --schema ... --instructions ... -- INPUT`を使用し、スキーマをRecorderへ不変保存する。PCCは引き続きTerminal起動コンテキスト制約で利用不可。`fm quota-usage`はsystem非適用/PCC unavailableで終了1。実PCC quota到達は未検証。比較・境界・再開ゲートは[Phase 5記録](phase5-results.md)を参照。
+
+## Phase 6追加実測（2026-11-13 JST）
+
+FastAPI 0.162.5 / Uvicorn 0.54.0 / httpx 0.28.1、React/Viteの確定版は`web/package-lock.json`を参照。HTTPは127.0.0.1限定。実Beads作成・更新・コメント、実CLI check停止/再開と承認をPlaywrightで確認。TestClientのhttpx非推奨警告は1件。localhost HTTPのためCookieはHttpOnly/SameSite Strict、Secureは付与しない。本人認証の境界・再開方法は[Phase 6記録](phase6-results.md)を参照。

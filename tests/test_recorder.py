@@ -220,3 +220,39 @@ def test_local_review_binding_is_unique_and_recovery_preserves_snapshot(recorder
         recorder.recover()
         assert [a['action_hash'] for a in recorder.history(key)['approvals']]==[original]
     assert hashes[0]!=hashes[1]
+
+
+def test_slow_outbox_sender_does_not_hold_sqlite_and_other_sender_is_fenced(recorder,registry):
+    import threading
+    key,owner=recorder.claim('test','bd-1');entered=threading.Event();release=threading.Event();errors=[]
+    comments=[]
+    def sender(argv,cwd):
+        entered.set();assert release.wait(5)
+        if 'add' in argv:
+            c={'issue_id':'bd-1','text':argv[-2]};comments.append(c);return 0,json.dumps(c),''
+        return 0,json.dumps(comments),''
+    def flush():
+        try:recorder.flush(registry,sender)
+        except BaseException as exc:errors.append(exc)
+    thread=threading.Thread(target=flush);thread.start();assert entered.wait(3)
+    try:
+        with pytest.raises(CadendaError) as exc:recorder.flush(registry,sender)
+        assert exc.value.code=='OUTBOX_BUSY'
+        # A second SQLite connection must be able to commit a cancellation during external send.
+        recorder.cancel(key);assert recorder.get(key)['cancel_requested']==1
+        recorder.heartbeat(key,owner)
+    finally:release.set();thread.join(5)
+    assert not errors and not thread.is_alive()
+
+
+def test_gui_job_admission_binds_claim_atomically_and_rejects_wrong_target(recorder,monkeypatch):
+    from cadenda.human_store import initialize
+    initialize(recorder)
+    with recorder.transaction() as db:db.execute('INSERT INTO gui_jobs VALUES(?,?,?,?,NULL,NULL,?,?,NULL,?)',('job_test','p','i',None,'launching',time.time(),str(recorder.root/'output')))
+    monkeypatch.setenv('CADENDA_GUI_JOB_ID','job_test')
+    with pytest.raises(CadendaError):recorder.claim('p','wrong')
+    with recorder.connect() as db:assert db.execute('SELECT count(*) FROM runs').fetchone()[0]==0
+    key,owner=recorder.claim('p','i')
+    with recorder.connect() as db:
+        row=db.execute('SELECT * FROM gui_jobs WHERE job_id=?',('job_test',)).fetchone()
+        assert row['replacement_run_id']==key and row['worker_pid']==os.getpid()
