@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"category":{"type":"string"}},"required":["category"],"title":"Classification","type":"object","x-order":["category"]}

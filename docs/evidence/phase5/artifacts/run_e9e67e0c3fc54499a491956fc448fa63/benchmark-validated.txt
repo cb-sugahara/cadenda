@@ -1,0 +1,1 @@
+{"input":"The application crashes every time I click Save.","result":{"category":"bug"},"retries":0,"run_id":"run_e9e67e0c3fc54499a491956fc448fa63","success":true,"task":"classify"}

@@ -1,0 +1,1 @@
+{"code":"def clamp(value, lower, upper):\n    return max(lower, min(value, upper))"}

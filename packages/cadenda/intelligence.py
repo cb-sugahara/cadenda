@@ -64,10 +64,11 @@ class Review(StrictModel):
         return self
 
 
-def route(role,*,risk='workspace_write',classification='internal',cloud_enabled=False):
+def route(role,*,risk='workspace_write',classification='internal',cloud_enabled=False,local_enabled=False):
     if risk not in {'read_only','workspace_write'} or classification not in {'public','internal'}:
         return 'needs_human'
     if role=='executor':return 'executor'
+    if role=='worker_local' and local_enabled:return 'fm_system'
     if cloud_enabled and role in {'architect','reviewer'}:return 'codex'
     if cloud_enabled and role=='developer':return 'antigravity'
     return 'needs_human'

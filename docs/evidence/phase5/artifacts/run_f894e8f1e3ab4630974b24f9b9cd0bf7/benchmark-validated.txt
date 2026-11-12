@@ -1,0 +1,1 @@
+{"input":"Generate the bounded clamp function.","result":{"code":"def clamp(value, lower, upper):\n    return max(lower, min(value, upper))\n"},"retries":0,"run_id":"run_f894e8f1e3ab4630974b24f9b9cd0bf7","success":true,"task":"clamp"}

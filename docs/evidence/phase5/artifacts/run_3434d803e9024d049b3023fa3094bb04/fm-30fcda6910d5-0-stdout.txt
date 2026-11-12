@@ -1,0 +1,1 @@
+{"names": ["weekly_rank_start", "rank_start_calc", "week_start_rank"]}

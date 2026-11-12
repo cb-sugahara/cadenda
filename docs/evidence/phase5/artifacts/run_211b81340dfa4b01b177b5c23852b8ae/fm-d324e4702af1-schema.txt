@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"code":{"type":"string"}},"required":["code"],"title":"Code","type":"object","x-order":["code"]}

@@ -1,0 +1,23 @@
+{
+  "wheel": "cadenda-0.3.0-py3-none-any.whl",
+  "sha256": "f30c1bbe4f121968678afbd7b27432483d6432aa340d0fcec322c0b40710dc5a",
+  "packaged_python_source_matches": {
+    "packages/cadenda/worker.py": true,
+    "packages/cadenda/snapshots.py": true,
+    "packages/cadenda/config.py": true,
+    "packages/cadenda/launch_gate.py": true,
+    "packages/cadenda/models.py": true,
+    "packages/cadenda/fm_adapter.py": true,
+    "packages/cadenda/beads_adapter.py": true,
+    "packages/cadenda/context_builder.py": true,
+    "packages/cadenda/security.py": true,
+    "packages/cadenda/recorder.py": true,
+    "packages/cadenda/__init__.py": true,
+    "packages/cadenda/intelligence.py": true,
+    "packages/cadenda/codex_adapter.py": true,
+    "packages/cadenda/cli.py": true,
+    "packages/cadenda/pipeline.py": true,
+    "packages/cadenda/process.py": true,
+    "packages/cadenda/errors.py": true
+  }
+}

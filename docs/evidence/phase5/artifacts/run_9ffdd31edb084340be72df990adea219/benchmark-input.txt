@@ -1,0 +1,1 @@
+{"instructions":"Suggest 1 to 3 short ASCII snake_case names for the reference task. Return names only.","task":"names","text":"A function calculating the weekly ranking start date"}

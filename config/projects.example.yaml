@@ -21,3 +21,6 @@ projects:
       - docs/adr/001-architecture.md
     # Add only after a genuine approval. No comment tag can manufacture a receipt.
     decisions: []
+    # Explicit owner opt-ins; PCC remains unavailable even when local fm is enabled.
+    cloud_enabled: false
+    fm_local_enabled: false

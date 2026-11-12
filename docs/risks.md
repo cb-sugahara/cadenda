@@ -4,7 +4,7 @@
 
 | 制約 | 対応・後続ゲート |
 |---|---|
-| PCCはCodex起動コンテキストから使用不可 | Phase 5保留。Terminal/GUIセッションで本人が条件を確認する。fm serveで回避できるとは仮定しない。別クラウドへ自動代替しない。 |
+| PCCはCodex起動コンテキストから使用不可 | Phase 5でLocal 4タスクは検証済み、PCCだけ保留。別の明示許可後、Terminal/GUIセッションで本人が条件を確認する。fm serveで回避できるとは仮定しない。別クラウドへ自動代替しない。 |
 | Beads Embeddedの全体doctor未対応 | 対応する3個別チェックとIssue/依存の実操作で確認。全体診断は未検証のまま明示し、必要時だけServerモードを再評価。 |
 | AIの終了0でも未実行になり得る | Antigravityのdenied_actions、stderr、成果物、独立テストを確認。Beads doctorもunsupportedを判定する。 |
 | Antigravity autoモードは現アカウントで不可 | Workerはdefaultと個別permissions.allowを使用。グローバル設定は変更しない。 |
@@ -16,3 +16,5 @@
 | Phase 2のreceiptとトークン見積り | receiptは所有者管理の設定であり認証APIではない。token見積りはUTF-8バイト数の保守的近似。実Provider上限は測定してからプロファイルへ設定する。 |
 | 実行管理の運用境界 | SQLite Recorder・排他・Outbox・停止/復旧はPhase 3で検証済み。チェックは所有者が信頼するコードとし、OSサンドボックスや本番ネットワーク隔離を保証しない。常駐運用・本人認証は後続工程。 |
 | テストIssueに対するclose試験 | CLI fixtureのみ直接closeを検証。本PoCの子Issueは独立テスト・Codexレビュー・引継ぎ記録を確認してから閉じる。 |
+
+Phase 5のLocal比較は4合成入力各1件で、命名の意味品質や一般的なコード生成性能は未評価。生成コードは限定AST・整数ベクトルを検証した提案のみ。データ分類は呼出者申告であり秘密検出パターンは完全ではない。

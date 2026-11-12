@@ -49,3 +49,7 @@ PCCの追加試験は明示的な`--pcc`でのみ実行する。各試験は新�
 - [Codex非対話モード](https://learn.chatgpt.com/docs/non-interactive-mode?translationFallback=ja-JP) — execの構造化出力。
 - [Antigravity Headless](https://antigravity.google/docs/cli/headless/) と [権限設定](https://antigravity.google/docs/permissions?tab=cli) — headless権限と結果形式。
 - fmの仕様は実機`respond --help`、`serve --help`と各コマンド出力を証跡保存。
+
+## Phase 5追加実測（2026-11-12）
+
+AFM 3 Core Advancedのsystemで構造化出力4タスクを確認。`fm respond --schema ... --instructions ... -- INPUT`を使用し、スキーマをRecorderへ不変保存する。PCCは引き続きTerminal起動コンテキスト制約で利用不可。`fm quota-usage`はsystem非適用/PCC unavailableで終了1。実PCC quota到達は未検証。比較・境界・再開ゲートは[Phase 5記録](phase5-results.md)を参照。

@@ -1,0 +1,1 @@
+{"instructions":"Classify the reference text as bug, feature or question. Return category only.","task":"classify","text":"The application crashes every time I click Save."}

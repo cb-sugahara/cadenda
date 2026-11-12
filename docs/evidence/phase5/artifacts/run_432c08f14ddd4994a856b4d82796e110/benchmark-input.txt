@@ -1,0 +1,1 @@
+{"instructions":"Extract exactly one verbatim issue_id and status (open/in_progress/closed) from the text. Never invent values.","task":"extract","text":"issue_id=bd-demo status=open"}

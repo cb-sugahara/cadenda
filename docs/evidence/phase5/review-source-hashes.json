@@ -1,0 +1,13 @@
+{
+  "packages/cadenda/fm_adapter.py": "598ba6943520cedcb1d7cf8d2b33cd9c38b0ba3531efb1fff58b0133c473896e",
+  "packages/cadenda/config.py": "ab8a9800ab6efe4a387ecb906957b0e24d3c32dc94b32720806cdc9ba7bc47b4",
+  "packages/cadenda/intelligence.py": "55727589c88113229d0933ade9ad149102b9d44e13f329220b97a4e29f045037",
+  "packages/cadenda/cli.py": "5fd3689a84c1b7985f923918a13e2f461e9d36ba6800bc4419d530046818e2a0",
+  "packages/cadenda/worker.py": "7c41a916181f1ec45f764be0812e90b1a08eb5a7a3187861a1e0efc854656138",
+  "packages/cadenda/recorder.py": "720b7a854e6f82950fd70411ab08b071f790847226240104e6c5e2cea4caff5e",
+  "packages/cadenda/security.py": "a8ff95bc0e791baa9ef94cbf87b7bf3c4ded5bf4dea0591763785001c10c92f6",
+  "packages/cadenda/process.py": "4518b396a3db3fd8cfaaa850e9850f1a358f05bb45fb2e4703a0d760051ec734",
+  "packages/cadenda/launch_gate.py": "2ee626d64a23308c57f3fa8f6fa6966e9ed1d78da9ee6088d7140229d0ba0a05",
+  "tests/test_fm_adapter.py": "318e5b3a0c11bebec79207489d6ed93c732d24d2404ebf24d9f476b72cf730af",
+  "tests/test_recorder.py": "9e8f61d3acb92b6918230afd7178432a45e1c4cae188f3000ea7b810ba0b92fa"
+}

@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"code":{"maxLength":2000,"minLength":1,"title":"Code","type":"string"}},"required":["code"],"title":"Code","type":"object"}

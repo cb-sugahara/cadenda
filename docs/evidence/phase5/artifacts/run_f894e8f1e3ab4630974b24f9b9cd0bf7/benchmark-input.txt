@@ -1,0 +1,1 @@
+{"instructions":"Return Python source for def clamp(value, lower, upper): returning max(lower, min(value, upper)). Only one function, one return, min/max calls and these arguments. No imports, annotations or side effects.","task":"clamp","text":"Generate the bounded clamp function."}

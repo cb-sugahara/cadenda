@@ -1,7 +1,7 @@
 # cadenda 作業規約
 
 - 設計の基準は `docs/macmini_ai_development_implementation_plan.md`。工程ごとの完了条件を検証し、未合格のまま後工程を大量実装しない。
-- Phase 0・Phase 1は `docs/issue-handoff-poc.md`、Phase 2は `docs/phase2-results.md`、Phase 3は `docs/phase3-results.md`、Phase 4は `docs/phase4-results.md` を参照。次工程はPhase 5（fm Local / PCC）。実測と推測、未検証を明確に区別する。
+- Phase 0・Phase 1は `docs/issue-handoff-poc.md`、Phase 2は `docs/phase2-results.md`、Phase 3は `docs/phase3-results.md`、Phase 4は `docs/phase4-results.md`、Phase 5は `docs/phase5-results.md` を参照。次工程はPhase 6（GUI）。PCCは明示的な別許可と利用条件確認まで保留。実測と推測、未検証を明確に区別する。
 - Cadenda自身の開発にも `aiops issue context`、`aiops run check`、Recorder/Outboxを利用し、成果物の動作確認と実装を同時に進める。
 - Issueの正本はBeads。実行ログ・成果物は `state/` に保存し、公開可能な検証結果のみ `docs/` に記録する。代替Issue DBを作らない。
 - PoCのソース編集は試験リポジトリのworktree内に限定する。Control Planeの検証スクリプト・スキーマ・文書はこのリポジトリで管理する。

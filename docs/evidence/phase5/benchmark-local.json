@@ -1,0 +1,34 @@
+[
+  {
+    "task": "classify",
+    "input": "The application crashes every time I click Save.",
+    "seconds": 1.177,
+    "exit": 0,
+    "stdout": "{\n  \"run_id\": \"run_14428184fd1b450d8ab024b3be89e05f\",\n  \"task\": \"classify\",\n  \"model\": \"system\",\n  \"result\": {\n    \"category\": \"bug\"\n  },\n  \"suggestion_only\": true\n}\n",
+    "stderr": ""
+  },
+  {
+    "task": "extract",
+    "input": "issue_id=bd-demo status=open",
+    "seconds": 0.95,
+    "exit": 0,
+    "stdout": "{\n  \"run_id\": \"run_1dcc7d4f7674498c9277a398837d8b7e\",\n  \"task\": \"extract\",\n  \"model\": \"system\",\n  \"result\": {\n    \"issue_id\": \"bd-demo\",\n    \"status\": \"open\"\n  },\n  \"suggestion_only\": true\n}\n",
+    "stderr": ""
+  },
+  {
+    "task": "names",
+    "input": "A function calculating the weekly ranking start date",
+    "seconds": 1.186,
+    "exit": 0,
+    "stdout": "{\n  \"run_id\": \"run_3434d803e9024d049b3023fa3094bb04\",\n  \"task\": \"names\",\n  \"model\": \"system\",\n  \"result\": {\n    \"names\": [\n      \"weekly_rank_start\",\n      \"rank_start_calc\",\n      \"week_start_rank\"\n    ]\n  },\n  \"suggestion_only\": true\n}\n",
+    "stderr": ""
+  },
+  {
+    "task": "clamp",
+    "input": "Generate the bounded clamp function.",
+    "seconds": 1.2,
+    "exit": 0,
+    "stdout": "{\n  \"run_id\": \"run_211b81340dfa4b01b177b5c23852b8ae\",\n  \"task\": \"clamp\",\n  \"model\": \"system\",\n  \"result\": {\n    \"code\": \"def clamp(value, lower, upper):\\n    return max(lower, min(value, upper))\"\n  },\n  \"suggestion_only\": true\n}\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,1 @@
+{"model":"system","task":"names","text":"A function calculating the weekly ranking start date"}

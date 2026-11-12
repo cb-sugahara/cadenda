@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"names":{"items":{"type":"string"},"type":"array"}},"required":["names"],"title":"Names","type":"object","x-order":["names"]}

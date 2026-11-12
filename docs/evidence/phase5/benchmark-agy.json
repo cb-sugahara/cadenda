@@ -1,0 +1,51 @@
+[
+  {
+    "task": "classify",
+    "input": "The application crashes every time I click Save.",
+    "run_id": "run_e9e67e0c3fc54499a491956fc448fa63",
+    "retries": 0,
+    "success": true,
+    "result": {
+      "category": "bug"
+    },
+    "seconds": 11.589
+  },
+  {
+    "task": "extract",
+    "input": "issue_id=bd-demo status=open",
+    "run_id": "run_432c08f14ddd4994a856b4d82796e110",
+    "retries": 0,
+    "success": true,
+    "result": {
+      "issue_id": "bd-demo",
+      "status": "open"
+    },
+    "seconds": 10.818
+  },
+  {
+    "task": "names",
+    "input": "A function calculating the weekly ranking start date",
+    "run_id": "run_9ffdd31edb084340be72df990adea219",
+    "retries": 0,
+    "success": true,
+    "result": {
+      "names": [
+        "calc_weekly_ranking_start_date",
+        "weekly_ranking_start_date",
+        "get_weekly_rank_start"
+      ]
+    },
+    "seconds": 7.951
+  },
+  {
+    "task": "clamp",
+    "input": "Generate the bounded clamp function.",
+    "run_id": "run_f894e8f1e3ab4630974b24f9b9cd0bf7",
+    "retries": 0,
+    "success": true,
+    "result": {
+      "code": "def clamp(value, lower, upper):\n    return max(lower, min(value, upper))\n"
+    },
+    "seconds": 11.549
+  }
+]

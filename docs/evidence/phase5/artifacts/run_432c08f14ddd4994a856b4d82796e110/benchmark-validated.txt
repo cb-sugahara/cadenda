@@ -1,0 +1,1 @@
+{"input":"issue_id=bd-demo status=open","result":{"issue_id":"bd-demo","status":"open"},"retries":0,"run_id":"run_432c08f14ddd4994a856b4d82796e110","success":true,"task":"extract"}

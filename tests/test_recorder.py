@@ -203,3 +203,20 @@ def test_history_exposes_provenance_without_worker_token(recorder):
     assert 'owner' not in history['run']
     assert history['events'][0]['project_id']=='p'
     assert history['events'][0]['actor']=='orchestrator'
+
+
+def test_local_review_binding_is_unique_and_recovery_preserves_snapshot(recorder):
+    hashes=[]
+    for value in [b'first',b'second']:
+        key,owner=recorder.claim('p','local-issue',provider='fm-system',verification=True)
+        recorder.transition(key,owner,'Running')
+        recorder.artifact(key,'validated',value,'report')
+        recorder.transition(key,owner,'Verifying');recorder.transition(key,owner,'Review')
+        h=recorder.history(key);original=h['approvals'][0]['action_hash'];hashes.append(original)
+        binding=h['events'][-2]['payload']['review_binding']
+        assert binding['run_id']==key and binding['artifacts'][0]['sha256']==h['artifacts'][0]['sha256']
+        recorder.artifact(key,'later-report',b'later','report')
+        with recorder.transaction() as db:db.execute('DELETE FROM approvals WHERE run_id=?',(key,))
+        recorder.recover()
+        assert [a['action_hash'] for a in recorder.history(key)['approvals']]==[original]
+    assert hashes[0]!=hashes[1]

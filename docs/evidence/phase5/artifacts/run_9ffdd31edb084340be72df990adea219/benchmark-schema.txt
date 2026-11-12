@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"names":{"items":{"type":"string"},"maxItems":3,"minItems":1,"title":"Names","type":"array"}},"required":["names"],"title":"Names","type":"object"}

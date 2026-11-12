@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"issue_id":{"type":"string"},"status":{"type":"string"}},"required":["issue_id","status"],"title":"Extraction","type":"object","x-order":["issue_id","status"]}

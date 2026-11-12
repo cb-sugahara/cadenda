@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"issue_id":{"pattern":"^[A-Za-z][A-Za-z0-9_.-]{0,79}$","title":"Issue Id","type":"string"},"status":{"enum":["open","in_progress","closed"],"title":"Status","type":"string"}},"required":["issue_id","status"],"title":"Extraction","type":"object"}

@@ -25,6 +25,7 @@ def parser():
     pipeline=run.add_parser('pipeline');pipeline.add_argument('project_id');pipeline.add_argument('issue_id');pipeline.add_argument('--max-fixes',type=int,default=2)
     plan=run.add_parser('plan');plan.add_argument('project_id');plan.add_argument('issue_id')
     policy=run.add_parser('policy');policy.add_argument('project_id');policy.add_argument('issue_id')
+    local=run.add_parser('local');local.add_argument('project_id');local.add_argument('issue_id');local.add_argument('task',choices=['classify','extract','names','clamp']);local.add_argument('text');local.add_argument('--model',choices=['system','pcc'],default='system');local.add_argument('--classification',choices=['public','internal','secret'],default='internal')
     project = commands.add_parser("projects")
     project.add_argument("--format", choices=["json", "text"], default="text")
     issue = commands.add_parser("issue").add_subparsers(dest="issue_command", required=True)
@@ -60,7 +61,10 @@ def main(argv=None):
             from .process import capture
             recorder=Recorder(registry.settings.state_root)
             from .pipeline import Pipeline
-            if args.run_command=='plan': result=Pipeline(registry).architect(args.project_id,args.issue_id)
+            if args.run_command=='local':
+                from .fm_adapter import LocalService
+                result=LocalService(registry).run(args.project_id,args.issue_id,args.task,args.text,model=args.model,classification=args.classification)
+            elif args.run_command=='plan': result=Pipeline(registry).architect(args.project_id,args.issue_id)
             elif args.run_command=='policy': result=Pipeline(registry).architect(args.project_id,args.issue_id,policy=True)
             elif args.run_command=='review': result=Pipeline(registry).review(args.run_id)
             elif args.run_command=='pipeline': result=Pipeline(registry).run(args.project_id,args.issue_id,args.max_fixes)

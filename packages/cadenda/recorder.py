@@ -127,12 +127,20 @@ class Recorder:
             assignments = ','.join(f'{name}=?' for name in fields)
             db.execute('UPDATE runs SET state=?,active=?,updated_at=?'+(','+assignments if assignments else '')+' WHERE run_id=?',
                 (state,int(state in ACTIVE),time.time(),*fields.values(),key))
-            self._event(db,key,'state_changed',{'from':row['state'],'to':state,**fields})
+            binding=self._review_binding(db,dict(row)|fields) if state=='Review' else None
+            self._event(db,key,'state_changed',{'from':row['state'],'to':state,**fields,**({'review_binding':binding} if binding else {})})
             if state=='Review':
-                action_hash=digest(canonical({'action':'review','commit':fields.get('commit_id'),'issue_id':row['issue_id']}))
+                action_hash=digest(canonical(binding))
                 approval_id='approval_'+uuid4().hex
                 db.execute('INSERT INTO approvals(approval_id,run_id,action_hash) VALUES(?,?,?)',(approval_id,key,action_hash))
                 self._event(db,key,'approval_requested',{'approval_id':approval_id,'action_hash':action_hash})
+
+    @staticmethod
+    def _review_binding(db,row):
+        return {'action':'review','run_id':row['run_id'],'project_id':row['project_id'],
+            'issue_id':row['issue_id'],'commit':row['commit_id'],
+            'artifacts':[{ 'artifact_id':a['artifact_id'],'sha256':a['sha256']} for a in db.execute(
+                'SELECT artifact_id,sha256 FROM artifacts WHERE run_id=? ORDER BY artifact_id',(row['run_id'],))]}
 
     def history(self,key):
         run=self.get(key);run.pop('owner',None)
@@ -203,7 +211,13 @@ class Recorder:
                 self._event(db,row['run_id'],'orphan_detected',{'pgid':row['pgid'],'worktree':row['worktree']})
                 recovered.append(row['run_id'])
             for row in db.execute("SELECT * FROM runs WHERE state='Review'").fetchall():
-                action_hash=digest(canonical({'action':'review','commit':row['commit_id'],'issue_id':row['issue_id']}))
+                event=db.execute("SELECT payload FROM run_events WHERE run_id=? AND event_type='state_changed' ORDER BY occurred_at DESC LIMIT 1",(row['run_id'],)).fetchone()
+                binding=json.loads(event['payload']).get('review_binding') if event else None
+                # Preserve the immutable review-time snapshot even if later reports were added.
+                if binding is None:
+                    if db.execute('SELECT 1 FROM approvals WHERE run_id=?',(row['run_id'],)).fetchone():continue
+                    binding=self._review_binding(db,row)
+                action_hash=digest(canonical(binding))
                 if not db.execute('SELECT 1 FROM approvals WHERE run_id=? AND action_hash=?',(row['run_id'],action_hash)).fetchone():
                     approval_id='approval_'+uuid4().hex
                     db.execute('INSERT INTO approvals(approval_id,run_id,action_hash) VALUES(?,?,?)',(approval_id,row['run_id'],action_hash))

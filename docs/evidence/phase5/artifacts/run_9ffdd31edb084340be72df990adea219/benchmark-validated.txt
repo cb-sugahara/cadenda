@@ -1,0 +1,1 @@
+{"input":"A function calculating the weekly ranking start date","result":{"names":["calc_weekly_ranking_start_date","weekly_ranking_start_date","get_weekly_rank_start"]},"retries":0,"run_id":"run_9ffdd31edb084340be72df990adea219","success":true,"task":"names"}
