@@ -1,13 +1,44 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Independent PoC review",
-  "type": "object",
   "additionalProperties": false,
   "properties": {
-    "verdict": {"type": "string", "enum": ["approved", "changes_requested"]},
-    "findings": {"type": "array", "items": {"type": "string"}},
-    "requirements_checked": {"type": "array", "items": {"type": "string"}},
-    "source_refs": {"type": "array", "items": {"type": "string"}}
+    "verdict": {
+      "enum": [
+        "approved",
+        "changes_requested"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "requirements_checked": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Requirements Checked",
+      "type": "array"
+    },
+    "source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Source Refs",
+      "type": "array"
+    }
   },
-  "required": ["verdict", "findings", "requirements_checked", "source_refs"]
+  "required": [
+    "verdict",
+    "findings",
+    "requirements_checked",
+    "source_refs"
+  ],
+  "title": "Review",
+  "type": "object"
 }

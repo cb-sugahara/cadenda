@@ -11,6 +11,7 @@ Phase 2のContext Builderに加え、Phase 3の明示的な単一Run実行・Rec
 - [Phase 2の検証結果と次工程](docs/phase2-results.md)
 - [Runの実行・停止・復旧](docs/execution.md)
 - [Phase 3と自己利用の検証結果](docs/phase3-results.md)
+- [Phase 4の分解・独立レビュー・修正パイプライン](docs/phase4-results.md)
 - [Issue引継ぎPoCの結果・確認方法・次工程](docs/issue-handoff-poc.md)
 - [未解決制約](docs/risks.md)
 - [承認されたPoCの課題分解](docs/poc-task-proposal.md)

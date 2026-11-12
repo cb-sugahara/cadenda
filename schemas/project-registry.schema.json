@@ -155,6 +155,11 @@
           "default": false,
           "title": "Recorder Enabled",
           "type": "boolean"
+        },
+        "cloud_enabled": {
+          "default": false,
+          "title": "Cloud Enabled",
+          "type": "boolean"
         }
       },
       "required": [

@@ -49,6 +49,7 @@ class Project(StrictModel):
     decisions: list[DecisionReceipt] = Field(default_factory=list, max_length=64)
     checks: list[Check] = Field(default_factory=list)
     recorder_enabled: bool = False
+    cloud_enabled: bool = False
 
     @field_validator("root", "worktree_roots", "artifact_roots", "evidence_catalog")
     @classmethod
@@ -131,7 +132,9 @@ class Registry:
         try:
             if path.stat().st_size > 1_048_576:
                 raise CadendaError("CONFIG_INVALID", "Config exceeds 1 MiB")
-            return cls(Settings.model_validate(yaml.safe_load(path.read_text())))
+            registry=cls(Settings.model_validate(yaml.safe_load(path.read_text())))
+            registry.config_path=path.resolve()
+            return registry
         except (OSError, ValueError, yaml.YAMLError) as exc:
             raise CadendaError("CONFIG_INVALID", "Invalid project configuration; verify schema and canonical absolute paths") from exc
 

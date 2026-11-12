@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "source": "state/phase4/tests.txt",
+      "export": "docs/evidence/phase4/tests.txt",
+      "sha256": "1d434093d4e01cf233c09cb9e369f7d45fe25d2e313b69eaf2e542bb974e67ac"
+    },
+    {
+      "source": "state/phase4/tests.xml",
+      "export": "docs/evidence/phase4/tests.xml",
+      "sha256": "ecf55059ac0b808e4b42c6d685184f445192b301d7c3cb583262d2980246d03d"
+    },
+    {
+      "source": "state/phase4/review-result.json",
+      "export": "docs/evidence/phase4/review-result.json",
+      "sha256": "2ffacff7b433b2ff13222ba20d014b8b7468de97676c184e3d5927fd17cefaa7"
+    },
+    {
+      "source": "state/phase4/review-source-hashes.json",
+      "export": "docs/evidence/phase4/review-source-hashes.json",
+      "sha256": "a1f735e798e1c98073351b3781e13ab3047efa0854ed1b2b1afcc0c3df83fcf1"
+    },
+    {
+      "source": "state/phase4/plan-live.json",
+      "export": "docs/evidence/phase4/plan-live.json",
+      "sha256": "41e267488c3a56d26a81adcb3a88b721423562e18e57acc59b3c21b269d348dc"
+    },
+    {
+      "source": "state/phase4/final-pipeline-live.json",
+      "export": "docs/evidence/phase4/final-pipeline-live.json",
+      "sha256": "06253174af7801d909688c997038a8d413a2c11de7a7007c108d8e665f92f2fe"
+    },
+    {
+      "source": "state/phase4/self-run-history.json",
+      "export": "docs/evidence/phase4/self-run-history.json",
+      "sha256": "420809013bdbcaa54e595cd028c1a8012159805449427dc40ea57d4300cdb80d"
+    },
+    {
+      "source": "state/phase4/plan-live-history.json",
+      "export": "docs/evidence/phase4/plan-live-history.json",
+      "sha256": "a59cdc9b0ff7e08474c5fb94383826da6f30153907adc20cd74e847ec06a2110"
+    },
+    {
+      "source": "state/phase4/cloud-consent.json",
+      "export": "docs/evidence/phase4/cloud-consent.json",
+      "sha256": "8ab43837cce5a07e8edf351552c7bd457511b139e0277a542b9b7749d6a19165"
+    },
+    {
+      "source": "state/phase4/review-attempt-1/result.json",
+      "export": "docs/evidence/phase4/review-attempt-1.json",
+      "sha256": "e610adbd024e5ee7951e8b770962c586a8243eb034fd36f6c31729279b6fd99b"
+    }
+  ]
+}

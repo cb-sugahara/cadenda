@@ -1,0 +1,101 @@
+{
+  "run_id": "run_20292676a94840bcad5355f2c2a62097",
+  "proposal": {
+    "schema_version": 1,
+    "summary": "Proposed Phase 4 architecture tasks only; nothing registered or executed. Supplied context contains no actual diff or independent check records, so it cannot establish implementation completion. Referenced plans and Phase 3 behavior remain unverified. No human approval is inferred.",
+    "tasks": [
+      {
+        "proposal_id": "p4-01",
+        "title": "Establish Phase 4 requirements and baseline",
+        "description": "Reconcile the implementation plan, Phase 3 results, execution documentation, current source changes and trusted decision receipts. Record requirement-to-evidence mappings and unresolved gates before implementing dependent behavior.",
+        "acceptance_criteria": [
+          "Each Phase 4 requirement maps to a bounded implementation task and an independent verification method.",
+          "Existing modifications are inventoried against the Phase 3 source commit without overwriting unrelated work.",
+          "Missing approval receipts remain explicit pending gates; comments and historical review claims confer no authorization.",
+          "Cadenda context and diagnostic results are recorded through Recorder with artifact hashes under state/."
+        ],
+        "depends_on": [],
+        "risk_class": "read_only"
+      },
+      {
+        "proposal_id": "p4-02",
+        "title": "Define strict architect and reviewer contracts",
+        "description": "Implement versioned JSON schemas and semantic validators for task proposals and review findings. Keep proposals separate from Beads registration and human decisions.",
+        "acceptance_criteria": [
+          "Schemas reject unknown fields, invalid enum values, missing required fields and oversized outputs.",
+          "Proposal validation rejects duplicate identifiers, unknown dependencies, dependency cycles and tasks outside the permitted scope.",
+          "Review results distinguish approved from changes_requested and bind findings to requirements and reviewed evidence.",
+          "Independent negative tests cover malformed JSON, schema violations and source text attempting to grant approval."
+        ],
+        "depends_on": [
+          "p4-01"
+        ],
+        "risk_class": "workspace_write"
+      },
+      {
+        "proposal_id": "p4-03",
+        "title": "Implement bounded Codex adapters",
+        "description": "Add architect and separate reviewer adapters using verified local CLI capabilities, argument arrays, explicit timeouts and bounded output capture.",
+        "acceptance_criteria": [
+          "Recorded CLI version and help establish supported invocation and structured-output options.",
+          "Successful process exit alone cannot yield a valid proposal or review; schema validation, stderr classification and artifact integrity are checked.",
+          "Denial, timeout, cancellation, truncated output and invalid responses produce explicit non-success states.",
+          "Adapters cannot grant human approval, mutate Issues or invoke an automatic alternate cloud provider; PCC remains disabled."
+        ],
+        "depends_on": [
+          "p4-02"
+        ],
+        "risk_class": "workspace_write"
+      },
+      {
+        "proposal_id": "p4-04",
+        "title": "Add persistent routing and approval gates",
+        "description": "Implement explicit transitions from validated proposal through trusted approval, isolated implementation, deterministic checks and separate review, using SQLite as Run authority and Beads as Issue authority.",
+        "acceptance_criteria": [
+          "Unapproved proposals cannot start implementation or automatically register tasks.",
+          "Approval binds to a canonical action hash covering the proposal, scope, baseline and execution policy; material changes invalidate it.",
+          "Reviewer inputs contain requirements, the actual diff and recorded independent checks; implementer summaries are supplementary only.",
+          "Review decisions bind to exact source and evidence hashes; subsequent changes invalidate the decision.",
+          "Restart preserves pending gates without replaying implementation or fabricating approval, and no transition automatically closes an Issue."
+        ],
+        "depends_on": [
+          "p4-03"
+        ],
+        "risk_class": "workspace_write"
+      },
+      {
+        "proposal_id": "p4-05",
+        "title": "Implement bounded correction and escalation",
+        "description": "Route actionable review findings into a persisted, limited correction loop that reruns affected checks and obtains a fresh separate review.",
+        "acceptance_criteria": [
+          "Correction attempts and total execution time have finite configured limits persisted across restarts.",
+          "Each correction remains within approved scope; scope expansion requires a new trusted decision.",
+          "Denial, invalid output, exhausted limits or unresolved findings stop dependent execution and record a human escalation.",
+          "A prior approved review cannot authorize a changed diff, and changes_requested cannot satisfy the completion gate."
+        ],
+        "depends_on": [
+          "p4-04"
+        ],
+        "risk_class": "workspace_write"
+      },
+      {
+        "proposal_id": "p4-06",
+        "title": "Verify the complete flow and publish handoff",
+        "description": "Exercise the pipeline on a scoped fixture repository with isolated implementation worktrees, Recorder artifacts and Outbox delivery. Update compatibility, risks and Phase 4 handoff documents using independently recorded results.",
+        "acceptance_criteria": [
+          "A recorded fixture flow demonstrates approved decomposition, isolated implementation, deterministic checks and separate review.",
+          "Independent tests demonstrate safe stops for forged comment approval, stale hashes, malformed and denied outputs, failed checks, retry exhaustion and restart.",
+          "Completion is blocked whenever required evidence or trusted human approval is missing, even if all subprocesses exit successfully.",
+          "Recorder retains Run authority, Beads retains Issue authority and Outbox retries do not duplicate mutations.",
+          "Documentation distinguishes measured results from assumptions and lists unresolved gates with exact resumption steps; no production deployment or Issue closure occurs."
+        ],
+        "depends_on": [
+          "p4-05"
+        ],
+        "risk_class": "workspace_write"
+      }
+    ]
+  },
+  "human_approval_required": true,
+  "proposal_sha256": "bdfff09fafd433ac6cd2363a0e2f9e8d7ff3a2b6433df892eb36644aa934d5c4"
+}

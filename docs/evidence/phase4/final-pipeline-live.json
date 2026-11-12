@@ -1,0 +1,26 @@
+{
+  "run_id": "run_3b87883623924931b1794c2586170a37",
+  "reports": [
+    {
+      "review": {
+        "verdict": "approved",
+        "findings": [],
+        "requirements_checked": [
+          "The supplied diff adds answer.txt containing CADENDA_OK.",
+          "The supplied diff contains no changes to check.py or policy/runtime files.",
+          "The recorded independent check-answer command completed with exit code 0; stdout and stderr were empty."
+        ],
+        "source_refs": [
+          "beads://worker-poc/worker-4eo",
+          "git://worker-poc/6a2d087fc8871e5c3efcb69d527450f69fbd6c15/diff",
+          "run://worker-poc/run_3b87883623924931b1794c2586170a37",
+          "execution_record.events/evt_1f17511b2d154f74ad07d68dd2b2a62c"
+        ]
+      },
+      "commit": "6a2d087fc8871e5c3efcb69d527450f69fbd6c15",
+      "issue_revision": "-5090859418182088311",
+      "evidence_sha256": "3767d91b0abc91f59af1b1dfe17f87c1e700c8df0c1aea84cfc721c45208fd39"
+    }
+  ],
+  "human_approval_required": true
+}

@@ -51,7 +51,9 @@
         "cancel_requested",
         "orphan_detected",
         "command_started",
-        "command_finished"
+        "command_finished",
+        "review_started",
+        "repair_started"
       ]
     },
     "occurred_at": {

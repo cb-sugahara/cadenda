@@ -1,27 +1,88 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Issue decomposition proposal (requires human review)",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "schema_version": {"type": "integer", "const": 1},
-    "summary": {"type": "string"},
-    "tasks": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "proposal_id": {"type": "string"},
-          "title": {"type": "string"},
-          "description": {"type": "string"},
-          "acceptance_criteria": {"type": "array", "items": {"type": "string"}, "minItems": 1},
-          "depends_on": {"type": "array", "items": {"type": "string"}},
-          "risk_class": {"type": "string", "enum": ["read_only", "workspace_write", "staging", "production"]}
+  "$defs": {
+    "Task": {
+      "additionalProperties": false,
+      "properties": {
+        "proposal_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+          "title": "Proposal Id",
+          "type": "string"
         },
-        "required": ["proposal_id", "title", "description", "acceptance_criteria", "depends_on", "risk_class"]
-      }
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "acceptance_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Acceptance Criteria",
+          "type": "array"
+        },
+        "depends_on": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "risk_class": {
+          "enum": [
+            "read_only",
+            "workspace_write",
+            "staging",
+            "production"
+          ],
+          "title": "Risk Class",
+          "type": "string"
+        }
+      },
+      "required": [
+        "proposal_id",
+        "title",
+        "description",
+        "acceptance_criteria",
+        "depends_on",
+        "risk_class"
+      ],
+      "title": "Task",
+      "type": "object"
     }
   },
-  "required": ["schema_version", "summary", "tasks"]
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/$defs/Task"
+      },
+      "maxItems": 40,
+      "minItems": 1,
+      "title": "Tasks",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "summary",
+    "tasks"
+  ],
+  "title": "Plan",
+  "type": "object"
 }

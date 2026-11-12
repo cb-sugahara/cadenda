@@ -1,0 +1,40 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "const": "proposed",
+      "title": "Status",
+      "type": "string"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "rationale": {
+      "title": "Rationale",
+      "type": "string"
+    },
+    "affected_issues": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Affected Issues",
+      "type": "array"
+    },
+    "suggested_document": {
+      "title": "Suggested Document",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "summary",
+    "rationale",
+    "affected_issues",
+    "suggested_document"
+  ],
+  "title": "PolicyProposal",
+  "type": "object"
+}

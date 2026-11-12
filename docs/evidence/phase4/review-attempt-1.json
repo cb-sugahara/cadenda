@@ -1,0 +1,19 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "Blocking: Worker.start runs checks against a mutable worktree, then stages and commits its final contents without binding each successful check to that source tree. A later check can modify code after an earlier check passes; review verifies only argv, exit status and log hashes, so it can approve a commit the earlier check never tested. Record source identity around checks and require every successful check to cover the final committed tree.",
+    "Blocking: Pipeline.review revalidates only the root Issue payload and worktree after model execution. Context also contains requirements from comments, decision receipts and related Issues, whose bodies are not revalidated. Editing an approved comment without changing the root Issue payload can leave an approved report bound to obsolete requirements. Revalidate the complete requirement source identities before accepting the verdict.",
+    "Blocking: Each repair sets base_commit to the rejected commit, and Pipeline.review supplies only base_commit..commit_id. Consequently, repair review sees the repair delta rather than the complete implementation against its original baseline. Unchanged defects from the rejected implementation can disappear from the supplied diff and receive approval. Preserve the original implementation baseline and supply the cumulative diff alongside the immutable rejection report."
+  ],
+  "requirements_checked": [
+    "Reviewed supplied source only; no tools or file reads.",
+    "Considered structured output, evidence binding, races and bounded repair.",
+    "Accepted explicit cloud opt-in and manual human approval boundaries.",
+    "Supplied test results and smoke evidence do not cover the identified failure paths."
+  ],
+  "source_refs": [
+    "packages/cadenda/worker.py: Worker.start check loop, commit creation and repair base",
+    "packages/cadenda/pipeline.py: Pipeline.review evidence construction and final source validation",
+    "packages/cadenda/context_builder.py: ContextBuilder.build requirement sources"
+  ]
+}

@@ -21,6 +21,10 @@ def parser():
     for name in ('show','cancel','release'):
         action=run.add_parser(name);action.add_argument('run_id')
     run.add_parser('recover');run.add_parser('flush')
+    review=run.add_parser('review');review.add_argument('run_id')
+    pipeline=run.add_parser('pipeline');pipeline.add_argument('project_id');pipeline.add_argument('issue_id');pipeline.add_argument('--max-fixes',type=int,default=2)
+    plan=run.add_parser('plan');plan.add_argument('project_id');plan.add_argument('issue_id')
+    policy=run.add_parser('policy');policy.add_argument('project_id');policy.add_argument('issue_id')
     project = commands.add_parser("projects")
     project.add_argument("--format", choices=["json", "text"], default="text")
     issue = commands.add_parser("issue").add_subparsers(dest="issue_command", required=True)
@@ -55,7 +59,12 @@ def main(argv=None):
             from .worker import Worker, execute
             from .process import capture
             recorder=Recorder(registry.settings.state_root)
-            if args.run_command=='start': result=Worker(registry).start(args.project_id,args.issue_id,checks_only=args.checks_only)
+            from .pipeline import Pipeline
+            if args.run_command=='plan': result=Pipeline(registry).architect(args.project_id,args.issue_id)
+            elif args.run_command=='policy': result=Pipeline(registry).architect(args.project_id,args.issue_id,policy=True)
+            elif args.run_command=='review': result=Pipeline(registry).review(args.run_id)
+            elif args.run_command=='pipeline': result=Pipeline(registry).run(args.project_id,args.issue_id,args.max_fixes)
+            elif args.run_command=='start': result=Worker(registry).start(args.project_id,args.issue_id,checks_only=args.checks_only)
             elif args.run_command=='show': result=recorder.history(args.run_id)
             elif args.run_command=='cancel': recorder.cancel(args.run_id);result={'cancel_requested':args.run_id}
             elif args.run_command=='recover': result=recorder.recover()

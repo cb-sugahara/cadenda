@@ -1,0 +1,9 @@
+{
+  "projects": [
+    "cadenda",
+    "worker-poc"
+  ],
+  "source": "explicit current-chat response",
+  "answer": "この2プロジェクトで許可する",
+  "scope": "Codex/Antigravity CLI context, diff and test evidence; excludes secrets"
+}
