@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "source": "state/phase3/tests.txt",
+      "export": "docs/evidence/phase3/tests.txt",
+      "sha256": "3b259d72f3f51ab70a4de17132bf9c4b8185e073fec876e4ab744f8c2f6d8b46"
+    },
+    {
+      "source": "state/phase3/tests.xml",
+      "export": "docs/evidence/phase3/tests.xml",
+      "sha256": "c94c97b1321030940b91899581678e13eef0ec26efba27d1bdcdeeb87a8c19b8"
+    },
+    {
+      "source": "state/phase3/controller-tests.txt",
+      "export": "docs/evidence/phase3/controller-tests.txt",
+      "sha256": "e65a9577a36ddbad95577d457f5e21e27637e4c174dae1b43d9785cafa113cfe"
+    },
+    {
+      "source": "state/phase3/final-live-result-history.json",
+      "export": "docs/evidence/phase3/final-live-result-history.json",
+      "sha256": "ba8cbb82545eee45723c12e2fa19267da6486f4acc4946f1cafcd69c03e8e8ce"
+    },
+    {
+      "source": "state/phase3/final-self-run-history.json",
+      "export": "docs/evidence/phase3/final-self-run-history.json",
+      "sha256": "002588e93168bb5d1ad784a442983ad4b5f667b975ce3abd5091079f57297c58"
+    },
+    {
+      "source": "state/phase3/review-result.json",
+      "export": "docs/evidence/phase3/review-result.json",
+      "sha256": "7f16737160b262343656d76fa98d5c053287139e6ac6903e9b40bea562e3383b"
+    },
+    {
+      "source": "state/phase3/review-source-hashes.json",
+      "export": "docs/evidence/phase3/review-source-hashes.json",
+      "sha256": "f61194eb324ebbb2a8e50822808fd7b905a9717c4dd1ce8f7710290cf6159af0"
+    },
+    {
+      "source": "state/phase3/review-attempt-1/result.json",
+      "export": "docs/evidence/phase3/review-attempt-1.json",
+      "sha256": "0ef7c14d88af2dc5c3ea45a2194bc6148e042a355a652e539d59a297ec235eb3"
+    },
+    {
+      "source": "state/phase3/review-attempt-2/result.json",
+      "export": "docs/evidence/phase3/review-attempt-2.json",
+      "sha256": "df2760942bdf704f0c3a7872c3817d53bca60d61708e935c6d0abddf7486b124"
+    }
+  ]
+}

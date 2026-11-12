@@ -4,15 +4,73 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "schema_version": {"type": "integer", "const": 1},
-    "event_id": {"type": "string", "minLength": 1},
-    "project_id": {"type": "string", "minLength": 1},
-    "issue_id": {"type": "string", "minLength": 1},
-    "run_id": {"type": ["string", "null"]},
-    "actor": {"type": "string"},
-    "event_type": {"type": "string", "enum": ["comment", "decision_proposed", "decision_approved", "requirement_changed", "run_started", "run_finished", "test_passed", "test_failed", "approval_requested", "approved", "rejected", "human_needed", "handoff_written"]},
-    "occurred_at": {"type": "string", "format": "date-time"},
-    "payload": {"type": "object"}
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issue_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actor": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "comment",
+        "decision_proposed",
+        "decision_approved",
+        "requirement_changed",
+        "run_started",
+        "run_finished",
+        "test_passed",
+        "test_failed",
+        "approval_requested",
+        "approved",
+        "rejected",
+        "human_needed",
+        "handoff_written",
+        "run_claimed",
+        "state_changed",
+        "artifact_recorded",
+        "cancel_requested",
+        "orphan_detected",
+        "command_started",
+        "command_finished"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object"
+    }
   },
-  "required": ["schema_version", "event_id", "project_id", "issue_id", "run_id", "actor", "event_type", "occurred_at", "payload"]
+  "required": [
+    "schema_version",
+    "event_id",
+    "project_id",
+    "issue_id",
+    "run_id",
+    "actor",
+    "event_type",
+    "occurred_at",
+    "payload"
+  ]
 }

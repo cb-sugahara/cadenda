@@ -33,6 +33,12 @@ class DecisionReceipt(StrictModel):
         return value
 
 
+class Check(StrictModel):
+    check_id: ID
+    argv: list[str] = Field(min_length=1)
+    timeout_seconds: int = Field(default=300,ge=1,le=3600)
+
+
 class Project(StrictModel):
     project_id: ID
     root: Path
@@ -41,6 +47,8 @@ class Project(StrictModel):
     documents: list[str] = Field(default_factory=lambda: ["AGENTS.md"], max_length=128)
     evidence_catalog: Path | None = None
     decisions: list[DecisionReceipt] = Field(default_factory=list, max_length=64)
+    checks: list[Check] = Field(default_factory=list)
+    recorder_enabled: bool = False
 
     @field_validator("root", "worktree_roots", "artifact_roots", "evidence_catalog")
     @classmethod

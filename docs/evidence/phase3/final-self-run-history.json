@@ -1,0 +1,177 @@
+{
+  "run": {
+    "run_id": "run_83db100366e94c45a111009923aeeade",
+    "project_id": "cadenda",
+    "issue_id": "cadenda-h3o",
+    "state": "Review",
+    "active": 0,
+    "provider": "executor",
+    "attempt": 1,
+    "created_at": 1794477896.7874718,
+    "updated_at": 1794477909.144185,
+    "heartbeat_at": 1794477909.1220548,
+    "lease_expires_at": 1794477939.1220548,
+    "worker_pid": 89449,
+    "pgid": null,
+    "cancel_requested": 0,
+    "worktree": "/Users/m4pro/Desktop/cadenda",
+    "base_commit": null,
+    "commit_id": null,
+    "snapshot_id": null
+  },
+  "events": [
+    {
+      "schema_version": 1,
+      "event_id": "evt_f94f112c1fcf4e19a47d7d0ceacc3c7f",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "run_claimed",
+      "occurred_at": "2026-11-12T10:04:56.788446+00:00",
+      "payload": {
+        "attempt": 1
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_24efa935fb2643a7a9f8e00003500f32",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "state_changed",
+      "occurred_at": "2026-11-12T10:04:56.789560+00:00",
+      "payload": {
+        "from": "Claimed",
+        "to": "Running",
+        "worktree": "/Users/m4pro/Desktop/cadenda"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_d399a6bc6b164b8baca2d1121cd2cd80",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "state_changed",
+      "occurred_at": "2026-11-12T10:04:56.790496+00:00",
+      "payload": {
+        "from": "Running",
+        "to": "Verifying"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_0845a0f6a41c4cd4a867ad2913ad3253",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "command_started",
+      "occurred_at": "2026-11-12T10:04:56.792479+00:00",
+      "payload": {
+        "name": "check-pytest",
+        "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+        "argv_sha256": "cc254a8e36f5a801a19543b19d7b8e84b68884fa87859e30eb834c3208604fe2",
+        "cwd": "/Users/m4pro/Desktop/cadenda",
+        "timeout_seconds": 120,
+        "agent": false
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_adaa4d8dd529435b83dcd95cdccc8743",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:05:09.141857+00:00",
+      "payload": {
+        "artifact_id": "check-pytest-stdout",
+        "sha256": "b27b70d08df28705732b21e5e3ac9b7c4b830b1dc98b2059d0d88e5c56652739"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_bcad9f62c48a4e2fa8aaa6119e6a5931",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:05:09.142632+00:00",
+      "payload": {
+        "artifact_id": "check-pytest-stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_589368fe124b4ae7bdf559f054e455ef",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "command_finished",
+      "occurred_at": "2026-11-12T10:05:09.143583+00:00",
+      "payload": {
+        "name": "check-pytest",
+        "reason": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_8f3768a0a8bd40dc9ad9fefd8bc300ee",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "state_changed",
+      "occurred_at": "2026-11-12T10:05:09.144215+00:00",
+      "payload": {
+        "from": "Verifying",
+        "to": "Review",
+        "pgid": null
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_25a05bed20a14c3d8943a07eb2305f9a",
+      "project_id": "cadenda",
+      "issue_id": "cadenda-h3o",
+      "run_id": "run_83db100366e94c45a111009923aeeade",
+      "actor": "orchestrator",
+      "event_type": "approval_requested",
+      "occurred_at": "2026-11-12T10:05:09.144266+00:00",
+      "payload": {
+        "approval_id": "approval_b7692521de754baf91839893e4781792",
+        "action_hash": "607cab5ebf9b64ed103e7050fb8fddcdddc240d9fb0fb92fd09aca9e237b79f8"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "check-pytest-stderr",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_83db100366e94c45a111009923aeeade/check-pytest-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "check-pytest-stdout",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_83db100366e94c45a111009923aeeade/check-pytest-stdout.txt",
+      "sha256": "b27b70d08df28705732b21e5e3ac9b7c4b830b1dc98b2059d0d88e5c56652739",
+      "kind": "test"
+    }
+  ],
+  "approvals": [
+    {
+      "approval_id": "approval_b7692521de754baf91839893e4781792",
+      "action_hash": "607cab5ebf9b64ed103e7050fb8fddcdddc240d9fb0fb92fd09aca9e237b79f8",
+      "status": "pending"
+    }
+  ]
+}

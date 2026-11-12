@@ -4,11 +4,13 @@ Macで動く、BeadsをIssueの正本とするAI開発オーケストレーシ�
 設計は [実装計画書](docs/macmini_ai_development_implementation_plan.md) に従う。
 
 Phase 0（実機・CLI互換性）とPhase 1（Issue引継ぎPoC）を完了。
-Phase 2の読み取り専用Context Builder・`aiops` CLIを実装・検証済み。常駐WorkerとWeb GUIは後続工程。
+Phase 2のContext Builderに加え、Phase 3の明示的な単一Run実行・Recorder・停止復旧を実装。常駐スケジューラとWeb GUIは後続工程。
 
 - [実機互換性と再検証コマンド](docs/compatibility-matrix.md)
 - [Context Builderの導入・使い方・データ境界](docs/context-builder.md)
 - [Phase 2の検証結果と次工程](docs/phase2-results.md)
+- [Runの実行・停止・復旧](docs/execution.md)
+- [Phase 3と自己利用の検証結果](docs/phase3-results.md)
 - [Issue引継ぎPoCの結果・確認方法・次工程](docs/issue-handoff-poc.md)
 - [未解決制約](docs/risks.md)
 - [承認されたPoCの課題分解](docs/poc-task-proposal.md)

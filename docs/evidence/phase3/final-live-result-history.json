@@ -1,0 +1,493 @@
+{
+  "run": {
+    "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+    "project_id": "worker-poc",
+    "issue_id": "worker-741",
+    "state": "Review",
+    "active": 0,
+    "provider": "antigravity+executor",
+    "attempt": 1,
+    "created_at": 1794477649.0600672,
+    "updated_at": 1794477661.6490612,
+    "heartbeat_at": 1794477661.624066,
+    "lease_expires_at": 1794477691.624066,
+    "worker_pid": 87953,
+    "pgid": null,
+    "cancel_requested": 0,
+    "worktree": "/Users/m4pro/Desktop/cadenda/state/worktrees/worker-poc/run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+    "base_commit": "47c7848ab7b9c1b6b9d35a8201da9652b5c99eef",
+    "commit_id": "d5667bede105cacd22020dbf454bc1ece526a065",
+    "snapshot_id": "ctx_b90cbb2d152146548ee1e43b1f4b8081"
+  },
+  "events": [
+    {
+      "schema_version": 1,
+      "event_id": "evt_4c6899cfba674a488315b720befb6fec",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "run_claimed",
+      "occurred_at": "2026-11-12T10:00:49.060643+00:00",
+      "payload": {
+        "attempt": 1
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_6fa16e438fe84faaae6342d191a42c32",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "state_changed",
+      "occurred_at": "2026-11-12T10:00:49.073967+00:00",
+      "payload": {
+        "from": "Claimed",
+        "to": "Running",
+        "worktree": "/Users/m4pro/Desktop/cadenda/state/worktrees/worker-poc/run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+        "base_commit": "47c7848ab7b9c1b6b9d35a8201da9652b5c99eef",
+        "snapshot_id": "ctx_b90cbb2d152146548ee1e43b1f4b8081"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_81a09168c0884098b2324b4d79160162",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_started",
+      "occurred_at": "2026-11-12T10:00:49.075296+00:00",
+      "payload": {
+        "name": "git-worktree",
+        "executable": "git",
+        "argv_sha256": "3a722140af4c513cd4732c068103e7069f629c60501c4a71ffa905c84f69014f",
+        "cwd": "/Users/m4pro/Desktop/cadenda/state/projects/worker-poc",
+        "timeout_seconds": 300,
+        "agent": false
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_1ec4ea721f5b4a1780e9506e7391afb5",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:00:49.120247+00:00",
+      "payload": {
+        "artifact_id": "git-worktree-stdout",
+        "sha256": "b293c3521ac7b49551cc37dc03ae025e6299b673d5cecbcc5ffedecfa47f3d40"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_99fc6d18b9a74831b2e4a62f0076f72f",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:00:49.121023+00:00",
+      "payload": {
+        "artifact_id": "git-worktree-stderr",
+        "sha256": "9124d32be6ec83a86fc311f0ad56987340e81d267ebe253bb1418500fae3fe85"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_6ed1f84fc22b4a5791ca7c38b02882a7",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_finished",
+      "occurred_at": "2026-11-12T10:00:49.122126+00:00",
+      "payload": {
+        "name": "git-worktree",
+        "reason": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_b11bb6f059cb489dadfe7abf421dd7d2",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_started",
+      "occurred_at": "2026-11-12T10:00:49.123967+00:00",
+      "payload": {
+        "name": "agent",
+        "executable": "agy",
+        "argv_sha256": "b3242461a6f7e612c70f740534470b7eb82287967a556dc966fa8f506ee73518",
+        "cwd": "/Users/m4pro/Desktop/cadenda/state/worktrees/worker-poc/run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+        "timeout_seconds": 310,
+        "agent": true
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_b49634d56b264e989c80fc4789bb6fac",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.445481+00:00",
+      "payload": {
+        "artifact_id": "agent-stdout",
+        "sha256": "874ad0792076a4a9aefe35f71dfca5dade816ac4877d68e096edb0d6f9582966"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_d58b919cd5a840efac86763564c6936b",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.448215+00:00",
+      "payload": {
+        "artifact_id": "agent-stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_61cbd8274a6c46608ffc987f87bcc25f",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_finished",
+      "occurred_at": "2026-11-12T10:01:01.451663+00:00",
+      "payload": {
+        "name": "agent",
+        "reason": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_7c11e1d8c24a4799a98878c509df5cad",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "state_changed",
+      "occurred_at": "2026-11-12T10:01:01.477829+00:00",
+      "payload": {
+        "from": "Running",
+        "to": "Verifying",
+        "pgid": null
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_bd5adb0c282848efb039e59c251a30ca",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_started",
+      "occurred_at": "2026-11-12T10:01:01.479505+00:00",
+      "payload": {
+        "name": "check-answer",
+        "executable": "/Users/m4pro/Desktop/cadenda/.venv/bin/python",
+        "argv_sha256": "dfea0859b28a214d0a9233fc9804f7ba996b3debf8bb8d3ef5b9d92654ee2971",
+        "cwd": "/Users/m4pro/Desktop/cadenda/state/worktrees/worker-poc/run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+        "timeout_seconds": 300,
+        "agent": false
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_b1eb71ef340f4973af32c3fea4e5effd",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.523781+00:00",
+      "payload": {
+        "artifact_id": "check-answer-stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_fd8161ff550f47fea664a37914b9fd3e",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.524605+00:00",
+      "payload": {
+        "artifact_id": "check-answer-stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_1f896fe397c74a5e9c79311151e9f9ce",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_finished",
+      "occurred_at": "2026-11-12T10:01:01.525666+00:00",
+      "payload": {
+        "name": "check-answer",
+        "reason": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_4d9c627ad5e44f45968f85fada1773ef",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_started",
+      "occurred_at": "2026-11-12T10:01:01.559299+00:00",
+      "payload": {
+        "name": "git-stage",
+        "executable": "git",
+        "argv_sha256": "acda49c34ec661988ae52d8946fad964d66effdb669a61fdb67cb2bc79a45cea",
+        "cwd": "/Users/m4pro/Desktop/cadenda/state/worktrees/worker-poc/run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+        "timeout_seconds": 300,
+        "agent": false
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_5e3b0a4d21a043d3a382dd68e3d13ce0",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.587481+00:00",
+      "payload": {
+        "artifact_id": "git-stage-stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_b2abbe9ec72d4af0a4c5bebf508c21a0",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.588373+00:00",
+      "payload": {
+        "artifact_id": "git-stage-stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_5028818c87eb46bfae9cd8917d114a8e",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_finished",
+      "occurred_at": "2026-11-12T10:01:01.589387+00:00",
+      "payload": {
+        "name": "git-stage",
+        "reason": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_5f55b6f16f1d422c864f1ab25f815cdc",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_started",
+      "occurred_at": "2026-11-12T10:01:01.590423+00:00",
+      "payload": {
+        "name": "git-commit",
+        "executable": "git",
+        "argv_sha256": "fc0e795b589fd9edb26f9363f22caad93898b06a6c300cbe0d87262b08793f88",
+        "cwd": "/Users/m4pro/Desktop/cadenda/state/worktrees/worker-poc/run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+        "timeout_seconds": 300,
+        "agent": false
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_022aa8cef80b4532a4ef1016386d88bf",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.624891+00:00",
+      "payload": {
+        "artifact_id": "git-commit-stdout",
+        "sha256": "b4686b7057ab75a7fc08f1d82f51719cd8a9f21c45401fb84a3e6e3324c58b55"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_e400dd8da2fd4665a6a7e4333a9ecde7",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.625605+00:00",
+      "payload": {
+        "artifact_id": "git-commit-stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_5b6526f3bbfc4ae09a040b5b14533c62",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "command_finished",
+      "occurred_at": "2026-11-12T10:01:01.626612+00:00",
+      "payload": {
+        "name": "git-commit",
+        "reason": null,
+        "exit_code": 0
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_cc7c736d7f4e4a31b343ba775c079498",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "artifact_recorded",
+      "occurred_at": "2026-11-12T10:01:01.648408+00:00",
+      "payload": {
+        "artifact_id": "diff",
+        "sha256": "82543032d295f1a28624eed7d14f18e7295259081e6120e19ae57913c933610c"
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_ed255f6a118c46f5966db404baf0de4c",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "state_changed",
+      "occurred_at": "2026-11-12T10:01:01.649094+00:00",
+      "payload": {
+        "from": "Verifying",
+        "to": "Review",
+        "commit_id": "d5667bede105cacd22020dbf454bc1ece526a065",
+        "pgid": null
+      }
+    },
+    {
+      "schema_version": 1,
+      "event_id": "evt_f44eb3daad7441fb8da43ec96d95c864",
+      "project_id": "worker-poc",
+      "issue_id": "worker-741",
+      "run_id": "run_5d7ddb9f56674241a3f84a5d57fdd5a6",
+      "actor": "orchestrator",
+      "event_type": "approval_requested",
+      "occurred_at": "2026-11-12T10:01:01.649147+00:00",
+      "payload": {
+        "approval_id": "approval_096324c84d1c4620a88b53b80981e7bc",
+        "action_hash": "2c2092ef938eb7704d6f74cf60db5cf4e4a5fab437a1f5f72201ed2f92eef205"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "agent-stderr",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/agent-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "log"
+    },
+    {
+      "artifact_id": "agent-stdout",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/agent-stdout.txt",
+      "sha256": "874ad0792076a4a9aefe35f71dfca5dade816ac4877d68e096edb0d6f9582966",
+      "kind": "log"
+    },
+    {
+      "artifact_id": "check-answer-stderr",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/check-answer-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "check-answer-stdout",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/check-answer-stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "diff",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/diff.txt",
+      "sha256": "82543032d295f1a28624eed7d14f18e7295259081e6120e19ae57913c933610c",
+      "kind": "report"
+    },
+    {
+      "artifact_id": "git-commit-stderr",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/git-commit-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "git-commit-stdout",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/git-commit-stdout.txt",
+      "sha256": "b4686b7057ab75a7fc08f1d82f51719cd8a9f21c45401fb84a3e6e3324c58b55",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "git-stage-stderr",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/git-stage-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "git-stage-stdout",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/git-stage-stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "git-worktree-stderr",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/git-worktree-stderr.txt",
+      "sha256": "9124d32be6ec83a86fc311f0ad56987340e81d267ebe253bb1418500fae3fe85",
+      "kind": "test"
+    },
+    {
+      "artifact_id": "git-worktree-stdout",
+      "path": "/Users/m4pro/Desktop/cadenda/state/artifacts/run_5d7ddb9f56674241a3f84a5d57fdd5a6/git-worktree-stdout.txt",
+      "sha256": "b293c3521ac7b49551cc37dc03ae025e6299b673d5cecbcc5ffedecfa47f3d40",
+      "kind": "test"
+    }
+  ],
+  "approvals": [
+    {
+      "approval_id": "approval_096324c84d1c4620a88b53b80981e7bc",
+      "action_hash": "2c2092ef938eb7704d6f74cf60db5cf4e4a5fab437a1f5f72201ed2f92eef205",
+      "status": "pending"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "Blocking: mutating Git commands bypass the durable launch gate and process-group recording. If the worker dies during `git worktree add`, `git add`, or `git commit`, the capture subprocess can continue with runs.pgid unset. Recovery and release can then abandon the run and permit another global claim while the original command still modifies repository state. Route mutating Git commands through a durably recorded launch gate and retain their process identity until completion.",
+    "Blocking: Review and its pending approval request are committed separately. A crash after the Review transition but before request_approval leaves an inactive Review run with no approval request; recover ignores it and ordinary start refuses it. Persist Review and its pending request atomically, or provide idempotent reconciliation for this crash window.",
+    "Blocking: outbox reconciliation accepts any comment beginning with the event marker, without matching the event payload or validating issue_id. An untrusted comment containing the marker and different content can cause an undelivered event to be marked delivered. Require the exact expected event text and issue identity before acknowledging delivery."
+  ],
+  "requirements_checked": [
+    "Static review of supplied source and evidence only; no tools or files accessed.",
+    "Reviewed transaction/global claim behavior, fencing, crash recovery, launch gating, cancellation, bounded execution, artifact redaction, independent checks, completion boundaries, denial rejection, and outbox reconciliation.",
+    "Supplied 57-pass test output and successful run records do not cover the identified crash and reconciliation failures."
+  ],
+  "source_refs": [
+    "packages/cadenda/worker.py: Worker.git and Worker.start",
+    "packages/cadenda/process.py: capture",
+    "packages/cadenda/recorder.py: recover and release",
+    "packages/cadenda/worker.py: separate Review transition and request_approval calls",
+    "packages/cadenda/recorder.py: flush comment-marker reconciliation",
+    "tests/test_recorder.py: test_outbox_reconciles_crash_after_external_send"
+  ]
+}

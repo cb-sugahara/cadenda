@@ -209,6 +209,13 @@ class ContextBuilder:
         ]
 
         runs = []
+        if project.recorder_enabled:
+            from .recorder import Recorder
+            try:
+                runs = Recorder(settings.state_root, initialize=False).catalog_runs(project_id, issue_ids=list(issues))
+                add(f"recorder://{project_id}", [run.model_dump(mode='json') for run in runs])
+            except Exception:
+                warn('RECORDER_UNAVAILABLE', issue_ref, 'Execution Recorder could not be read')
         if project.evidence_catalog:
             try:
                 anchor, relative = project.artifact_location(project.evidence_catalog)
@@ -220,11 +227,12 @@ class ContextBuilder:
                 run_ids = [run.run_id for run in catalog.runs]
                 if len(run_ids) != len(set(run_ids)):
                     raise CadendaError("CATALOG_INVALID", "Duplicate run IDs")
-                runs = sorted([run for run in catalog.runs if run.issue_id in issues], key=lambda item: item.ended_at, reverse=True)
+                runs += catalog.runs
             except (OSError, ValueError, ValidationError, CadendaError) as exc:
                 warn("CATALOG_UNAVAILABLE", f"catalog://{project_id}", f"Execution evidence unavailable ({getattr(exc, 'code', 'invalid catalog')})")
-        else:
+        elif not project.recorder_enabled:
             warn("RUN_STORE_UNCONFIGURED", issue_ref, "No run evidence provider configured; absence of history is not proof of no prior execution")
+        runs = sorted([run for run in runs if run.issue_id in issues], key=lambda item: item.ended_at, reverse=True)
         current_runs = [run for run in runs if run.issue_id == issue_id]
         worktree = project.root
         if current_runs and current_runs[0].worktree:

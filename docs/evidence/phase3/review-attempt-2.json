@@ -1,0 +1,19 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "Blocking: execute() launches the Python gate with PYTHONPATH pointing into the editable worktree. Python can execute worktree-supplied sitecustomize.py during startup, before launch_gate.py waits for G and before the parent durably records the process group. An agent-created startup module can therefore run commands or spawn processes outside the gate, reopening the crash/release race. Launch the trusted gate with Python isolated mode (-I), while preserving the intended environment for the eventual exec target. Add a regression test with a worktree sitecustomize.py sentinel proving that startup code cannot run before gate authorization."
+  ],
+  "requirements_checked": [
+    "Static review of supplied source only; no tools or files accessed. Supplied test results were not independently executed.",
+    "Mutating Git operations now use execute(); however, Python startup bypasses its launch gate.",
+    "Review and pending approval are persisted atomically; legacy missing requests have idempotent recovery.",
+    "Outbox reconciliation validates exact event text and issue identity.",
+    "Applied the stated privileged-owner and unsandboxed-check boundaries; no future GUI, authentication, or production features required."
+  ],
+  "source_refs": [
+    "packages/cadenda/worker.py: execute environment and launcher construction",
+    "packages/cadenda/launch_gate.py: startup before stdin authorization",
+    "packages/cadenda/recorder.py: transition, recover, and flush",
+    "tests/test_launch_gate.py"
+  ]
+}

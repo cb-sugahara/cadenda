@@ -1,4 +1,4 @@
-"""aiops: local read-only context CLI. No run/start/update commands in Phase 2."""
+"""aiops: Context inspection and explicit owner-invoked local execution."""
 import argparse
 import json
 from pathlib import Path
@@ -15,6 +15,12 @@ def parser():
     root = argparse.ArgumentParser(prog="aiops")
     root.add_argument("--config", type=Path, default=Path("config/projects.yaml"))
     commands = root.add_subparsers(dest="command", required=True)
+    run = commands.add_parser('run').add_subparsers(dest='run_command',required=True)
+    start=run.add_parser('start');start.add_argument('project_id');start.add_argument('issue_id');start.add_argument('--checks-only',action='store_true')
+    check=run.add_parser('check');check.add_argument('project_id');check.add_argument('issue_id')
+    for name in ('show','cancel','release'):
+        action=run.add_parser(name);action.add_argument('run_id')
+    run.add_parser('recover');run.add_parser('flush')
     project = commands.add_parser("projects")
     project.add_argument("--format", choices=["json", "text"], default="text")
     issue = commands.add_parser("issue").add_subparsers(dest="issue_command", required=True)
@@ -44,6 +50,33 @@ def main(argv=None):
     try:
         registry = Registry.load(args.config)
         store = SnapshotStore(registry.settings.state_root)
+        if args.command=='run':
+            from .recorder import Recorder
+            from .worker import Worker, execute
+            from .process import capture
+            recorder=Recorder(registry.settings.state_root)
+            if args.run_command=='start': result=Worker(registry).start(args.project_id,args.issue_id,checks_only=args.checks_only)
+            elif args.run_command=='show': result=recorder.history(args.run_id)
+            elif args.run_command=='cancel': recorder.cancel(args.run_id);result={'cancel_requested':args.run_id}
+            elif args.run_command=='recover': result=recorder.recover()
+            elif args.run_command=='release': recorder.release(args.run_id);result={'released':args.run_id}
+            elif args.run_command=='flush': recorder.flush(registry,capture);result={'outbox':'delivered'}
+            else:
+                project=registry.project(args.project_id)
+                if not project.checks: raise CadendaError('CHECKS_REQUIRED','No owner-approved checks configured')
+                from .beads_adapter import BeadsAdapter
+                BeadsAdapter(project).issue(args.issue_id)
+                key,owner=recorder.claim(args.project_id,args.issue_id,verification=True)
+                try:
+                    recorder.transition(key,owner,'Running',worktree=str(project.root))
+                    recorder.transition(key,owner,'Verifying')
+                    for check in project.checks: execute(recorder,key,owner,'check-'+check.check_id,check.argv,project.root,check.timeout_seconds)
+                    recorder.transition(key,owner,'Review',pgid=None)
+                except BaseException:
+                    recorder.transition(key,owner,'NeedsHuman',pgid=None)
+                    raise
+                result=recorder.get(key)
+            print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command == "projects":
             rows = [{"project_id": p.project_id, "root": str(p.root)} for p in registry.settings.projects]
             print(json.dumps(rows, ensure_ascii=False, indent=2) if args.format == "json" else "\n".join(f"{p['project_id']}: {p['root']}" for p in rows))

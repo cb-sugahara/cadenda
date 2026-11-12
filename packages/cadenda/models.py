@@ -80,7 +80,7 @@ class Section(StrictModel):
 
 class Context(StrictModel):
     schema_version: int = 1
-    builder_version: str = "0.2.0"
+    builder_version: str = "0.3.0"
     snapshot_id: str
     project_id: ID
     issue_id: ID

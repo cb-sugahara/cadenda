@@ -14,5 +14,5 @@
 | Issueと成果物の参照切れ | PoCはローカルstate配下を保持。Phase 2で欠損警告、Phase 7で整合バックアップ・別場所復元を実装する。 |
 | 承認イベントの本人確認 | 今回はユーザーのチャット回答を根拠として記録する。イベントJSONやactor名だけを認証と扱わない。GUIの本人認証はPhase 6。 |
 | Phase 2のreceiptとトークン見積り | receiptは所有者管理の設定であり認証APIではない。token見積りはUTF-8バイト数の保守的近似。実Provider上限は測定してからプロファイルへ設定する。 |
-| Run DBはまだ未実装 | 現在は既存証跡の読取用Evidence Catalog。SQLite Recorder・排他・Outbox・再起動復旧はPhase 3で検証する。 |
+| 実行管理の運用境界 | SQLite Recorder・排他・Outbox・停止/復旧はPhase 3で検証済み。チェックは所有者が信頼するコードとし、OSサンドボックスや本番ネットワーク隔離を保証しない。常駐運用・本人認証は後続工程。 |
 | テストIssueに対するclose試験 | CLI fixtureのみ直接closeを検証。本PoCの子Issueは独立テスト・Codexレビュー・引継ぎ記録を確認してから閉じる。 |
