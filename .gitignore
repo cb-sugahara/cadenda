@@ -24,6 +24,28 @@ config/projects.yaml
 web/test-results/
 web/playwright-report/
 
+# AI IDEs & Agent tooling (chats, caches, session history)
+.cursor/
+!.cursor/rules/
+.claude/
+.gemini/
+.antigravity/
+.agy/
+.codex/
+.openai/
+.windsurf/
+.codeium/
+.aider*
+*.chat.history.md
+
+# Testing & Linting caches
+.coverage
+coverage/
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.log
+
 # Machine-local native backup destinations and progress (not source).
 .beads/dolt-backup.json
 .beads/dolt-backup-state.json
