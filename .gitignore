@@ -22,3 +22,7 @@ config/projects.yaml
 
 web/test-results/
 web/playwright-report/
+
+# Machine-local native backup destinations and progress (not source).
+.beads/dolt-backup.json
+.beads/dolt-backup-state.json

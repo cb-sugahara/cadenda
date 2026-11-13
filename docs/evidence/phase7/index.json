@@ -39,6 +39,18 @@
     "bytes": 252,
     "sha256": "5933dea2aa2e8940e5980d067b0301013f70586919ab9642f1fa1cb7ea78b842"
   },
+  "launchd-path-probe.json": {
+    "bytes": 116,
+    "sha256": "ad4813f47cbebe12ae052c08c87f4f458d21a43c5dbba598f4630927be3c8efc"
+  },
+  "main-backup-result.json": {
+    "bytes": 381,
+    "sha256": "54757ef1724ca9cd57751ceaf468b12f344afb751b924034f6cf4effdeeedfe4"
+  },
+  "main-context-audit.json": {
+    "bytes": 5087,
+    "sha256": "2f705bf33265309c3336a21584aebfa70c956b356bb4562979ae6d30df553147"
+  },
   "operations-desktop.png": {
     "bytes": 127342,
     "sha256": "fe78fb589f0a06a58d2564c22f2d6eb866d27a5c8963d62d8325d6b98efcbc76"

@@ -1,0 +1,10 @@
+{
+  "complete_snapshot_published": false,
+  "error_code": "SNAPSHOT_CORRUPT",
+  "valid_contexts": 195,
+  "unverified_contexts": 18,
+  "all_unverified_file_checksums_valid": true,
+  "all_unverified_builder_version": "0.2.0",
+  "existing_contexts_modified": false,
+  "cause": "Context semantic hash differs from stored content_sha256; no compatibility bypass or deletion performed"
+}

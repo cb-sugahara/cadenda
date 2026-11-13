@@ -1,6 +1,6 @@
 # Phase 7: 運用・復元・限定staging
 
-作業Issue: `cadenda-a2s`。実装と隔離環境での検証を進めた。**実機launchdからのAPI応答確認が未合格のため、Phase 7全体は未完了**。
+作業Issue: `cadenda-a2s`。実装と隔離環境での検証を進めた。**実機launchdからのAPI応答確認とメイン環境の完全バックアップが未合格のため、Phase 7全体は未完了**。
 
 ## 実装した機能
 
@@ -51,6 +51,12 @@ stagingは所有者設定の`staging_enabled`が必要で、初期値false。候
 
 [テスト](evidence/phase7/tests.txt)、[JUnit](evidence/phase7/tests.xml)、[自己検証Run](evidence/phase7/self-run.json)、[実ブラウザ](evidence/phase7/browser-live.json)、[運用画面](evidence/phase7/operations-desktop.png)、[隔離復元](evidence/phase7/final-restore.json)、[再起動上限](evidence/phase7/supervisor-live.json)、[staging fixture](evidence/phase7/staging-live.json)、[独立レビュー](evidence/phase7/review-result.json)を参照。レビューは提供したソース/証跡の照合であり、レビューAIがテストを実行したものではない。
 
-実機launchdの一時登録は成功したが、観測時間中にAPI応答を確認できなかった。初期のAPI観測にはsandboxのネットワーク制限が混ざっていたため、許可された実機コンテキストでも再測定した。画面確認時にはMacがロックされており、手動解除が必要との結果だった。ロックがlaunchd不達の原因であるとはまだ断定できない。一時登録は解除した。通常GUIは新コードへ安全に再起動し、localhost応答とペアリングファイルの0600を確認した（コード本文は読んでいない）。正式なLaunchAgentの常用登録、メイン3プロジェクトの新方式バックアップ、物理的な再起動・ログイン後の認証継続は未合格。実機解除後、launchd status・ログとAPI応答を照合してから切り替える。PCCは従来どおり保留。
+実機launchdの一時登録は成功したが、観測時間中にAPI応答を確認できなかった。初期のAPI観測にはsandboxのネットワーク制限が混ざっていたため、許可された実機コンテキストでも再測定した。画面確認時にはMacがロックされており、手動解除が必要との結果だった。ロックがlaunchd不達の原因であるとはまだ断定できない。一時登録は解除した。通常GUIは新コードへ安全に再起動し、localhost応答とペアリングファイルの0600を確認した（コード本文は読んでいない）。正式なLaunchAgentの常用登録、メイン3プロジェクトの新方式バックアップ、物理的な再起動・ログイン後の認証継続は未合格。`/private/tmp`のechoだけを実行する最小LaunchAgentは成功した。Desktop配下のCadenda/Pythonの起動との違いを、実機解除後にlaunchd status・ログとAPI応答で照合してから切り替える。PCCは従来どおり保留。
 
 一次資料: [SQLite Backup API](https://www.sqlite.org/backup.html)、[Apple launchd.plist](https://github.com/apple-oss-distributions/launchd/blob/main/man/launchd.plist.5)、[Beads Dolt](https://github.com/gastownhall/beads/blob/main/docs/architecture/dolt.md)。挙動は実機ヘルプと試験結果を優先する。
+
+### メイン環境のバックアップ試行
+
+実装コミット`1e805cb`でソースを固定し、登録3プロジェクトを対象にbackupを実行した。既存Context 213件のうち195件は再生検証に成功したが、旧builder 0.2.0の18件はファイルmanifestのチェックサムが一致する一方、Contextの内容ハッシュが一致せず、`SNAPSHOT_CORRUPT`で停止した。古い開発途中形式か破損かは未確定。既知の現行・profile追加前のハッシュ候補とも一致しないため、互換性の検証を迂回しない。既存Contextは変更・削除せず、完成したメインバックアップとしては公開していない。native作業先のDoltコピーは完全なCadenda復元パケットの代わりにはならない。
+
+[メイン試行結果](evidence/phase7/main-backup-result.json)、[Context検査のメタデータ](evidence/phase7/main-context-audit.json)、[最小launchd試験](evidence/phase7/launchd-path-probe.json)を保存した。次は旧Contextの生成形式の調査・再生可否の整理と、元バイトを保全した復旧方針の実装、完全バックアップの再試行が必要。Issueは閉じていない。
