@@ -1,0 +1,24 @@
+{
+  "verdict": "changes_requested",
+  "findings": [
+    "[P1] Diagnostic encoding can make valid runs unreviewable. output.py bounds raw bytes, but Recorder.artifact decodes with errors='replace' and re-encodes UTF-8. A 1 MiB excerpt containing invalid UTF-8 can expand to roughly 3 MiB; server.py rejects artifacts above 2,000,000 bytes, including during approval_target. Bound the persisted encoded excerpt while preserving head/tail and truncation metadata. Verify with invalid UTF-8 output that artifact retrieval and approval preview succeed.",
+    "[P2] The normal check path ignores the configured output cap. In cli.py, run check calls execute without max_output_bytes=project.max_output_bytes. GUI check mode and ops ci use this path, so both smaller and larger configured limits silently become 10 MiB. Pass the project limit and verify this route with limits below and above the default.",
+    "[P2] The dashboard does not reliably select the active Run. main.jsx searches data.runs for r.active, but server.py's /api/projects query omits active. It therefore always falls back to the newest Run for the selected project. A newer diagnostic Run can hide an older NeedsHuman Run that still holds the global active slot. Include active in the response and select the active Run explicitly; test this case.",
+    "[P2] The new stepper claims completion without corresponding successful evidence. pipeline-state.js marks Codex review complete from review_started plus state=Review, although Worker.start itself enters Review after checks, and review_started only establishes an attempt. It also marks human confirmation complete for either approval or rejection, while a successful local processing step never becomes complete because its done condition only recognizes agent commands. Derive each completion and outcome from successful stage-specific evidence, preserve rejection as a distinct outcome, and test review failure, rejection, and successful local execution."
+  ],
+  "requirements_checked": [
+    "Reviewed supplied N1/N2 sources only; no tools used and reported test results were not independently verified.",
+    "Checked environment allowlisting, configurable output capture, diagnostic persistence, and complete response handling.",
+    "Checked local-open ticket trust, expiry and replay handling, private launcher, fragment removal, Host/Origin enforcement, and mutating CSRF.",
+    "Checked current-Run selection and truthful stepper states; inspected retained candidate-tree and process-group controls."
+  ],
+  "source_refs": [
+    "packages/cadenda/output.py: LogExcerpt.render",
+    "packages/cadenda/recorder.py: Recorder.artifact",
+    "packages/cadenda/server.py: approval_target, artifact, projects",
+    "packages/cadenda/cli.py: main run check branch",
+    "web/src/main.jsx: activeHistory effect",
+    "web/src/pipeline-state.js: pipelineState",
+    "packages/cadenda/worker.py: Worker.start"
+  ]
+}

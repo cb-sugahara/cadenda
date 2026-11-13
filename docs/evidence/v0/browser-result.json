@@ -1,0 +1,11 @@
+{
+  "local_fixture": true,
+  "auto_connect_without_reading_pairing_code": true,
+  "fragment_removed": true,
+  "real_fixed_check": true,
+  "cancel_and_resume": true,
+  "headings_and_stepper_visible": true,
+  "staging_button_absent": true,
+  "desktop_and_mobile": true,
+  "page_errors": []
+}

@@ -68,8 +68,11 @@ def execute(recorder, key, owner, name, argv, cwd, timeout=300, *, agent=False, 
             process.wait(timeout=5)
             process.stdout.close();process.stderr.close()
             if not process.stdin.closed: process.stdin.close()
-        for stream,body in logs.items(): recorder.artifact(key,name+'-'+stream,body.render(),'log' if agent or name.startswith('git-') else 'test')
-        recorder.note(key,'command_finished',{'name':name,'reason':reason,'exit_code':process.returncode if process else None,'output_bytes':output_bytes,'output_limit_bytes':max_output_bytes,'log_truncated':{stream:body.truncated for stream,body in logs.items()}})
+        stored_truncated={}
+        for stream,body in logs.items():
+            info=recorder.artifact(key,name+'-'+stream,body.render(),'log' if agent or name.startswith('git-') else 'test',max_log_bytes=1_048_576)
+            stored_truncated[stream]=body.truncated or bool(info and info['truncated'])
+        recorder.note(key,'command_finished',{'name':name,'reason':reason,'exit_code':process.returncode if process else None,'output_bytes':output_bytes,'output_limit_bytes':max_output_bytes,'log_truncated':stored_truncated})
     if reason: raise CadendaError(reason,'Recorded subprocess did not complete successfully')
     return bytes(buffers['stdout']).decode(errors='replace'),bytes(buffers['stderr']).decode(errors='replace')
 

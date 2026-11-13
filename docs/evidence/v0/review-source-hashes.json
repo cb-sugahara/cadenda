@@ -1,0 +1,18 @@
+{
+  "packages/cadenda/process.py": "9de7063642ad5fb2ef0b7a755b8121e71e128dbefc3106c375b43e3dbf65b2bb",
+  "packages/cadenda/worker.py": "bdc69345696b63eb8315b0e07700a326254d0eaebec66470bea831032706d501",
+  "packages/cadenda/output.py": "a229eba3e38b46e62d1195c18af5cfe45d9bf7fe0cde2f8be8d46dec1f632c66",
+  "packages/cadenda/config.py": "e53ee31a9491a5376dcf55a9e471ba3669f971b0637f88826034d099e67472ab",
+  "packages/cadenda/gui_auth.py": "cdeebdc01ab11c548bf0027c7a7b3ecae5b9d78e4f54cf359d97c9e965ef1749",
+  "packages/cadenda/local_open.py": "dcec799c82574c7f8f3e7f8d7d82c5c07bc048dc2d2bf7b4cd9b2ed9fd3d0c53",
+  "packages/cadenda/server.py": "2196c7e8fc05e72d6fc2b81507bb6203594d990f5a239dfa9f06f8ccb088438e",
+  "packages/cadenda/cli.py": "dba087a497430d3591a1883475746f05012cdb4f4a140ed166aaa06bf888c0ce",
+  "packages/cadenda/launch_gate.py": "2ee626d64a23308c57f3fa8f6fa6966e9ed1d78da9ee6088d7140229d0ba0a05",
+  "packages/cadenda/recorder.py": "779e28539b87abacf63a996c8d7a17a691ed80714ff0e422fdeaf5c1dfb90e73",
+  "web/src/main.jsx": "10b5ac75c8a7aa9354849802a5709ab36aa78882f7d7d64836ae8a95f28bcec2",
+  "web/src/PipelineStepper.jsx": "6a54cdb5c144ef05bbdd6529d25dd4d67be98dbfa6ff9ad34030dac07d9bfbb3",
+  "web/src/pipeline-state.js": "9f807c361d1398d0f40fbb6bc12d4d8e90cf4c28e99845b8269a5e42920efab0",
+  "tests/test_server.py": "7a7c55ddc95db18aed22c5e3c474a62336525a98f93bfc85a616edff44ef6989",
+  "tests/test_recorder.py": "786d8066244d018fa76991756b8f99a56cb0701809d7db9470429d042856eebf",
+  "tests/test_boundaries.py": "8ded13d5255ec6d1980b663f48fbf8ee7c7701570e4be93839e320e869a5f3c0"
+}

@@ -426,3 +426,92 @@ def test_formal_receipt_is_committed_before_staging_can_read_requirements(gui,mo
     response=c.post('/api/projects/test/issues/bd-1/decisions',json={**body,'challenge':preview['challenge']})
     assert response.status_code==200,response.text
     threads[0].join(3);assert len(observed)==1 and observed[0].topic=='race'
+
+
+def test_local_open_ticket_is_single_use_and_preserves_origin_csrf(gui):
+    import hashlib
+    from cadenda.operations import atomic
+    app,c,fake,reg,_=gui;root=reg.settings.state_root
+    code='synthetic-local-open-ticket'
+    atomic(root/'gui-open-ticket.json',{'sha256':hashlib.sha256(code.encode()).hexdigest(),'expires':time.time()+60,'instance':app.state.instance})
+    (root/'gui-open.html').write_text('synthetic launcher')
+    assert c.post('/api/session/login',json={'code':code},headers={'origin':'https://outside.invalid'}).status_code==403
+    assert (root/'gui-open-ticket.json').exists()
+    result=c.post('/api/session/login',json={'code':code});assert result.status_code==200
+    assert not (root/'gui-open-ticket.json').exists() and not (root/'gui-open.html').exists()
+    assert c.post('/api/projects/test/issues',json={}).status_code==403
+    assert c.post('/api/session/login',json={'code':code}).status_code==401
+    c.headers['x-cadenda-csrf']=result.json()['csrf'];assert c.get('/api/projects').status_code==200
+
+
+def test_local_open_rejects_expired_or_public_ticket(gui):
+    import hashlib
+    from cadenda.operations import atomic
+    app,c,fake,reg,_=gui;p=reg.settings.state_root/'gui-open-ticket.json';code='synthetic-expired'
+    atomic(p,{'sha256':hashlib.sha256(code.encode()).hexdigest(),'expires':time.time()-1,'instance':app.state.instance})
+    assert c.post('/api/session/login',json={'code':code}).status_code==401
+    atomic(p,{'sha256':hashlib.sha256(code.encode()).hexdigest(),'expires':time.time()+60,'instance':app.state.instance});p.chmod(0o644)
+    assert c.post('/api/session/login',json={'code':code}).status_code==401
+
+
+def test_local_browser_launcher_never_passes_ticket_in_process_arguments(gui,monkeypatch):
+    import io,stat,re
+    from urllib.parse import urlparse,parse_qs
+    from cadenda import local_open
+    app,c,fake,reg,_=gui;root=reg.settings.state_root
+    (root/'gui-server.lock').write_text(json.dumps({'local_open':1,'port':8765,'instance':app.state.instance}))
+    monkeypatch.setattr(local_open.urllib.request,'urlopen',lambda *a,**k:io.BytesIO(json.dumps({'protocol':1,'workspace':digest(str(root).encode()),'instance':app.state.instance}).encode()))
+    calls=[];monkeypatch.setattr(local_open.subprocess,'run',lambda argv,**kw:calls.append(argv))
+    import fcntl
+    with (root/'gui-server.lock').open('r') as guard:
+        fcntl.flock(guard,fcntl.LOCK_EX)
+        result=local_open.open_workspace(reg)
+    html=(root/'gui-open.html').read_text();target=re.search('url=([^\"]+)',html).group(1);code=parse_qs(urlparse(target).fragment)['connect'][0]
+    assert code not in json.dumps(result) and code not in json.dumps(calls)
+    assert stat.S_IMODE((root/'gui-open.html').stat().st_mode)==0o600
+    assert stat.S_IMODE((root/'gui-open-ticket.json').stat().st_mode)==0o600
+    assert local_open.consume(root,code,app.state.instance) and not local_open.consume(root,code,app.state.instance)
+
+
+def test_invalid_utf8_output_remains_retrievable_and_reviewable(gui):
+    import sys
+    from cadenda.worker import execute
+    app,c,fake,reg,_=gui;login(c);r=app.state.recorder
+    key,owner=r.claim('test','bd-1');r.transition(key,owner,'Running')
+    execute(r,key,owner,'check-invalid',[sys.executable,'-c','import sys;sys.stdout.buffer.write(bytes([255])*1_048_576)'],reg.project('test').root)
+    r.transition(key,owner,'Verifying');r.transition(key,owner,'Review')
+    artifact=c.get('/api/runs/'+key+'/artifacts/check-invalid-stdout');assert artifact.status_code==200
+    assert 'TRUNCATED' in artifact.json()['text']
+    approval=r.history(key)['approvals'][-1]['approval_id']
+    assert c.get('/api/approvals/'+approval).status_code==200
+    entry=next(a for a in r.history(key)['artifacts'] if a['artifact_id']=='check-invalid-stdout')
+    assert Path(entry['path']).stat().st_size<1_049_000
+
+
+def test_projects_includes_active_slot_even_when_newer_diagnostics_exist(gui):
+    app,c,fake,reg,_=gui;login(c);r=app.state.recorder
+    older,owner=r.claim('test','bd-1');r.transition(older,owner,'Running');r.transition(older,owner,'NeedsHuman')
+    with r.transaction() as db:
+        row=dict(db.execute('SELECT * FROM runs WHERE run_id=?',(older,)).fetchone());row.update({'run_id':'run_new_diagnostic','active':0,'state':'Review','created_at':time.time()+1})
+        keys=list(row);db.execute('INSERT INTO runs('+','.join(keys)+') VALUES('+','.join('?' for _ in keys)+')',[row[k] for k in keys])
+    rows=c.get('/api/projects').json()['runs'];assert rows[0]['run_id']=='run_new_diagnostic'
+    assert next(row for row in rows if row['active'])['run_id']==older
+
+
+def test_local_open_rejects_stale_server_lock_even_with_forged_health(gui,monkeypatch):
+    from cadenda import local_open
+    from cadenda.errors import CadendaError
+    app,c,fake,reg,_=gui;root=reg.settings.state_root
+    (root/'gui-server.lock').write_text(json.dumps({'local_open':1,'port':8765,'instance':app.state.instance}))
+    monkeypatch.setattr(local_open.urllib.request,'urlopen',lambda *a,**k:pytest.fail('Must reject stale lock before contacting the port'))
+    with pytest.raises(CadendaError) as exc:local_open.open_workspace(reg,launch=False)
+    assert exc.value.code=='GUI_NOT_RUNNING'
+    assert not (root/'gui-open-ticket.json').exists()
+
+
+def test_local_open_ticket_cannot_cross_server_restart(gui):
+    import hashlib
+    from cadenda.operations import atomic
+    app,c,fake,reg,_=gui;code='synthetic-old-instance'
+    atomic(reg.settings.state_root/'gui-open-ticket.json',{'sha256':hashlib.sha256(code.encode()).hexdigest(),'expires':time.time()+60,'instance':'old-server-instance'})
+    assert c.post('/api/session/login',json={'code':code}).status_code==401

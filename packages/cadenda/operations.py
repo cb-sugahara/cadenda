@@ -42,7 +42,7 @@ def compatible_gui(state):
             meta=json.loads(f.read(4096));port=meta['port']
             if meta.get('protocol')!=1 or not isinstance(port,int) or not 1024<=port<=65535:raise ValueError()
             with urllib.request.urlopen(f'http://127.0.0.1:{port}/healthz',timeout=2) as response:value=json.loads(response.read(4096))
-            if value!={'protocol':1,'workspace':digest(str(state).encode())}:raise ValueError()
+            if value.get('protocol')!=1 or value.get('workspace')!=digest(str(state).encode()) or value.get('instance')!=meta.get('instance'):raise ValueError()
         except (OSError,ValueError,KeyError):raise CadendaError('GUI_RESTART_REQUIRED','Restart the GUI with maintenance-aware code before backup')
 
 

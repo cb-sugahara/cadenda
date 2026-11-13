@@ -36,6 +36,7 @@ def parser():
     stage=ops.add_parser('stage-plan');stage.add_argument('run_id')
     ci=ops.add_parser('ci');ci.add_argument('project_id');ci.add_argument('issue_id')
     serve = commands.add_parser("serve");serve.add_argument("--port",type=int,default=8765)
+    opening=commands.add_parser("open");opening.add_argument("--no-browser",action="store_true")
     project = commands.add_parser("projects")
     project.add_argument("--format", choices=["json", "text"], default="text")
     issue = commands.add_parser("issue").add_subparsers(dest="issue_command", required=True)
@@ -64,6 +65,9 @@ def main(argv=None):
     args = parser().parse_args(argv)
     try:
         registry = Registry.load(args.config)
+        if args.command=='open':
+            from .local_open import open_workspace
+            print(json.dumps(open_workspace(registry,launch=not args.no_browser)));return 0
         if args.command=='ops':
             from . import operations,backup
             if args.ops_command=='health':result=operations.health(registry,probe=args.probe)
@@ -112,7 +116,7 @@ def main(argv=None):
                 try:
                     recorder.transition(key,owner,'Running',worktree=str(project.root))
                     recorder.transition(key,owner,'Verifying')
-                    for check in project.checks: execute(recorder,key,owner,'check-'+check.check_id,check.argv,project.root,check.timeout_seconds)
+                    for check in project.checks: execute(recorder,key,owner,'check-'+check.check_id,check.argv,project.root,check.timeout_seconds,max_output_bytes=project.max_output_bytes)
                     recorder.transition(key,owner,'Review',pgid=None)
                 except BaseException:
                     recorder.transition(key,owner,'NeedsHuman',pgid=None)

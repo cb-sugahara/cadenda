@@ -1,0 +1,54 @@
+{
+  "browser-result.json": {
+    "bytes": 289,
+    "sha256": "c9b3b91dcc5da6d0ea111c6bdab3360a593abca7058679f55434d60cf7741928"
+  },
+  "dashboard-desktop.png": {
+    "bytes": 163129,
+    "sha256": "cf1b6dff616225fed7fcfdffbd516a2cc166865e85eef0afe6c656f6adb537f1"
+  },
+  "dashboard-mobile.png": {
+    "bytes": 90390,
+    "sha256": "b87f6b45eecf459773f5f0f38807a0aa67b935410d62a34eefff8c777335cb78"
+  },
+  "n0-result.json": {
+    "bytes": 299,
+    "sha256": "b138569e7cd558cea9b9189099223393684c7917d6d1ba1c6b0303c0a6aec0e4"
+  },
+  "n1-tests.txt": {
+    "bytes": 758,
+    "sha256": "beda0e374527563d2000b870ce1568993157a6cb9c572feb5e098b86e0b03f02"
+  },
+  "n1-tests.xml": {
+    "bytes": 20450,
+    "sha256": "6cdc5897c00b69c5fa7642f0a03846a84048bfc72d2b933f1146b7c7885734d6"
+  },
+  "n2-tests.txt": {
+    "bytes": 758,
+    "sha256": "65a3614edd5741dbcf34d6e1b78abefa1b6b05cc10799c92849a0a6ecc9601ff"
+  },
+  "n2-tests.xml": {
+    "bytes": 21562,
+    "sha256": "e4f79ec7cb0566c6128922b27d72e2000fcec3a7886bebb8c7cab73aed27f2e9"
+  },
+  "review-attempt-1.json": {
+    "bytes": 2935,
+    "sha256": "ab922b089ee35e608263cdac8f3abd1cf65b642c29a16b8a5c64c2a24c0daac7"
+  },
+  "review-attempt-2.json": {
+    "bytes": 1547,
+    "sha256": "4e00efa9a54039e65876da5f1bcd7f5d8910eec0f9f32ae924b5143a4aa9a3d8"
+  },
+  "review-result.json": {
+    "bytes": 1245,
+    "sha256": "487d4f851b8fbf3988d5be18b5f214df277c704c80ffee077ab8236b5e23e30a"
+  },
+  "review-source-hashes.json": {
+    "bytes": 1591,
+    "sha256": "f42765ec29c2388665a4ebc38ac6462c0e40ead45c8d4176b858c0787a668c43"
+  },
+  "run-desktop.png": {
+    "bytes": 166802,
+    "sha256": "c5b8672ad463e19adddaacfdc71aa006338e4467add79ed605cf8b12eae2818f"
+  }
+}

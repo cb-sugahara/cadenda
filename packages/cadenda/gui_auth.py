@@ -37,8 +37,13 @@ class OwnerAuth:
         if len(self.failures)>=5:raise CadendaError('LOGIN_RATE_LIMIT','Wait one minute before trying again')
         if not self.pairing_hash or not secrets.compare_digest(self.hash(code),self.pairing_hash):
             self.failures.append(now);raise CadendaError('UNAUTHENTICATED','Pairing code is invalid or already used')
-        token=secrets.token_urlsafe(32);self.pairing_hash=None
-        self.sessions[self.hash(token)]=Session('owner:'+secrets.token_hex(12),secrets.token_urlsafe(32),now+8*3600)
+        self.pairing_hash=None
+        return self.new_session()
+
+    @synchronized
+    def new_session(self):
+        token=secrets.token_urlsafe(32)
+        self.sessions[self.hash(token)]=Session('owner:'+secrets.token_hex(12),secrets.token_urlsafe(32),time.time()+8*3600)
         return token,self.sessions[self.hash(token)]
 
     @synchronized

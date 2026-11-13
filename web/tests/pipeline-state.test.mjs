@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {pipelineState,selectCurrentRun} from '../src/pipeline-state.js';
+const event=(type,payload)=>({event_type:type,payload});
+const begin=name=>event('command_started',{name});
+const end=(name,exit_code=0)=>event('command_finished',{name,exit_code});
+const history=(state,events,provider='antigravity+executor')=>({run:{state,active:['Running','Verifying','NeedsHuman'].includes(state),provider},events});
+assert.equal(pipelineState(history('Running',[begin('agent')]))[0].status,'running');
+let h=history('Verifying',[begin('agent'),end('agent'),begin('check-a'),end('check-a'),begin('check-b')]);
+assert.equal(pipelineState(h)[1].status,'running');
+h=history('NeedsHuman',[begin('check-a'),end('check-a'),begin('check-b'),end('check-b',1)]);
+assert.equal(pipelineState(h)[1].status,'stopped');
+h=history('Review',[begin('check-a'),end('check-a')]);assert.equal(pipelineState(h)[3].status,'waiting');assert.notEqual(pipelineState(h)[2].status,'complete');
+h=history('Review',[begin('check-a'),end('check-a'),event('review_started',{}),end('reviewer-1'),event('state_changed',{to:'Review'})]);assert.equal(pipelineState(h)[2].status,'complete');
+h=history('Review',[begin('check-a'),end('check-a')],'executor');assert.equal(pipelineState(h)[0].status,'skipped');assert.equal(pipelineState(h)[2].status,'skipped');
+console.log('6 pipeline state scenarios passed');
+
+assert.notEqual(pipelineState(history('Review',[event('review_started',{})]))[2].status,'complete');
+assert.equal(pipelineState(history('Review',[event('human_review_decided',{verdict:'reject'})]))[3].status,'rejected');
+assert.equal(pipelineState(history('Review',[end('names-0')],'fm-system'))[0].status,'complete');
+assert.equal(selectCurrentRun([{run_id:'new',project_id:'p',active:0},{run_id:'blocked',project_id:'p',active:1}],'p').run_id,'blocked');
+console.log('Additional review, rejection, local and active-run cases passed');

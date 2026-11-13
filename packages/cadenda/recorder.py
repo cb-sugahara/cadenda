@@ -193,20 +193,26 @@ class Recorder:
             self._event(db,key,'approval_requested',{'approval_id':approval_id,'action_hash':action_hash})
         return approval_id
 
-    def artifact(self, key, artifact_id, body: bytes, kind='log'):
+    def artifact(self, key, artifact_id, body: bytes, kind='log', *, max_log_bytes=None):
         with access(self.root,wait=30):
             identifier(key); identifier(artifact_id)
             text, _ = redact(body.decode('utf-8',errors='replace'))
             directory = self.root / 'artifacts' / key
             directory.mkdir(parents=True,exist_ok=True,mode=0o700)
             if directory.resolve() != directory: raise CadendaError('PATH_DENIED','Artifact directory symlink')
-            content = text.encode(); path = directory / (artifact_id + '.txt')
+            content = text.encode(); saved_truncated=False
+            if max_log_bytes is not None:
+                from .output import LogExcerpt
+                excerpt=LogExcerpt(max_log_bytes);excerpt.append(content)
+                saved_truncated=excerpt.truncated;content=excerpt.render().decode('utf-8',errors='replace').encode()
+            path = directory / (artifact_id + '.txt')
             fd = os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
             with os.fdopen(fd,'wb') as file:
                 file.write(content); file.flush(); os.fsync(file.fileno())
             with self.transaction() as db:
                 db.execute('INSERT INTO artifacts VALUES(?,?,?,?,?)',(key,artifact_id,str(path),digest(content),kind))
                 self._event(db,key,'artifact_recorded',{'artifact_id':artifact_id,'sha256':digest(content)})
+            return {'truncated':saved_truncated,'bytes':len(content)}
 
     @staticmethod
     def alive(pid):

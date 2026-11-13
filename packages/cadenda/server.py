@@ -101,8 +101,9 @@ class RequestLimit:
         await self.app(scope,replay,send)
 
 
-def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,writer=beads_capture,launcher=None,context_runner=capture):
+def create_app(registry,*,pairing_code,port=8765,instance=None,adapter_factory=BeadsAdapter,writer=beads_capture,launcher=None,context_runner=capture):
     recorder=Recorder(registry.settings.state_root);initialize(recorder)
+    instance=instance or secrets.token_hex(16)
     auth=OwnerAuth(pairing_code);origin=f'http://127.0.0.1:{port}';lock=threading.RLock();jobs={}
     project_ids={p.project_id for p in registry.settings.projects}
     recorder.recover(project_ids=project_ids)
@@ -239,7 +240,7 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
                 recorder.note(resume_of,'gui_resume_launch_pending',{'job_id':key})
                 if previous['state']=='NeedsHuman':recorder.release(resume_of)
             try:
-                proc=(launcher or subprocess.Popen)([sys.executable,'-I','-m','cadenda.cli','--config',str(config_path),'run',*args],cwd=registry.project(project_id).root,stdin=subprocess.DEVNULL,stdout=out,stderr=out,start_new_session=True,env=os.environ|{'CADENDA_GUI_JOB_ID':key})
+                proc=(launcher or subprocess.Popen)([sys.executable,'-I','-m','cadenda.cli','--config',str(config_path),'run',*args],cwd=registry.project(project_id).root,stdin=subprocess.DEVNULL,stdout=out,stderr=out,start_new_session=True,env={k:v for k,v in os.environ.items() if k in {'HOME','PATH','LANG','LC_ALL','TMPDIR','SYSTEMROOT'}}|{'CADENDA_GUI_JOB_ID':key})
             except OSError as exc:
                 with recorder.transaction() as db:
                     db.execute("UPDATE gui_jobs SET state='failed' WHERE job_id=?",(key,))
@@ -283,7 +284,7 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
                         job['process'].kill();await asyncio.to_thread(job['process'].wait)
 
     app=FastAPI(title='Cadenda',docs_url=None,redoc_url=None,openapi_url=None,lifespan=lifespan)
-    app.state.recorder=recorder;app.state.auth=auth;app.state.jobs=jobs
+    app.state.recorder=recorder;app.state.auth=auth;app.state.instance=instance;app.state.jobs=jobs
 
     @app.middleware('http')
     async def guard(request,call_next):
@@ -323,13 +324,15 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
 
     @app.post('/api/session/login')
     def login(data:Login):
-        with lock:token,session=auth.login(data.code)
+        from .local_open import consume
+        with lock:
+            token,session=auth.new_session() if consume(recorder.root,data.code,instance) else auth.login(data.code)
         response=JSONResponse({'actor':session.actor,'csrf':session.csrf,'expires_at':session.expires})
         response.set_cookie('cadenda_session',token,httponly=True,samesite='strict',max_age=8*3600,path='/')
         return response
 
     @app.get('/healthz')
-    def liveness():return {'protocol':1,'workspace':digest(str(recorder.root).encode())}
+    def liveness():return {'protocol':1,'workspace':digest(str(recorder.root).encode()),'instance':instance}
 
     @app.get('/api/session')
     def session(request:Request):return vars(request.state.owner)
@@ -344,7 +347,7 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
         with closing(recorder.connect()) as db:
             db.execute('BEGIN')
             cursor=db.execute('SELECT COALESCE(MAX(rowid),0) FROM run_events').fetchone()[0]
-            rows=[dict(r) for r in db.execute('SELECT run_id,project_id,issue_id,state,provider,updated_at FROM runs ORDER BY created_at DESC LIMIT 500')]
+            rows=[dict(r) for r in db.execute('SELECT run_id,project_id,issue_id,state,active,provider,updated_at FROM runs ORDER BY created_at DESC LIMIT 500')]
             db.commit()
         return {'cursor':cursor,'projects':[{'project_id':p.project_id,'cloud_enabled':p.cloud_enabled,'fm_local_enabled':p.fm_local_enabled} for p in registry.settings.projects],'runs':[r for r in rows if r['project_id'] in project_ids]}
 
@@ -595,11 +598,12 @@ def serve(registry,port=8765):
     with os.fdopen(fd,'w') as guard:
         try:fcntl.flock(guard,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:raise CadendaError('GUI_ALREADY_RUNNING','This workspace GUI is already running')
-        guard.seek(0);guard.truncate();guard.write(json.dumps({'protocol':1,'pid':os.getpid(),'port':port}));guard.flush();os.fsync(guard.fileno())
+        instance=secrets.token_hex(16)
+        guard.seek(0);guard.truncate();guard.write(json.dumps({'protocol':1,'local_open':1,'instance':instance,'pid':os.getpid(),'port':port}));guard.flush();os.fsync(guard.fileno())
         code=secrets.token_urlsafe(32);path=root/'gui-pairing-code.txt'
         if path.exists():path.unlink()
         fd=os.open(path,os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600)
         with os.fdopen(fd,'w') as f:f.write(code+'\n')
         print(f'Cadenda: http://127.0.0.1:{port}\nOne-time pairing code: {path} (expires when this server stops)',flush=True)
-        try:uvicorn.run(create_app(registry,pairing_code=code,port=port),host='127.0.0.1',port=port,proxy_headers=False,access_log=False)
+        try:uvicorn.run(create_app(registry,pairing_code=code,port=port,instance=instance),host='127.0.0.1',port=port,proxy_headers=False,access_log=False)
         finally:path.unlink(missing_ok=True)

@@ -280,3 +280,15 @@ def test_output_cap_stops_and_retains_last_observed_failure_context(recorder,tmp
     history=recorder.history(key)
     assert next(e for e in history['events'] if e['event_type']=='command_finished')['payload']['reason']=='OUTPUT_LIMIT'
     assert all(Path(a['path']).stat().st_size<1_049_000 for a in history['artifacts'])
+
+
+@pytest.mark.parametrize('limit,size,expected',[(65_536,100_000,2),(12_582_912,11_000_000,0)])
+def test_cli_checks_honor_project_output_limit(registry,monkeypatch,limit,size,expected):
+    from cadenda import cli,beads_adapter
+    from cadenda.config import Check
+    from conftest import FakeBeads
+    project=registry.project('test');project.max_output_bytes=limit
+    project.checks=[Check(check_id='cap',argv=[sys.executable,'-c',f'import sys;sys.stdout.write("x"*{size})'])]
+    monkeypatch.setattr(cli.Registry,'load',lambda path:registry)
+    monkeypatch.setattr(beads_adapter,'BeadsAdapter',lambda project:FakeBeads())
+    assert cli.main(['run','check','test','bd-1'])==expected
