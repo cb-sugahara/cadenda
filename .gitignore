@@ -1,5 +1,6 @@
 .DS_Store
 state/
+_review/
 .venv/
 __pycache__/
 *.py[cod]
