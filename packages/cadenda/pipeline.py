@@ -96,7 +96,7 @@ class Pipeline:
             if requirement_ids(refreshed)!=requirement_hashes:raise CadendaError('STALE_REQUIREMENTS','Requirement sources changed during review')
             current,current_raw=BeadsAdapter(project).issue(row['issue_id'])
             if digest(canonical(current_raw))!=digest(canonical(raw)) or current.revision!=issue.revision or git(worktree,'rev-parse','HEAD')!=row['commit_id'] or git(worktree,'status','--porcelain'):raise CadendaError('STALE_EVIDENCE','Source/requirements changed during review')
-            report={'review':result.model_dump(),'commit':row['commit_id'],'issue_revision':issue.revision,'evidence_sha256':digest(canonical(evidence))}
+            report={'review':result.model_dump(),'commit':row['commit_id'],'issue_revision':issue.revision,'evidence_sha256':digest(canonical(evidence)),'requirement_hashes':requirement_hashes}
             self.recorder.artifact(key,'bound-review-'+uuid4().hex[:12],canonical(report),'review')
             self.recorder.transition(key,owner,'Review' if result.verdict=='approved' else 'RetryableFailure',commit_id=row['commit_id'],pgid=None)
             return report

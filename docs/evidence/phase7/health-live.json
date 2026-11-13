@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-13T03:48:55.116338+00:00",
+  "alerts": [
+    {
+      "code": "COMMAND_FAILED",
+      "project_id": "cadenda",
+      "run_id": "run_9137a9dce3fc4b82982d32fa9edbb219",
+      "reason": "EXIT_NONZERO"
+    },
+    {
+      "code": "BACKUP_DUE"
+    }
+  ],
+  "projects": [
+    {
+      "project_id": "handoff-poc",
+      "beads": "embedded",
+      "migration_required": false
+    },
+    {
+      "project_id": "cadenda",
+      "beads": "embedded",
+      "migration_required": false
+    },
+    {
+      "project_id": "worker-poc",
+      "beads": "embedded",
+      "migration_required": false
+    }
+  ],
+  "disk_free_bytes": 327608913920,
+  "last_verified_backup": null,
+  "providers": {
+    "inference_performed": false,
+    "authentication": "not probed; derived alerts only",
+    "pcc": "disabled",
+    "codex_auth": "authenticated",
+    "antigravity_auth": "no non-inference status command; detect recorded failures",
+    "fm_system": "unavailable"
+  },
+  "service": {
+    "state": "not_started"
+  }
+}

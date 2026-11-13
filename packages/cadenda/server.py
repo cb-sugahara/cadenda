@@ -22,12 +22,13 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import Field
 
 from .beads_adapter import BeadsAdapter
+from .coordination import access
 from .config import StrictModel,ID,DecisionReceipt
 from .context_builder import ContextBuilder
 from .errors import CadendaError
 from .gui_auth import OwnerAuth
 from .human_store import initialize,issue_fingerprint,receipts
-from .process import capture
+from .process import capture,beads_capture,beads_guard
 from .recorder import Recorder
 from .security import canonical,digest,identifier,read_bounded,redact
 from .snapshots import SnapshotStore
@@ -100,7 +101,7 @@ class RequestLimit:
         await self.app(scope,replay,send)
 
 
-def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,writer=capture,launcher=None,context_runner=capture):
+def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,writer=beads_capture,launcher=None,context_runner=capture):
     recorder=Recorder(registry.settings.state_root);initialize(recorder)
     auth=OwnerAuth(pairing_code);origin=f'http://127.0.0.1:{port}';lock=threading.RLock();jobs={}
     project_ids={p.project_id for p in registry.settings.projects}
@@ -256,7 +257,9 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
     async def lifespan(app):
         async def monitor():
             while True:
-                await asyncio.to_thread(reconcile_jobs)
+                try:await asyncio.to_thread(reconcile_jobs)
+                except CadendaError as exc:
+                    if exc.code!='MAINTENANCE_BUSY':raise
                 await asyncio.sleep(.5)
         monitor_task=asyncio.create_task(monitor())
         try:yield
@@ -295,7 +298,13 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
             except CadendaError:return deny('UNAUTHENTICATED',401)
             request.state.owner=session
             if request.method not in {'GET','HEAD'} and not secrets.compare_digest(request.headers.get('x-cadenda-csrf',''),session.csrf):return deny('CSRF_DENIED',403)
-        response=await call_next(request)
+        if request.method not in {'GET','HEAD'}:
+            try:
+                with access(recorder.root):response=await call_next(request)
+            except CadendaError as exc:
+                if exc.code!='MAINTENANCE_BUSY':raise
+                return deny('MAINTENANCE_BUSY',503)
+        else:response=await call_next(request)
         response.headers['Cache-Control']='no-store'
         response.headers['X-Content-Type-Options']='nosniff'
         response.headers['Referrer-Policy']='no-referrer'
@@ -319,6 +328,9 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
         response.set_cookie('cadenda_session',token,httponly=True,samesite='strict',max_age=8*3600,path='/')
         return response
 
+    @app.get('/healthz')
+    def liveness():return {'protocol':1,'workspace':digest(str(recorder.root).encode())}
+
     @app.get('/api/session')
     def session(request:Request):return vars(request.state.owner)
 
@@ -335,6 +347,29 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
             rows=[dict(r) for r in db.execute('SELECT run_id,project_id,issue_id,state,provider,updated_at FROM runs ORDER BY created_at DESC LIMIT 500')]
             db.commit()
         return {'cursor':cursor,'projects':[{'project_id':p.project_id,'cloud_enabled':p.cloud_enabled,'fm_local_enabled':p.fm_local_enabled} for p in registry.settings.projects],'runs':[r for r in rows if r['project_id'] in project_ids]}
+
+    @app.get('/api/operations/health')
+    def operations_health():
+        from .operations import health
+        return health(registry)
+
+    @app.post('/api/runs/{run_id}/stage/preview')
+    def stage_preview(run_id:str,request:Request):
+        from .staging import prepare
+        with lock:
+            result=prepare(registry,run_id)
+            return {**result,**auth.challenge(request.state.owner,'stage:'+run_id,result['fingerprint'])}
+
+    @app.post('/api/runs/{run_id}/stage')
+    def stage_apply(run_id:str,data:ApprovalInput,request:Request):
+        from .staging import prepare,apply
+        with lock:
+            current=prepare(registry,run_id)
+            if current['fingerprint']!=data.fingerprint:raise CadendaError('STALE_STAGE','Staging plan changed')
+            auth.consume(request.state.owner,data.challenge,'stage:'+run_id,data.fingerprint)
+            result=apply(registry,run_id,data.fingerprint)
+            audit(request.state.owner.actor,'local_stage',run_id,{'fingerprint':data.fingerprint,'target':result['target']})
+            return result
 
     @app.get('/api/providers/health')
     def health():return {'providers':[{'name':'Executor','status':'configured checks'},{'name':'Codex / Antigravity','status':'project opt-in only'},{'name':'fm system','status':'project opt-in only'},{'name':'PCC','status':'disabled / separate consent required'}],'probe':'configuration only; no inference or authentication probe'}
@@ -397,7 +432,7 @@ def create_app(registry,*,pairing_code,port=8765,adapter_factory=BeadsAdapter,wr
 
     @app.post('/api/projects/{project_id}/issues/{issue_id}/decisions')
     def decision(project_id:str,issue_id:str,data:DecisionConfirm,request:Request):
-        with lock:
+        with lock,beads_guard(registry.project(project_id).root):
             project,issue,value,sha=decision_payload(project_id,issue_id,data)
             auth.consume(request.state.owner,data.challenge,'decision:'+project_id+'/'+issue_id,sha)
             now=datetime.now(timezone.utc);text=f'[decision_approved] {data.topic}\n{data.text}\n[owner-confirmation:{sha}]'
@@ -560,6 +595,7 @@ def serve(registry,port=8765):
     with os.fdopen(fd,'w') as guard:
         try:fcntl.flock(guard,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:raise CadendaError('GUI_ALREADY_RUNNING','This workspace GUI is already running')
+        guard.seek(0);guard.truncate();guard.write(json.dumps({'protocol':1,'pid':os.getpid(),'port':port}));guard.flush();os.fsync(guard.fileno())
         code=secrets.token_urlsafe(32);path=root/'gui-pairing-code.txt'
         if path.exists():path.unlink()
         fd=os.open(path,os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600)

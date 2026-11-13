@@ -1,0 +1,10 @@
+{
+  "config": "/Users/m4pro/Desktop/cadenda/state/phase7/restore-detached-head-verified/projects.yaml",
+  "backup_id": "backup_20261113T034713_220a80e7",
+  "execution_enabled": false,
+  "historical_references_preserved": true,
+  "source_packet_unchanged": true,
+  "detached_primary_head_restored": true,
+  "detached_legacy_commit_restored": true,
+  "two_projects": 2
+}

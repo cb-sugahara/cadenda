@@ -1,0 +1,86 @@
+{
+  "attempt-1-review-result.json": {
+    "bytes": 2572,
+    "sha256": "0064d6d933850a625268739f0675ef52735c14417307d3590e70d808c2d9416a"
+  },
+  "attempt-2-review-result.json": {
+    "bytes": 2189,
+    "sha256": "f76990d846eca74cb89152633fd2452035e8d48076b1f8bcfa4bed6811da7a4d"
+  },
+  "attempt-3-review-result.json": {
+    "bytes": 2076,
+    "sha256": "2face1acee52bf5a6f095e43c4f60721a99fb26deaa0a8db98fc8689f80bb065"
+  },
+  "attempt-4-review-result.json": {
+    "bytes": 2098,
+    "sha256": "d46b9e2c3cad99ac837b0957e7cbe674cc30bd9681b686fe39d9ebdd9ff30f58"
+  },
+  "attempt-5-review-result.json": {
+    "bytes": 1919,
+    "sha256": "03f3a591028755caf72dfadbb96453059d802a831db8a314a67235da983afb4c"
+  },
+  "browser-live.json": {
+    "bytes": 198,
+    "sha256": "1197176e4fe3524117ac66d92ef81956833a2149657636cd22d08342dc45bcbc"
+  },
+  "final-restore.json": {
+    "bytes": 368,
+    "sha256": "45c28f56c926a0862f218531c060a0093083cd5b9ffae2a4e81c8067337b5021"
+  },
+  "gui-live.json": {
+    "bytes": 224,
+    "sha256": "9509da337e2a8febb6ea3e3738a1a7e3ea4368ef29824bbab3e8795b7e652589"
+  },
+  "health-live.json": {
+    "bytes": 1042,
+    "sha256": "1d92475859f20669c732717374ebead45c2330b1592c6a0af2d703f540542de6"
+  },
+  "launchd-live.json": {
+    "bytes": 252,
+    "sha256": "5933dea2aa2e8940e5980d067b0301013f70586919ab9642f1fa1cb7ea78b842"
+  },
+  "operations-desktop.png": {
+    "bytes": 127342,
+    "sha256": "fe78fb589f0a06a58d2564c22f2d6eb866d27a5c8963d62d8325d6b98efcbc76"
+  },
+  "operations-mobile.png": {
+    "bytes": 80807,
+    "sha256": "c6ae991fe9c756dce545a11d63a08dd0c6f0c46bda61ee45362d8ae51bb97fbc"
+  },
+  "review-result.json": {
+    "bytes": 1149,
+    "sha256": "fca7f12ebed3ca53b9b12c8b6dafa93502c73e8ac4897db426b3f53596963a8f"
+  },
+  "review-source-hashes.json": {
+    "bytes": 3036,
+    "sha256": "ca52b5f44dcb196bf20ed3ed3c3213d772d3a62c9c257abd362f7329c493a293"
+  },
+  "self-run.json": {
+    "bytes": 512,
+    "sha256": "c6ff6476cad9c2723af34bfaf0716ba8ed45de7c0e4fdc3f2c635660b6ff6ec7"
+  },
+  "self-tests.xml": {
+    "bytes": 20069,
+    "sha256": "a648667a192aa539bf412dbfe5517ee16e691b33ca9a486d59fc4003778094be"
+  },
+  "staging-live.json": {
+    "bytes": 425,
+    "sha256": "7a9e34857097f769be46f9134dac10efeca78b1dad6a5b4f4908667d0bbdc1fc"
+  },
+  "supervisor-live.json": {
+    "bytes": 244,
+    "sha256": "4b336b544c7b0a59f4aab4c3f0e69e1368f896400587fc0bf6337f16943b02b8"
+  },
+  "tests.txt": {
+    "bytes": 758,
+    "sha256": "bc0c8173436861dd6aa63b9720d4be2847d078c32ca256125a7522286f7fcb9d"
+  },
+  "tests.xml": {
+    "bytes": 20069,
+    "sha256": "25d47e559dedfae84c267fc863dba060496b23a005ba5ee6671028a23f2518ac"
+  },
+  "wheel-verification.json": {
+    "bytes": 1350,
+    "sha256": "d0ce1f42ec7888226b5a20467a7c9268a4d09328cc32f9a90053c564d762609e"
+  }
+}

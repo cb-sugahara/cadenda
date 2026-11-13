@@ -1,0 +1,13 @@
+{
+  "synthetic_fixture_only": true,
+  "model_review_is_synthetic": true,
+  "run_id": "run_c5837f8fadec4aebbc98f18d43d34eb5",
+  "result": {
+    "target": "/Users/m4pro/Desktop/cadenda/state/phase7/lab/state/staging/lab-a/run_c5837f8fadec4aebbc98f18d43d34eb5-4981aff15cd0",
+    "already_staged": false,
+    "files": 3,
+    "source_executed": false
+  },
+  "output_checks_passed": true,
+  "source_executed_by_deployment": false
+}

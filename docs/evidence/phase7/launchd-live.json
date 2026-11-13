@@ -1,0 +1,11 @@
+{
+  "probe_context": "unsandboxed localhost read; no auth contents",
+  "last_error_type": "URLError",
+  "api_available": false,
+  "service": {
+    "at": 1794536550.873419,
+    "reason": "operator_stop",
+    "state": "stopped"
+  },
+  "bootout_code": 0
+}

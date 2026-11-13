@@ -52,6 +52,7 @@ class Project(StrictModel):
     recorder_enabled: bool = False
     cloud_enabled: bool = False
     fm_local_enabled: bool = False
+    staging_enabled: bool = False
 
     @field_validator("root", "worktree_roots", "artifact_roots", "evidence_catalog")
     @classmethod

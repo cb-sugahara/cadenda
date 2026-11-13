@@ -26,6 +26,15 @@ def parser():
     plan=run.add_parser('plan');plan.add_argument('project_id');plan.add_argument('issue_id')
     policy=run.add_parser('policy');policy.add_argument('project_id');policy.add_argument('issue_id')
     local=run.add_parser('local');local.add_argument('project_id');local.add_argument('issue_id');local.add_argument('task',choices=['classify','extract','names','clamp']);local.add_argument('text');local.add_argument('--model',choices=['system','pcc'],default='system');local.add_argument('--classification',choices=['public','internal','secret'],default='internal')
+    ops=commands.add_parser('ops').add_subparsers(dest='ops_command',required=True)
+    h=ops.add_parser('health');h.add_argument('--probe',action='store_true')
+    ops.add_parser('backup');ops.add_parser('status');ops.add_parser('reset')
+    v=ops.add_parser('verify');v.add_argument('path',type=Path)
+    r=ops.add_parser('restore');r.add_argument('path',type=Path);r.add_argument('destination',type=Path)
+    for name in ('launch-plan','install','supervise'):
+        p=ops.add_parser(name);p.add_argument('--port',type=int,default=8765)
+    stage=ops.add_parser('stage-plan');stage.add_argument('run_id')
+    ci=ops.add_parser('ci');ci.add_argument('project_id');ci.add_argument('issue_id')
     serve = commands.add_parser("serve");serve.add_argument("--port",type=int,default=8765)
     project = commands.add_parser("projects")
     project.add_argument("--format", choices=["json", "text"], default="text")
@@ -55,6 +64,22 @@ def main(argv=None):
     args = parser().parse_args(argv)
     try:
         registry = Registry.load(args.config)
+        if args.command=='ops':
+            from . import operations,backup
+            if args.ops_command=='health':result=operations.health(registry,probe=args.probe)
+            elif args.ops_command=='backup':result=backup.create(registry)
+            elif args.ops_command=='verify':result={'backup_id':backup.verify(args.path.resolve())['backup_id'],'verified':True}
+            elif args.ops_command=='restore':result=backup.restore(args.path.resolve(),args.destination.absolute())
+            elif args.ops_command=='status':result=operations.service_status(registry)
+            elif args.ops_command=='reset':result=operations.reset(registry)
+            elif args.ops_command=='launch-plan':result=operations.launch_plan(registry,args.port)
+            elif args.ops_command=='install':result=operations.install(registry,args.port)
+            elif args.ops_command=='supervise':result=operations.supervise(registry,args.port)
+            elif args.ops_command=='ci':return main(['--config',str(args.config),'run','check',args.project_id,args.issue_id])
+            else:
+                from .staging import prepare
+                result=prepare(registry,args.run_id)
+            print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command=="serve":
             from .server import serve
             serve(registry,args.port);return 0
@@ -62,7 +87,7 @@ def main(argv=None):
         if args.command=='run':
             from .recorder import Recorder
             from .worker import Worker, execute
-            from .process import capture
+            from .process import capture,beads_capture
             recorder=Recorder(registry.settings.state_root)
             from .pipeline import Pipeline
             if args.run_command=='local':
@@ -77,7 +102,7 @@ def main(argv=None):
             elif args.run_command=='cancel': recorder.cancel(args.run_id);result={'cancel_requested':args.run_id}
             elif args.run_command=='recover': result=recorder.recover()
             elif args.run_command=='release': recorder.release(args.run_id);result={'released':args.run_id}
-            elif args.run_command=='flush': recorder.flush(registry,capture);result={'outbox':'delivered'}
+            elif args.run_command=='flush': recorder.flush(registry,beads_capture);result={'outbox':'delivered'}
             else:
                 project=registry.project(args.project_id)
                 if not project.checks: raise CadendaError('CHECKS_REQUIRED','No owner-approved checks configured')

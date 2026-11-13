@@ -7,7 +7,7 @@
 |---|---|---|
 | macOS / CPU / RAM | 27.2.1 / arm64 / 51,539,607,552 bytes（48 GiB） | 確認済み。Codex実行sandbox内のsysctlは拒否され、通常権限で再確認。 |
 | Xcode CLI Tools | `/Library/Developer/CommandLineTools` | パス確認済み。GUI版Xcodeの動作は未検証。 |
-| Python / Node / Git | 3.14.7 / v26.8.1 / 2.50.1 (Apple Git-155) | 計画の最低版を満たす。 |
+| Python / Node / Git | 3.14.7 / v26.8.1 / 2.50.1 (Apple Git-158) | 計画の最低版を満たす。 |
 | Homebrew | 6.0.22 | Beads/Dolt導入成功。ネットワーク制限されたsandbox内ではDNS取得が失敗。 |
 | Beads | 1.3.4 (Homebrew) | Embedded Doltでinit・Epic/子Issue作成・コメント・取得・依存・ready・closeを実測合格。 |
 | Dolt | 2.7.3 | Embeddedモード確認。外部SQLサーバーは起動していない。 |
@@ -57,3 +57,7 @@ AFM 3 Core Advancedのsystemで構造化出力4タスクを確認。`fm respond 
 ## Phase 6追加実測（2026-11-13 JST）
 
 FastAPI 0.162.5 / Uvicorn 0.54.0 / httpx 0.28.1、React/Viteの確定版は`web/package-lock.json`を参照。HTTPは127.0.0.1限定。実Beads作成・更新・コメント、実CLI check停止/再開と承認をPlaywrightで確認。TestClientのhttpx非推奨警告は1件。localhost HTTPのためCookieはHttpOnly/SameSite Strict、Secureは付与しない。本人認証の境界・再開方法は[Phase 6記録](phase6-results.md)を参照。
+
+## Phase 7追加実測（2026-11-13 JST）
+
+Dolt native backup init/sync/restoreと2プロジェクトの別場所復元を確認。bd initは--jsonを無視し、未初期化repoの-Cを拒否するため、cwdを指定した別の一時repoで初期化する。Beadsの祖先探索を避けるため全通常呼出しはBEADS_DIRとembedded実パスを検証する。Git bundleはHEAD・Recorderのcommit/base_commit・旧カタログのcommit/base_commitを明示保存する。158件のPythonテスト（実Beads Context再生を含む）、API停止3回と明示reset、合成所有者の別承認によるローカルstagingを確認。実launchd登録は成功したがAPI応答未確認、物理再起動・ログイン後のCLI認証継続は未確認。詳細は[Phase 7記録](phase7-results.md)。

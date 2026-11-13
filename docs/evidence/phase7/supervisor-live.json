@@ -1,0 +1,13 @@
+{
+  "api_crash_pids": [
+    63783,
+    64289,
+    64291
+  ],
+  "budget_state": "needs_human",
+  "explicit_reset_started_new_api": true,
+  "run_count_before": 1,
+  "run_count_after": 1,
+  "automatic_ai_replay": false,
+  "supervisor_pid": 63780
+}

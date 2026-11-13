@@ -39,6 +39,7 @@ class MemoryBeads:
 def gui(registry):
     registry.config_path=registry.settings.state_root.parent/'config.yaml'
     registry.settings.projects[0].recorder_enabled=True
+    (registry.settings.projects[0].root/'.beads').mkdir()
     fake=MemoryBeads();launches=[]
     def launcher(*args,**kwargs):
         launches.append((args,kwargs));return SimpleNamespace(pid=99999999,poll=lambda:0)
@@ -378,3 +379,50 @@ def test_duplicate_gui_serve_preserves_pairing_file_and_releases_lock(gui,monkey
     monkeypatch.setattr(uvicorn,'run',run)
     serve(registry);assert not path.exists()
     serve(registry);assert len(calls)==2 and not path.exists()
+
+
+def test_maintenance_rejects_http_mutations_before_beads_write(gui):
+    from cadenda.coordination import access
+    app,c,fake,registry,_=gui;login(c)
+    with access(registry.settings.state_root,exclusive=True):
+        response=c.post('/api/projects/test/issues/bd-1/comments',json={'kind':'comment','text':'must not persist'})
+        assert response.status_code==503 and response.json()['error']['code']=='MAINTENANCE_BUSY'
+        assert not fake.calls
+        assert c.get('/api/projects').status_code==200
+
+
+def test_staging_requires_a_separate_owner_confirmation_and_rejects_replay(gui,monkeypatch):
+    import cadenda.staging as staging
+    app,c,*_=gui;calls=[]
+    monkeypatch.setattr(staging,'prepare',lambda reg,key:{'plan':{'operation':'local_stage','run_id':key},'fingerprint':'b'*64})
+    monkeypatch.setattr(staging,'apply',lambda *args:(calls.append(args) or {'target':'synthetic','source_executed':False}))
+    assert c.post('/api/runs/run_test/stage/preview',json={}).status_code==401
+    login(c);preview=c.post('/api/runs/run_test/stage/preview',json={}).json()
+    body={'challenge':preview['challenge'],'fingerprint':preview['fingerprint']}
+    assert c.post('/api/runs/run_test/stage',json={**body,'challenge':'forged'}).status_code==409
+    assert not calls
+    preview=c.post('/api/runs/run_test/stage/preview',json={}).json();body={'challenge':preview['challenge'],'fingerprint':preview['fingerprint']}
+    assert c.post('/api/runs/run_test/stage',json=body).status_code==200
+    assert c.post('/api/runs/run_test/stage',json=body).status_code==409 and len(calls)==1
+
+
+def test_formal_receipt_is_committed_before_staging_can_read_requirements(gui,monkeypatch):
+    from contextlib import contextmanager
+    import threading
+    from cadenda.process import beads_guard
+    app,c,fake,reg,_=gui;login(c)
+    body={'topic':'race','text':'Synthetic receipt race','expected':issue_fingerprint(Issue.model_validate(fake.rows['bd-1']))}
+    preview=c.post('/api/projects/test/issues/bd-1/decisions/preview',json=body).json()
+    original=Recorder.transaction;threads=[];observed=[]
+    def stage_reader():
+        with beads_guard(reg.project('test').root):observed.extend(receipts(Recorder(reg.settings.state_root,initialize=False),'test'))
+    @contextmanager
+    def pause_before_receipt(self):
+        if not threads and fake.messages['bd-1']:
+            thread=threading.Thread(target=stage_reader);threads.append(thread);thread.start();time.sleep(.08)
+            assert not observed
+        with original(self) as db:yield db
+    monkeypatch.setattr(Recorder,'transaction',pause_before_receipt)
+    response=c.post('/api/projects/test/issues/bd-1/decisions',json={**body,'challenge':preview['challenge']})
+    assert response.status_code==200,response.text
+    threads[0].join(3);assert len(observed)==1 and observed[0].topic=='race'

@@ -1,0 +1,9 @@
+{
+  "health": {
+    "protocol": 1,
+    "workspace": "4c113a4e0a5c33c6896eb03d21f827e5ac638702d92638e518f3c08191f92d03"
+  },
+  "pairing_file_mode": "0o600",
+  "pairing_contents_read": false,
+  "url": "http://127.0.0.1:8765"
+}

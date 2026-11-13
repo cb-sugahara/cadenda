@@ -16,6 +16,13 @@ class SnapshotStore:
         self.root = state_root / "contexts"
 
     def save(self, context: Context, sources: list[Source]):
+        from .coordination import access
+        if self.root.parent.resolve()!=self.root.parent:raise CadendaError('PATH_DENIED','State root may not traverse symlinks')
+        self.root.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
+        with access(self.root.parent,wait=30):
+            return self._save(context,sources)
+
+    def _save(self, context: Context, sources: list[Source]):
         if self.root.resolve() != self.root:
             raise CadendaError("PATH_DENIED", "Snapshot root may not traverse symlinks")
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)

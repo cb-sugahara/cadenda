@@ -24,3 +24,5 @@ projects:
     # Explicit owner opt-ins; PCC remains unavailable even when local fm is enabled.
     cloud_enabled: false
     fm_local_enabled: false
+    # Local artifact placement only; separate GUI owner confirmation is required.
+    staging_enabled: false

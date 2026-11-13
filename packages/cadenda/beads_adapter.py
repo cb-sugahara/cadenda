@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 from .config import Project
 from .errors import CadendaError
-from .process import capture
+from .process import beads_capture
 from .security import identifier, redact
 
 
@@ -38,7 +38,7 @@ class Comment(BaseModel):
 class BeadsAdapter:
     """Only these read operations are exposed; no generic command passthrough."""
 
-    def __init__(self, project: Project, *, runner=capture, executable="bd"):
+    def __init__(self, project: Project, *, runner=beads_capture, executable="bd"):
         self.project = project
         self.runner = runner
         self.executable = executable

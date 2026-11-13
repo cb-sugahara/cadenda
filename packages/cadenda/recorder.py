@@ -6,9 +6,11 @@ import fcntl
 import os
 from pathlib import Path
 import sqlite3
+import shutil
 import time
 from uuid import uuid4
 
+from .coordination import access
 from .errors import CadendaError
 from .models import Run, Artifact
 from .security import canonical, digest, identifier, read_bounded, redact
@@ -31,34 +33,35 @@ class Recorder:
         if not self.path.exists():
             try: os.close(os.open(self.path,os.O_CREAT|os.O_EXCL|os.O_WRONLY,0o600))
             except FileExistsError: pass
-        with closing(self.connect()) as db:
-            version = db.execute('pragma user_version').fetchone()[0]
-            if version > 1:
-                raise CadendaError('SCHEMA_VERSION', 'Recorder is newer than this application')
-            db.executescript('''
-            BEGIN IMMEDIATE;
-            CREATE TABLE IF NOT EXISTS runs (
-              run_id TEXT PRIMARY KEY, project_id TEXT NOT NULL, issue_id TEXT NOT NULL,
-              state TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1 CHECK(active IN(0,1)),
-              provider TEXT NOT NULL DEFAULT 'executor', owner TEXT NOT NULL, attempt INTEGER NOT NULL, created_at REAL NOT NULL, updated_at REAL NOT NULL,
-              heartbeat_at REAL, lease_expires_at REAL, worker_pid INTEGER, pgid INTEGER,
-              cancel_requested INTEGER NOT NULL DEFAULT 0, worktree TEXT, base_commit TEXT, commit_id TEXT, snapshot_id TEXT);
-            CREATE UNIQUE INDEX IF NOT EXISTS one_active_worker ON runs(active) WHERE active=1;
-            CREATE TABLE IF NOT EXISTS run_events (
-              event_id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES runs(run_id),
-              schema_version INTEGER NOT NULL, occurred_at REAL NOT NULL, event_type TEXT NOT NULL, payload TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS artifacts (
-              run_id TEXT NOT NULL REFERENCES runs(run_id), artifact_id TEXT NOT NULL, path TEXT NOT NULL,
-              sha256 TEXT NOT NULL, kind TEXT NOT NULL, PRIMARY KEY(run_id,artifact_id));
-            CREATE TABLE IF NOT EXISTS approvals (
-              approval_id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES runs(run_id), action_hash TEXT NOT NULL,
-              status TEXT NOT NULL DEFAULT 'pending', actor_ref TEXT, decided_at REAL);
-            CREATE TABLE IF NOT EXISTS outbox (
-              event_id TEXT PRIMARY KEY REFERENCES run_events(event_id), delivered_at REAL, attempts INTEGER NOT NULL DEFAULT 0);
-            PRAGMA user_version=1;
-            COMMIT;
-            ''')
-        os.chmod(self.path, 0o600)
+        with access(self.root,wait=30):
+            with closing(self.connect()) as db:
+                version = db.execute('pragma user_version').fetchone()[0]
+                if version > 1:
+                    raise CadendaError('SCHEMA_VERSION', 'Recorder is newer than this application')
+                db.executescript('''
+                BEGIN IMMEDIATE;
+                CREATE TABLE IF NOT EXISTS runs (
+                  run_id TEXT PRIMARY KEY, project_id TEXT NOT NULL, issue_id TEXT NOT NULL,
+                  state TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1 CHECK(active IN(0,1)),
+                  provider TEXT NOT NULL DEFAULT 'executor', owner TEXT NOT NULL, attempt INTEGER NOT NULL, created_at REAL NOT NULL, updated_at REAL NOT NULL,
+                  heartbeat_at REAL, lease_expires_at REAL, worker_pid INTEGER, pgid INTEGER,
+                  cancel_requested INTEGER NOT NULL DEFAULT 0, worktree TEXT, base_commit TEXT, commit_id TEXT, snapshot_id TEXT);
+                CREATE UNIQUE INDEX IF NOT EXISTS one_active_worker ON runs(active) WHERE active=1;
+                CREATE TABLE IF NOT EXISTS run_events (
+                  event_id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES runs(run_id),
+                  schema_version INTEGER NOT NULL, occurred_at REAL NOT NULL, event_type TEXT NOT NULL, payload TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS artifacts (
+                  run_id TEXT NOT NULL REFERENCES runs(run_id), artifact_id TEXT NOT NULL, path TEXT NOT NULL,
+                  sha256 TEXT NOT NULL, kind TEXT NOT NULL, PRIMARY KEY(run_id,artifact_id));
+                CREATE TABLE IF NOT EXISTS approvals (
+                  approval_id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES runs(run_id), action_hash TEXT NOT NULL,
+                  status TEXT NOT NULL DEFAULT 'pending', actor_ref TEXT, decided_at REAL);
+                CREATE TABLE IF NOT EXISTS outbox (
+                  event_id TEXT PRIMARY KEY REFERENCES run_events(event_id), delivered_at REAL, attempts INTEGER NOT NULL DEFAULT 0);
+                PRAGMA user_version=1;
+                COMMIT;
+                ''')
+            os.chmod(self.path, 0o600)
 
     def connect(self):
         db = sqlite3.connect('file:'+str(self.path)+'?mode=ro' if self.read_only else self.path, uri=self.read_only, timeout=30, isolation_level=None)
@@ -71,16 +74,17 @@ class Recorder:
 
     @contextmanager
     def transaction(self):
-        db = self.connect()
-        try:
-            db.execute('BEGIN IMMEDIATE')
-            yield db
-            db.commit()
-        except BaseException:
-            db.rollback()
-            raise
-        finally:
-            db.close()
+        with access(self.root,wait=30):
+            db = self.connect()
+            try:
+                db.execute('BEGIN IMMEDIATE')
+                yield db
+                db.commit()
+            except BaseException:
+                db.rollback()
+                raise
+            finally:
+                db.close()
 
     def _event(self, db, run_id, kind, payload):
         event_id = 'evt_' + uuid4().hex
@@ -91,6 +95,7 @@ class Recorder:
 
     def claim(self, project_id, issue_id, provider="executor", *, verification=False):
         identifier(project_id); identifier(issue_id)
+        if shutil.disk_usage(self.root).free<67_108_864:raise CadendaError('DISK_LOW','Insufficient disk space for a new run')
         key, owner, now = 'run_' + uuid4().hex, uuid4().hex, time.time()
         try:
             with self.transaction() as db:
@@ -189,18 +194,19 @@ class Recorder:
         return approval_id
 
     def artifact(self, key, artifact_id, body: bytes, kind='log'):
-        identifier(key); identifier(artifact_id)
-        text, _ = redact(body.decode('utf-8',errors='replace'))
-        directory = self.root / 'artifacts' / key
-        directory.mkdir(parents=True,exist_ok=True,mode=0o700)
-        if directory.resolve() != directory: raise CadendaError('PATH_DENIED','Artifact directory symlink')
-        content = text.encode(); path = directory / (artifact_id + '.txt')
-        fd = os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
-        with os.fdopen(fd,'wb') as file:
-            file.write(content); file.flush(); os.fsync(file.fileno())
-        with self.transaction() as db:
-            db.execute('INSERT INTO artifacts VALUES(?,?,?,?,?)',(key,artifact_id,str(path),digest(content),kind))
-            self._event(db,key,'artifact_recorded',{'artifact_id':artifact_id,'sha256':digest(content)})
+        with access(self.root,wait=30):
+            identifier(key); identifier(artifact_id)
+            text, _ = redact(body.decode('utf-8',errors='replace'))
+            directory = self.root / 'artifacts' / key
+            directory.mkdir(parents=True,exist_ok=True,mode=0o700)
+            if directory.resolve() != directory: raise CadendaError('PATH_DENIED','Artifact directory symlink')
+            content = text.encode(); path = directory / (artifact_id + '.txt')
+            fd = os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+            with os.fdopen(fd,'wb') as file:
+                file.write(content); file.flush(); os.fsync(file.fileno())
+            with self.transaction() as db:
+                db.execute('INSERT INTO artifacts VALUES(?,?,?,?,?)',(key,artifact_id,str(path),digest(content),kind))
+                self._event(db,key,'artifact_recorded',{'artifact_id':artifact_id,'sha256':digest(content)})
 
     @staticmethod
     def alive(pid):
@@ -263,30 +269,31 @@ class Recorder:
             return result
 
     def flush(self, registry, runner):
-        # A separate process lock serializes sends without holding SQLite while invoking Beads.
-        fd=os.open(self.root/'outbox.lock',os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
-        with os.fdopen(fd,'w') as guard:
-            try:fcntl.flock(guard,fcntl.LOCK_EX|fcntl.LOCK_NB)
-            except BlockingIOError:raise CadendaError('OUTBOX_BUSY','Another sender is reconciling Beads events')
-            with closing(self.connect()) as db:
-                events=db.execute('SELECT e.*,r.project_id,r.issue_id FROM outbox o JOIN run_events e USING(event_id) JOIN runs r USING(run_id) WHERE o.delivered_at IS NULL ORDER BY e.occurred_at').fetchall()
-            for event in events:
-                project=registry.project(event['project_id']); marker=f"[cadenda-event:{event['event_id']}]"
-                prefix=['bd','--sandbox','--directory',str(project.root)]
-                code,out,_=runner(prefix+['comments',event['issue_id'],'--json'],project.root)
-                if code: raise CadendaError('OUTBOX_FAILED','Could not reconcile Beads comments')
-                try: comments=json.loads(out)
-                except ValueError as exc: raise CadendaError('OUTBOX_FAILED','Invalid Beads JSON') from exc
-                if not isinstance(comments,list) or any(not isinstance(c,dict) or not isinstance(c.get('text'),str) for c in comments): raise CadendaError('OUTBOX_FAILED','Invalid Beads comments')
-                text=marker+' '+event['event_type']+' '+event['payload']
-                matching=[c for c in comments if c['text'].startswith(marker+' ')]
-                if any(c['text']!=text or c.get('issue_id')!=event['issue_id'] for c in matching):
-                    raise CadendaError('OUTBOX_CONFLICT','Event marker has conflicting text/issue; human inspection required')
-                if not matching:
-                    code,ack,_=runner(prefix+['comments','add',event['issue_id'],text,'--json'],project.root)
-                    if code: raise CadendaError('OUTBOX_FAILED','Beads event delivery failed')
-                    try: body=json.loads(ack)
-                    except ValueError as exc: raise CadendaError('OUTBOX_FAILED','Invalid Beads acknowledgement') from exc
-                    if not isinstance(body,dict) or body.get('text')!=text or body.get('issue_id')!=event['issue_id']:
-                        raise CadendaError('OUTBOX_FAILED','Beads did not acknowledge this exact event')
-                with self.transaction() as db:db.execute('UPDATE outbox SET delivered_at=?,attempts=attempts+1 WHERE event_id=?',(time.time(),event['event_id']))
+        with access(self.root,wait=30):
+            # A separate process lock serializes sends without holding SQLite while invoking Beads.
+            fd=os.open(self.root/'outbox.lock',os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+            with os.fdopen(fd,'w') as guard:
+                try:fcntl.flock(guard,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                except BlockingIOError:raise CadendaError('OUTBOX_BUSY','Another sender is reconciling Beads events')
+                with closing(self.connect()) as db:
+                    events=db.execute('SELECT e.*,r.project_id,r.issue_id FROM outbox o JOIN run_events e USING(event_id) JOIN runs r USING(run_id) WHERE o.delivered_at IS NULL ORDER BY e.occurred_at').fetchall()
+                for event in events:
+                    project=registry.project(event['project_id']); marker=f"[cadenda-event:{event['event_id']}]"
+                    prefix=['bd','--sandbox','--directory',str(project.root)]
+                    code,out,_=runner(prefix+['comments',event['issue_id'],'--json'],project.root)
+                    if code: raise CadendaError('OUTBOX_FAILED','Could not reconcile Beads comments')
+                    try: comments=json.loads(out)
+                    except ValueError as exc: raise CadendaError('OUTBOX_FAILED','Invalid Beads JSON') from exc
+                    if not isinstance(comments,list) or any(not isinstance(c,dict) or not isinstance(c.get('text'),str) for c in comments): raise CadendaError('OUTBOX_FAILED','Invalid Beads comments')
+                    text=marker+' '+event['event_type']+' '+event['payload']
+                    matching=[c for c in comments if c['text'].startswith(marker+' ')]
+                    if any(c['text']!=text or c.get('issue_id')!=event['issue_id'] for c in matching):
+                        raise CadendaError('OUTBOX_CONFLICT','Event marker has conflicting text/issue; human inspection required')
+                    if not matching:
+                        code,ack,_=runner(prefix+['comments','add',event['issue_id'],text,'--json'],project.root)
+                        if code: raise CadendaError('OUTBOX_FAILED','Beads event delivery failed')
+                        try: body=json.loads(ack)
+                        except ValueError as exc: raise CadendaError('OUTBOX_FAILED','Invalid Beads acknowledgement') from exc
+                        if not isinstance(body,dict) or body.get('text')!=text or body.get('issue_id')!=event['issue_id']:
+                            raise CadendaError('OUTBOX_FAILED','Beads did not acknowledge this exact event')
+                    with self.transaction() as db:db.execute('UPDATE outbox SET delivered_at=?,attempts=attempts+1 WHERE event_id=?',(time.time(),event['event_id']))
