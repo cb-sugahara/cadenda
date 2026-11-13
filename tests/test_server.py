@@ -524,3 +524,22 @@ def test_approval_inbox_shows_only_latest_request_for_review_ready_run(gui):
     assert [a['approval_id'] for a in items]==[latest]
     with r.transaction() as db:db.execute("UPDATE runs SET state='Verifying',active=1 WHERE run_id=?",(key,))
     assert not c.get('/api/approvals').json()['approvals']
+
+
+def test_issue_list_accepts_actual_beads_full_edge_shape(gui):
+    app,c,fake,reg,_=gui;login(c)
+    fake.rows['bd-1']['dependencies']=[{'issue_id':'bd-1','depends_on_id':'bd-0','type':'blocks','metadata':'{}'}]
+    fake.rows['bd-1']['dependents']=[{'issue_id':'bd-2','depends_on_id':'bd-1','type':'blocks'}]
+    response=c.get('/api/projects/test/issues');assert response.status_code==200
+    issue=response.json()['issues'][0]
+    assert issue['dependencies']==[{'id':'bd-0','dependency_type':'blocks'}]
+    assert issue['dependents']==[{'id':'bd-2','dependency_type':'blocks'}]
+
+
+def test_issue_list_schema_error_is_structured_json(gui):
+    app,c,fake,reg,_=gui;login(c)
+    fake.rows['bd-1']['dependencies']=[{'issue_id':'bd-1','type':'blocks'}]
+    response=c.get('/api/projects/test/issues')
+    assert response.status_code==409
+    assert response.headers['content-type'].startswith('application/json')
+    assert response.json()['error']['code']=='SCHEMA_MISMATCH'

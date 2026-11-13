@@ -19,7 +19,7 @@ from fastapi import FastAPI,Request,Query
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse,FileResponse,StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import Field
+from pydantic import Field,ValidationError
 
 from .beads_adapter import BeadsAdapter
 from .coordination import access
@@ -382,7 +382,11 @@ def create_app(registry,*,pairing_code,port=8765,instance=None,adapter_factory=B
         project=registry.project(project_id);raw=adapter_factory(project)._json('list','--all','--brief','--limit=200')
         if not isinstance(raw,list):raise CadendaError('SCHEMA_MISMATCH','Expected Beads issue list')
         from .beads_adapter import Issue
-        return {'issues':redact([Issue.model_validate(row).model_dump() for row in raw])[0],'limit':200}
+        try:
+            items=[Issue.model_validate(row).model_dump() for row in raw]
+        except ValidationError as exc:
+            raise CadendaError('SCHEMA_MISMATCH','Unexpected Beads issue list shape') from exc
+        return {'issues':redact(items)[0],'limit':200}
 
     @app.post('/api/projects/{project_id}/issues')
     def create_issue(project_id:str,data:IssueInput,request:Request):

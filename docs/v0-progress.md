@@ -47,3 +47,11 @@ Cadenda自身のN1/N2/N3チェックは`aiops issue context`と`aiops run check`
 N0・N1・N2は完了。N3は上記の実AI完走・UI確認が成功し、本体への追加AI編集が残る。N4の4エージェント監視は追加しない。N5の自動Beads通知2種類への限定は未実施で、既存Outboxを削除していない。
 
 証跡: [最終試験](evidence/v0/final-tests.txt)、[実AI結果](evidence/v0/real-pipeline-result.json)、[最終差分レビュー](evidence/v0/final-review-result.json)、[結果確認画面](evidence/v0/real-result-confirmation.png)。
+
+## TOPページ不具合の修正
+
+Beadsの`list --brief`が返す依存関係は`issue_id / depends_on_id / type`を持つedge形式だった。GUIの一覧APIは`id / dependency_type`形式だけを想定し、ValidationError→HTTP 500になっていた。画面がその本文`Internal Server Error`をJSONとして解析していたため、`Unexpected token 'I'`が表示された。
+
+Issueモデルで一覧のedgeと詳細のbrief linkを正規化し、依存先と被依存元の方向を区別するよう修正。未対応の不正形式はSCHEMA_MISMATCHのJSON応答とし、画面側も非JSONのエラー応答をHTTPステータス付きの案内へ変換する。
+
+174 Python試験、5件のフロントエンド応答試験が通過。実ChromeでメインTOP、登録3プロジェクトの一覧HTTP 200、意図的なプレーンテキスト500時の案内、再読込後の復旧を確認した。修正済みGUIをLaunchAgentへ反映した。ユーザーの`howto.md`と`_review/`は変更していない。

@@ -134,3 +134,14 @@ def test_capture_default_environment_does_not_inherit_secrets(tmp_path,monkeypat
     assert code==0 and out.strip()=='False'
     code,out,err=capture([sys.executable,'-c','import os;print(os.environ["EXPLICIT_FLAG"])'],tmp_path,env={'EXPLICIT_FLAG':'owned'})
     assert code==0 and out.strip()=='owned'
+
+
+def test_beads_full_edges_preserve_dependency_direction(registry):
+    edge={'issue_id':'bd-1','depends_on_id':'bd-0','type':'blocks'}
+    dependent={'issue_id':'bd-2','depends_on_id':'bd-1','type':'blocks'}
+    payload=row(dependencies=[edge],dependents=[dependent])
+    adapter=BeadsAdapter(registry.project('test'),runner=lambda *args:(0,json.dumps([payload]),''))
+    issue,raw=adapter.issue('bd-1')
+    assert issue.dependencies[0].id=='bd-0' and issue.dependencies[0].dependency_type=='blocks'
+    assert issue.dependents[0].id=='bd-2' and issue.dependents[0].dependency_type=='blocks'
+    assert raw[0]['dependencies']==[edge]

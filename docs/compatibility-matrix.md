@@ -65,3 +65,5 @@ Dolt native backup init/sync/restoreと2プロジェクトの別場所復元を�
 ## v0 N1/N2追加実測（2026-11-13）
 
 環境許可リスト、既定10MiB出力と保存ログの先頭/末尾、単回ローカル接続、1本の進行表示を実装。171 Python試験・Node状態試験・Chromeの停止/再開と実AIパイプラインに成功。OS所有者の起動ticketは60秒・server instance結合、Host/Origin/CSRFは維持。CLI依存の追加はない。詳細は[v0進捗](v0-progress.md)。
+
+Beads一覧のfull edge（issue_id / depends_on_id / type）と詳細のbrief link（id / dependency_type）の両形式を確認した。2026-11-13のTOP不具合修正で両者を正規化し、174試験と登録3プロジェクトの実ブラウザ一覧HTTP 200を確認した。

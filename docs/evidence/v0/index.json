@@ -107,6 +107,18 @@
     "bytes": 98,
     "sha256": "72cbae9a586f8007753bf3f824b44e9a204f2c0ea811f91eed0ad3fcbf0dc719"
   },
+  "top-fix-browser.json": {
+    "bytes": 435,
+    "sha256": "4863e18a9d4b8c25f113302079ceab62be6b09040226bd44cc8308589ec13f29"
+  },
+  "top-fix-tests.txt": {
+    "bytes": 758,
+    "sha256": "8f41ee3b4d6a17ba10f444988389b1f85d811703c6244719d4a41e325d2d576c"
+  },
+  "top-fix-tests.xml": {
+    "bytes": 22034,
+    "sha256": "596e8da3a91c543d2f047216309151d76aa14da0fe078e0467c51448c97bca34"
+  },
   "wheel-verification.json": {
     "bytes": 1434,
     "sha256": "eefd6541532f7f9326bf73716629f656a5518888aada279843ed505c32ffad18"

@@ -3,11 +3,12 @@ import {createRoot} from 'react-dom/client';
 import Markdown from 'react-markdown';
 import {LayoutDashboard,Columns3,ShieldCheck,Settings,ArrowUpRight,ArrowLeft,Plus,Play,Square,RefreshCw,ChevronRight,Activity,Terminal,FileText,Check,LogOut,Lock,Layers,Copy,Download,X,Clock,Search} from 'lucide-react';
 import './style.css';
+import {readApiResponse} from './api-response.js';
 import PipelineStepper from './PipelineStepper.jsx';
 import {selectCurrentRun,initialProject} from './pipeline-state.js';
 
 let csrf='';
-async function api(path,method='GET',data){const r=await fetch('/api'+path,{method,headers:method==='GET'?{}:{'Content-Type':'application/json','X-Cadenda-CSRF':csrf},body:method==='GET'?undefined:JSON.stringify(data??{})});const value=await r.json();if(!r.ok)throw Error(value.error?.message||value.error?.code||'操作できませんでした');return value;}
+async function api(path,method='GET',data){const r=await fetch('/api'+path,{method,headers:method==='GET'?{}:{'Content-Type':'application/json','X-Cadenda-CSRF':csrf},body:method==='GET'?undefined:JSON.stringify(data??{})});return readApiResponse(r);}
 const short=s=>s?.slice(0,12)||'—';
 const time=s=>new Date(s*1000).toLocaleString('ja-JP',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
 const labels={Ready:'着手可能',Running:'実行中',Review:'レビュー待ち',Blocked:'ブロック',NeedsHuman:'確認が必要',Done:'完了'};

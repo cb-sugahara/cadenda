@@ -1,0 +1,24 @@
+{
+  "top_page_loaded": true,
+  "issue_lists": [
+    {
+      "project_id": "handoff-poc",
+      "status": 200,
+      "issues": 4
+    },
+    {
+      "project_id": "cadenda",
+      "status": 200,
+      "issues": 9
+    },
+    {
+      "project_id": "worker-poc",
+      "status": 200,
+      "issues": 6
+    }
+  ],
+  "plain_text_500_shows_http_error": true,
+  "no_json_parse_error": true,
+  "recovery_after_retry": true,
+  "page_errors": []
+}

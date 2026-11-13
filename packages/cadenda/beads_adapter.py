@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, field_validator
 
 from .config import Project
 from .errors import CadendaError
@@ -25,6 +25,25 @@ class Issue(BaseModel):
     dependencies: list[Link] = Field(default_factory=list)
     dependents: list[Link] = Field(default_factory=list)
     comment_count: int | None = None
+
+    @field_validator('dependencies', 'dependents', mode='before')
+    @classmethod
+    def normalize_links(cls, value, info):
+        # `show --brief-deps` returns target objects; `list --brief` returns
+        # edges. For dependents the other endpoint is the source, not target.
+        if not isinstance(value, list):
+            return value
+        endpoint = 'depends_on_id' if info.field_name == 'dependencies' else 'issue_id'
+        links = []
+        for item in value:
+            if isinstance(item, dict) and 'id' not in item:
+                item = dict(item)
+                if endpoint in item:
+                    item['id'] = item[endpoint]
+                if 'dependency_type' not in item and 'type' in item:
+                    item['dependency_type'] = item['type']
+            links.append(item)
+        return links
 
 
 class Comment(BaseModel):
