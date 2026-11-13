@@ -1,5 +1,7 @@
 # Phase 7: 運用・復元・限定staging
 
+> この文書は初回チェックポイントの記録。2026-11-13のロック解除後、メインLaunchAgentのAPI応答と正常停止後の再起動を確認した。旧Context隔離保存の未コミット改修・残件と、今後の優先順位は[実装計画v2](macmini_ai_development_implementation_plan.md)を参照。
+
 作業Issue: `cadenda-a2s`。実装と隔離環境での検証を進めた。**実機launchdからのAPI応答確認とメイン環境の完全バックアップが未合格のため、Phase 7全体は未完了**。
 
 ## 実装した機能

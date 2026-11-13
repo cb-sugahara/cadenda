@@ -2,6 +2,7 @@
 
 Macで動く、BeadsをIssueの正本とするAI開発オーケストレーション基盤。
 設計は [実装計画書](docs/macmini_ai_development_implementation_plan.md) に従う。
+現在はv2.1計画に沿い、1プロジェクト・1タスクを最後まで実行できるv0を優先する。次の作業順とレビュー資料の採否は計画書にまとめた。
 
 Phase 0（実機・CLI互換性）とPhase 1（Issue引継ぎPoC）を完了。
 Phase 2のContext Builderに加え、Phase 3の明示的な単一Run実行・Recorder・停止復旧を実装。Phase 6でローカルWeb GUIを追加。Phase 7の監視・バックアップ復元・限定stagingを実装し、実機常駐化を検証中。

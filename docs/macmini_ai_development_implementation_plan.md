@@ -1,1081 +1,250 @@
-# Mac mini AI開発マシン 実装計画書
+# Cadenda 実装計画 v2.1 — まず1件の仕事を最後まで動かす
 
-> **版**: v1.0（初期実装計画）  
-> **作成日**: 2026-11-12  
-> **対象機**: Mac mini M4 Pro / ユニファイドメモリ 48GB  
-> **対象業務**: Webサービス開発・保守・デプロイ、システム開発、ゲーム開発  
-> **方針**: BeadsをIssueの正本とし、IssueからAI作業用コンテキストを復元できるローカル・マルチエージェント開発基盤を構築する。  
-> **文書の位置づけ**: 実装開始に利用する設計・工程・受け入れ条件をまとめた計画。CLIの利用可能性、認証、モデル枠、実機のOS条件は導入時に検証する。
+更新: 2026-11-13 / 対象: Mac mini M4 Pro、単一オーナー、localhost
 
----
+この計画は、初期計画のPhase 0〜7を順番に増築する進め方から、既存機能で日常の1タスクを完結させる進め方へ変更する。将来機能の完成やコード行数の削減より、起動・依頼・実行・停止・結果確認が簡単にできることを優先する。
 
-## 0. エグゼクティブサマリー
+入力資料は`_review/fix_instructions.md`と`_review/local_optimization_plan.md`。提案は現行コードと照合して採否を決める。レビュー文書はローカル入力資料として扱い、内容を本書の照合表に記録する。[初期計画v1](archive/macmini_ai_development_implementation_plan_v1.md)は設計履歴として保存し、今後の優先順位は本書を正本とする。
 
-構築対象は、**「Beads中心のIssue駆動AI開発システム」**とする。人間はWeb GUIから依頼・確認・コメント・承認を行い、Codexは要件定義・タスク分解・最終判定、Antigravity CLIは複雑な実装・テスト設計・コードレビュー、Apple `fm`は単純な作業をローカル、中程度の作業をPrivate Cloud Compute（PCC）で処理する。コンパイラ、テストランナー、Git、ビルド、デプロイは**AIではなく確定的な実行プログラム**が担当する。
+## 1. 今回の到達点：Cadenda v0
 
-核となる要件は、**初めて起動したAIでも、Issue IDを起点に過去の意思決定・現在の状態・関連資料・失敗履歴を取得して作業を再開できること**である。
+**1つのプロジェクトで、小さなIssueを1件実行し、人間が結果を確認できるローカルアプリを作る。**
 
-採用する基本原則：
+通常の利用手順を次の5操作にする。
 
-1. **Issueが入口、BeadsがIssue情報の正本**。大容量のログや生成物を無理にIssue本文に貼り付けない。
-2. **すべての根拠へ到達できることと、毎回すべてをAIに送ることを分離**する。
-3. **AIは提案と編集、システムは実行と検証、人間は重大な承認**を担当する。
-4. **記憶と実行の分離**。Issueは作業の意味・意思決定を保持し、実行履歴・プロセス・アーティファクトは別の永続ストアを保持する。
-5. **途中停止を前提とした設計**。クラッシュ・利用枠超過・通信断・認証切れから安全に再開できる。
-6. **段階導入**。Beads単体 → Context Builder → 1エージェント実行 → 複数AIルーティング → GUI → 保守／デプロイの順に拡張する。
+1. Cadendaを開く。
+2. Issueの要件と受け入れ条件を入力、または既存Issueを選ぶ。
+3. 内容を確認して実行する。
+4. 担当AI・実行段階・結果を見て、必要なら停止する。
+5. 差分、テスト結果、レビューを確認して採用・却下を判断する。
 
-### MVPの定義
+実装の基本経路は既存の「Context → Antigravityによるworktree編集 → Executorによる固定チェック → Codexレビュー → 人間の結果確認」を使う。Codexによる自動分解、fmの振り分けは任意とし、stagingはv0の実行・成功判定・画面から除外する。チェックだけの実行も残す。
 
-MVPは「Issue生成 → 要件の確認・承認 → AntigravityによるGit worktreeでの実装 → テスト実行 → Codexによる結果レビュー → GUIから確認 → 履歴がIssueから参照可能」までを扱う。`fm Local/PCC`は次段階で追加する。**本番自動デプロイ、無制限の自己修正、GUIからの任意コマンド実行はMVPに含めない。**
+v0では、同時に編集するRunはホスト全体で1件。既存のプロジェクト登録は保持するが、最初の動作確認は1プロジェクトに絞る。ジョブキューや複数AIの並列実装は追加しない。
 
----
+### v0の完了条件
 
-## 1. 前提・非機能要件・対象外
+- [ ] 通常の起動からIssue選択まで、利用者がファイルや内部DBを探さずに進める。
+- [ ] 小さな実装Issueが、実際のCLIで編集・固定チェック・独立レビューまで完走する。
+- [ ] 画面から担当、現在の段階、待機理由、次にできる操作が分かる。
+- [ ] 実行中に停止でき、二重実行や停止後の自動再実行が起きない。
+- [ ] 失敗時に理由と保持されたログを表示し、手動で再試行できる。
+- [ ] アプリを再起動してもIssue・Run・成果物が見え、停止した仕事を勝手に再開しない。
+- [ ] 現行データの簡単な保存・復元手順がある。既に確認済みの隔離環境の復元手順を再利用し、旧18件を含む全履歴の救済・メイン3プロジェクト全体の復元はv0の完了条件から外す。旧履歴の保管範囲は別に明記する。
 
-### 1.1 前提
+テスト件数や「Phase 7までコードがあること」だけでは完了にしない。上の利用経路が実機で通ることを判定基準とする。
 
-- Mac miniは個人所有で、ローカル常駐サービスとして稼働する。
-- 初期は利用者1人、同時作業は原則1 Issue、拡張後は2〜3 Issue程度の並行実行を想定する。これは設計上の初期上限であり性能保証ではない。
-- AIのCLIは本人のアカウント認証と各社利用規約・利用枠に依存する。CLI利用枠とAPI課金を同一視しない。
-- Apple `fm`は **macOS 27以降**が前提。Apple Intelligence対応、モデル準備状態、PCCの利用可否を実機で検証する。
-- 開発対象リポジトリは原則Git管理されている。
-- GUIは初期は`127.0.0.1`のみで公開。外部からの接続が必要ならTailscaleなどの認証済みネットワークを使用する。
+## 2. 現在地と引継ぎ
 
-### 1.2 非機能要件（初期目標）
+実装の基準コミットは`8cd5d45`。それ以降の未コミット変更は、旧Contextを隔離保存するバックアップ改修である。本書の改訂ではコードも旧Contextもまだ移動・巻き戻していない。N0実施時に対象差分を復元可能なパッチとして保全し、バックアップ拡張の本線への適用を保留する。
 
-| 区分 | 目標 |
-|---|---|
-| 情報の再現性 | 同一Issueのコンテキストに、生成日時・入力参照・版・内容ハッシュを記録 |
-| 操作履歴 | Issueの重要操作、AI実行、承認、検証結果を追跡できる |
-| 安全性 | 破壊的操作・本番反映は事前承認なしに実行不可 |
-| 再開性 | プロセス異常終了後、孤児ジョブを検知し、人間が安全に再実行できる |
-| データ完全性 | ログや成果物の参照切れ・欠損を定期検出 |
-| 可観測性 | GUIでIssue、担当AI、試行回数、現在の工程、失敗理由を確認可能 |
-| 保守性 | CLIアダプタ交換だけで、後継モデルや別AIへ移行可能 |
-| 秘密保護 | 認証情報と本番秘密情報はIssue本文やLLMコンテキストへ注入しない |
-
-### 1.3 初期対象外
-
-- AIによる無制限の自律タスク生成・無限ループ
-- ChatGPT Webの会話をそのまま常駐プロセスに変換する機能
-- 本番サービスのDB削除・外部課金・公開デプロイの完全無人承認
-- 動画、音楽、画像の完成物をLLMだけで強制作成するワークフロー
-- 初期からのベクトルDB、Kubernetes、Redis、分散ジョブキュー
-- Beads独自フォークの継続メンテナンス
-
----
-
-## 2. 論理アーキテクチャ
-
-```mermaid
-flowchart TB
-    H[人間 / Web GUI] --> API[Local API / Orchestrator]
-    API <--> ISS[Beads CLI / Dolt: Issueの正本]
-    API <--> RUN[(SQLite: ジョブとイベント)]
-    API <--> ART[(Artifact Store: ログ・成果物)]
-    API --> CB[Context Builder]
-    CB --> ISS
-    CB --> DOC[AGENTS.md / ADR / 仕様書]
-    CB --> GIT[(Git・差分・コミット)]
-    CB --> RUN
-    CB --> ART
-    API --> ROUTER[Task Router / Policy Engine]
-    ROUTER --> C[Codex Adapter]
-    ROUTER --> A[Antigravity Adapter]
-    ROUTER --> FM[fm Adapter]
-    FM --> LOC[fm system / Local]
-    FM --> PCC[fm pcc / Private Cloud Compute]
-    ROUTER --> EX[Deterministic Executor]
-    C --> WT[Git worktree]
-    A --> WT
-    EX --> WT
-    WT --> GIT
-    EX --> TEST[Lint / Build / Test / CI]
-    TEST --> RUN
-    API --> APPROVAL[承認ゲート]
-    APPROVAL --> H
-```
-
-> MermaidはMarkdown対応ビューアで図として表示可能。上図の矢印はデータ・制御の概念的経路を表し、全コンポーネントが相互に任意コマンド実行できるという意味ではない。
-
-### 2.1 コンポーネント責任
-
-| コンポーネント | 責任 | 情報の正本 |
+| 領域 | 現在の状態 | 次の扱い |
 |---|---|---|
-| Beads | Issue、親子・依存関係、優先度、担当、コメント、クローズ | Beads/Dolt |
-| Orchestrator | スケジューリング、状態遷移、承認ゲート、実行再試行 | SQLite（実行情報のみ） |
-| Context Builder | Issue起点で情報を取得・要約・整形する読み取り層 | 元データに従う |
-| Task Router | 役割・難易度・安全性・利用枠による担当決定 | ポリシー設定＋判断イベント |
-| Codex Adapter | 非対話の設計・分解・検証・報告 | 実行結果はRecorder |
-| Antigravity Adapter | 複雑な実装・修正・レビュー | 実行結果はRecorder |
-| fm Adapter | `system`/`pcc`切り替えで定型作業と中程度の処理 | 実行結果はRecorder |
-| Executor | Git、テスト、ビルド、限定されたデプロイ処理 | ログ・結果はRecorder |
-| Execution Recorder | 実行プロセス、コマンド、出力、試行、使用モデル、検証 | SQLite＋Artifact Store |
-| GUI | 閲覧、Issue作成、コメント、変更・承認・中断 | APIを介して正本へ書込 |
+| Beads / Registry / Context | 実装済み。Issue・コメント・根拠の取得と再生がある | 再利用し、基本経路に必要な修正だけ行う |
+| 単一Run / worktree / 固定チェック / 停止 | 実装・試験済み | v0の中心として使う |
+| Codexレビュー / Antigravity実装 | 個別アダプタとパイプラインがある | 組合せを固定して1件の実利用を確認する |
+| fm system | 限定4タスクの試験済み。常時利用可能とは限らない | 任意機能。利用不能でもv0は動く |
+| Web GUI | Issue、Run、Context、承認、運用画面がある | 新規全面設計より、既存画面の導線と状態表示を改善 |
+| launchd | ロック解除後にメインLaunchAgentのAPI応答・正常停止後の再起動を確認 | 使う。物理再起動・ログアウト後の検証は別途 |
+| バックアップ | 隔離した2プロジェクトの復元は確認済み。メインの初回完全バックアップは未完了 | 現状を記録し、完全バックアップの仕上げは保留 |
+| 旧Context 18件 | ファイルチェックサムは一致、内容ハッシュ不一致。原因未確定 | 元バイトと退避先一覧を保持して通常の読取り対象から外す |
+| 隔離保存の改修 | 未コミット。復元→再バックアップ→再復元→再バックアップの実測あり | 差分をパッチ退避して追加開発を止める。採用はv0後に再判断 |
+| CI / staging | 固定チェック入口とローカルコピーを実装。外部CI・公開環境は未設定 | v0の通常画面から外し、追加開発を凍結 |
 
-### 2.2 正本の境界（必須）
+確認できた公開証跡は[Phase 6](phase6-results.md)と[Phase 7の初回記録](phase7-results.md)。初回記録の「launchd未確認」はその時点の履歴で、解除後の成功をまだ反映していない。
 
-- **Issueの状態**：Beadsのみを正本にする。SQLiteにIssueタイトル・本文・進捗を二重管理しない（画面用キャッシュは再生成可能とする）。
-- **実行の状態**：SQLiteのみを正本にする。`run_id`・PID・開始終了時刻・リトライ回数・leaseなど。
-- **ソースコード**：Gitリポジトリ。Issue本文にコード全文をコピーしない。
-- **大型ログ**：ファイル保存＋ハッシュ＋相対参照。Issueには要点と`run_id`を記録。
-- **仕様・決定**：Issueの決定イベントと、プロジェクト共通ADR/AGENTS.mdに分離して保存する。正式な仕様変更の版を管理する。
-- **秘密情報**：Keychain、各CLIの認証管理、デプロイ基盤のSecrets等。Issueやコンテキストには載せない。
+最新のローカル証跡は`state/phase7/main-launchd-live.json`、`main-launchd-restart.json`、`quarantine-roundtrip.json`、`unlock-tests.txt`にある。159件通過のログがあるが、未コミット変更全体の最終レビューは未完了。直近レビューでは隔離履歴の再保存漏れを指摘され、その修正と世代間保存の試験まで進んだ状態である。
 
----
+**N0では未コミット4ファイル（backup.py / cli.py / operations.py / test_operations.py）を記録・退避する。仕上げのレビューや追加の世代間復元試験は要求しない。** 稼働中のLaunchAgentは登録済みコードを読み込んでおり、ディスク上の最新変更すべてを反映済みとは限らない。再起動は実行中Runがないことを確認して行う。
 
-## 3. 推奨技術スタック
-
-| 層 | 推奨 | 理由・条件 |
-|---|---|---|
-| OS | macOS 27以降 | `fm`導入条件。実機でまず`sw_vers`確認 |
-| Issue | Beads CLI + Dolt | AI向けIssue、依存関係、引継ぎに適合 |
-| 統合バックエンド | Python 3.12+ + FastAPI | CLI起動、非同期I/O、GUI APIの実装が容易 |
-| 実行管理DB | SQLite（WAL） | 初期の単一ホスト運用に十分 |
-| バリデーション | Pydantic / JSON Schema | AI応答を構造化して検証 |
-| GUI | React + TypeScript + Vite | Kanban・Issue・イベント閲覧を段階構築 |
-| リアルタイム表示 | Server-Sent Events（SSE） | 実行中ログと状態通知の一方向配信に十分 |
-| プロセス常駐 | launchd（LaunchAgent/必要時Daemon） | macOS標準。GUIログインの要否を個別に判断 |
-| 作業分離 | Git worktree | 並列Issueの編集衝突防止 |
-| テスト | pytest、Vitest等、対象プロジェクト固有のコマンド | 実行そのものにAIを介在させない |
-| 検索 | Beads検索・SQLite FTS5・ファイル索引 | 初期にベクトルDBを導入しない |
-| LAN外からの閲覧 | Tailscale等 | 公開ポート不要の接続を優先 |
-
-### 3.1 構成選択の代替案
-
-- **Beads Embedded**：最初の単一ライター検証に使用。AIが直接`bd`で競合書込みしないよう、Orchestratorを唯一の書込み窓口にする。
-- **Beads Dolt Server**：複数プロセスが頻繁に同時書込みする段階で移行。移行手順・バックアップ・スキーマは対象バージョンで検証。
-- **既存Beads GUI**：検証段階では使用可。ただし「ユーザーコメント→仕様変更→再計画→承認」等の独自ワークフローは専用UIで実装する方針。
-- **将来のローカルモデル**：MLX/llama.cpp等のアダプタを追加可能にするが初期要件外。
-
----
-
-## 4. リポジトリ・ディレクトリ設計
+## 3. 残す構成と簡素化する範囲
 
 ```text
-~/AIWorkspace/
-├── control-plane/                  # このシステム自身のGitリポジトリ
-│   ├── apps/
-│   │   ├── api/                     # FastAPI / API / Policy
-│   │   └── web/                     # React GUI
-│   ├── packages/
-│   │   ├── orchestrator/            # スケジューラ・実行状態
-│   │   ├── beads_adapter/           # bd呼び出し境界
-│   │   ├── context_builder/         # コンテキスト組立
-│   │   ├── agent_adapters/          # codex / agy / fm
-│   │   ├── execution_recorder/      # ログ・イベント・成果物
-│   │   └── policy_engine/           # 権限・承認・ルーティング
-│   ├── config/
-│   │   ├── projects.yaml            # 登録済みリポジトリ許可リスト
-│   │   ├── routing.yaml             # モデル割当とフォールバック
-│   │   └── policy.yaml              # 承認・実行制限
-│   ├── schemas/                     # JSON Schema
-│   ├── templates/                   # AGENTS / prompts / report
-│   ├── docs/                        # ADR / 運用手順
-│   └── tests/                       # unit / integration / e2e
-├── projects/
-│   ├── example-web/                 # 実際の開発リポジトリ
-│   │   ├── .beads/                  # Beadsのプロジェクト単位DB
-│   │   ├── AGENTS.md                # プロジェクト方針
-│   │   └── ...
-│   └── example-game/
-├── worktrees/                       # Issueごとの作業用worktree
-│   └── example-web/<issue-id>/
-└── state/                           # 実行状態 / Gitに入れない
-    ├── orchestrator.sqlite3
-    ├── artifacts/<run-id>/          # stdout / stderr / reports
-    ├── contexts/<issue-id>/         # 生成したContextのスナップショット
-    └── backups/                     # 一時バックアップ保存先
+ブラウザ → FastAPI → 単一Runの実行制御
+                       ├─ Beads：Issue・要件・コメント
+                       ├─ SQLite：Run・状態・成果物索引・確認履歴
+                       ├─ Git worktree：編集・差分・コミット
+                       └─ 既存CLI：Antigravity / Codex / 固定チェック
 ```
 
-- `projects.yaml`で、エージェントがアクセスできるリポジトリの**絶対パス許可リスト**を持つ。
-- `~/AIWorkspace/state/`と各CLI認証領域はGit管理しない。
-- `run_id`と`issue_id`は別概念。1 Issueに複数Runが紐づく。
-- 複数リポジトリ間のIssue ID衝突を避けるため、APIの内部キーは`project_id + issue_id`とする。
+Python / FastAPI、React / Vite、SQLite WAL、Beads Embedded、Git worktree、ユーザー単位のLaunchAgentを継続する。新しいDB、キュー、フレームワーク、常駐AIサーバーは導入しない。
 
----
+- Issue本文と正式な要件はBeads、実行記録はSQLite、ソースはGitを正本とする。
+- UIの状態は既存のRun・コマンドイベントから導出し、別のエージェント状態DBを作らない。
+- AIに任意の実行コマンドを決めさせず、登録済みチェックを使う。
+- 人間の結果確認は1つの導線にまとめる。Review確認をmerge・deploy・自動closeの許可へ拡張しない。
+- 既存データを読めることを優先し、スキーマ変更や削除には移行と戻し方を用意する。
+- 汎用基底クラスや新しい抽象化は、実際に重複した変更が必要になったときにだけ追加する。
 
-## 5. Issue・履歴・決定のデータ設計
+### 維持する4つの安全要件
 
-### 5.1 Issueの必須項目
+| 要件 | 維持する動作と確認 |
+|---|---|
+| Origin / Host / CSRF | 現在の正規URLは`http://127.0.0.1:8765`。接続コードの手入力をなくしても、厳密なHost / Origin検証と、変更操作の`X-Cadenda-CSRF`検証を維持する。`localhost`を使う場合も明示した正規URLとして扱い、任意Origin・無指定への拡張はしない |
+| 候補treeの照合 | チェック前の`git write-tree`、チェック後のtree・差分・未追跡ファイルの照合、commitと検証treeの一致を維持する。変更があれば`SOURCE_CHANGED`で止める |
+| プロセスグループ停止 | キャンセル・timeout・異常終了で管理対象のPGID全体を停止し、子プロセスの終了を確認する。親PIDだけを止める変更はしない。記録済みPGIDを使い、再利用の疑いがあるPIDを推測で殺さない |
+| 単一Run排他 | SQLiteの`one_active_worker`を維持し、別タブ・連打・別CLIから同時に要求されても、ホスト全体で実行中のRunは1件とする。UIのボタン無効化だけで代替しない |
 
-| 項目 | 説明 | 保存先 |
+`write-tree`照合だけで、AIが候補確定前にテストを弱めたことまで判定できるわけではない。既存ポリシー保護、登録済み固定チェック、テスト変更を含む独立差分レビューも基本経路に残す。変更操作の本人確認と、成果物の採用判断も混同しない。
+
+### 簡素化の判断基準
+
+新しい仕組みや既存部品の削除には、「どの通常操作が減るか」「どの不具合を直すか」「既存データをどう保持するか」を1段落で説明する。説明できない改修は後回しにする。削減行数や推測の高速化率は受け入れ条件にしない。
+
+## 4. レビュー指摘の照合結果
+
+### fix_instructions.md
+
+| No. | 現行コードでの確認 | 計画への反映 |
 |---|---|---|
-| issue_id | Beads発行ID（例：`bd-a1b2`） | Beads |
-| project_id | ローカルプロジェクト識別子 | Project Registry |
-| title / description | 要件と背景 | Beads |
-| type / priority | epic, feature, task, bug等 / 優先度 | Beads |
-| status / assignee | Beadsの標準状態・担当 | Beads |
-| parent / dependencies | 親子関係とブロッカー | Beads |
-| acceptance_criteria | 機械判定できる粒度の受け入れ条件 | Issue説明の構造化節（または関連仕様） |
-| decision_refs | 確定した判断への参照 | Issueコメント/Decision記録 |
-| artifact_refs | Git commit、ログ、テストレポート | Issueコメント＋Artifact Registry |
-| latest_handoff | 現状・未解決・次の操作 | Context Snapshot（原本は履歴） |
-| risk_class | read_only / workspace_write / staging / production | Policy Engineのメタデータ |
+| 1 テキスト二重JSON化 | `SnapshotStore.page()`は既にstrを直接表示する。回帰試験もある | 修正済みとして保持し、作り直さない |
+| 2 measure後のハッシュ不一致 | `estimated_tokens`は`calculate_hash()`の対象外。提示された因果関係だけでは不具合にならない。一方warningsは対象 | 保存→再生の試験を維持する。18件の原因と断定せず、単純な呼出順入替を修正扱いにしない |
+| 3 flushの長時間SQLロック | 外部Beads呼出しは既にSQLite書込みトランザクションの外。遅い送信中の回帰試験あり | 修正済み。Outbox撤去をこの不具合の修正として実施しない |
+| 4 固定1MiB・末尾ログ欠落 | `worker.execute()`に残る | 優先対応。上限と保存方式を分けて設計する |
+| 5 環境変数全継承 | 汎用`capture(env=None)`に残る。WorkerとBeadsの専用経路は許可リストを使用 | 優先対応。Git等も既定で必要最小限にする |
+| 6 バイト数=token見積り | 保守的上限として意図的に使用中 | まず表示の意味を明確化。無条件の`//3`変更はせず、実データで不足が出たら改善 |
+| 7 AI呼出し直書き | AntigravityはWorker内。Codex/fmは既に別アダプタがある | 全Provider共通基底クラスは後回し。触る箇所だけ小関数へ分離 |
+| 8 Git作者・メッセージ固定 | 固定値が残る | v0後。設定追加より先に実行経路を通す |
+| 9 worktree回収 | 自動回収・専用cleanupコマンドはない | まず一覧と使用量を確認する手順。Review中の証跡を自動削除しない |
+| 10 ワンライナー・大きなファイル | 残る | 変更する関数から整形。全ファイル一括の整形PRは作らない |
 
-Beads標準スキーマを無理に拡張せず、追加メタデータは自前DBの`issue_attributes(project_id, issue_id, ...)`で管理可能とする。ただしIssueの本文や状態を二重コピーして正本にしない。**カスタム属性の正本の所在を項目ごとに定める**。
+元文書の「61テスト」は当時の数字で、現在の件数ではない。
 
-### 5.2 コメントを「意味のあるイベント」に分類
+### local_optimization_plan.md
 
-| イベント種別 | 用途 | 後続動作 |
-|---|---|---|
-| `comment` | 参考・相談 | 履歴追加のみ |
-| `decision_proposed` | AIによる変更提案 | GUIで人間判断待ち |
-| `decision_approved` | 人間の確定方針 | 必読コンテキスト更新 |
-| `requirement_changed` | 仕様変更 | Codexで影響分析・必要ならIssue再分解 |
-| `run_started` / `run_finished` | 実行追跡 | 実行DB更新・Issueへ要約追記 |
-| `test_passed` / `test_failed` | 検証結果 | レビューまたは修正へ |
-| `approval_requested` / `approved` / `rejected` | 重要操作の承認 | 実行ゲート開放/停止 |
-| `human_needed` | 音楽・画像・動画等の外部制作 | Issueを人間待ちにする |
-| `handoff_written` | 次担当AI向け引き継ぎ | Context Builderへ反映 |
+| 提案 | 判断と実施範囲 |
+|---|---|
+| 接続コードの手入力撤廃 | UX目標として採用。ローカル起動からブラウザ接続までの手間を減らす。認証モジュール全削除を達成条件にしない |
+| localhostなら本人とみなす | 採用しない。外部ページからのlocalhostリクエスト等と本人操作は同じではない。Host / Originと変更操作の保護を残し、複雑な多人数認証は追加しない |
+| human_store.py削除 | 採用しない。正式判断のreceiptに加え、起動受付と履歴を保存しており、認証だけの部品ではない |
+| ハッシュ不一致をすべてWarningへ | 範囲を限定して採用。旧履歴は隔離・警告し、現在の作業は継続可能にする。未検証データを実行・承認の根拠として使わない |
+| Outbox全面撤去 | テーブルと再送の仕組みは維持し、新規のBeads通知を開始・最終結果の2種類に絞る。中間イベントはSQLiteだけに保存し、Beads照合対象へ入れない |
+| launch_gate / heartbeat削除 | v0では行わない。ローカルでも起動直後の親停止やキャンセルの競合はある。単一Runを維持し、不要な監視項目は後で整理 |
+| Gitタグをバックアップへ置換 | 採用しない。同じリポジトリ内のタグだけでは別の場所への復元用コピーにならず、BeadsのDolt履歴も含まれない |
+| SQLiteをVACUUM INTOへ置換 | 必須にしない。現行も標準のSQLite backup APIを使っている。方式の置換より復元可能性を優先 |
+| モジュール分割・PEP 8化 | 採用。ただし動作改善に触る範囲から段階的に実施 |
+| エージェント・工程・依存の可視化 | 1本の進行ステッパーと現在の担当だけを採用。4エージェントの常時監視カード、DAG描画、全文ログ配信は後回し |
 
-**すべてのコメントを同格の指示として扱わない。** 通常コメント中の「こうした方がいいかも」は正式な仕様変更ではない。正式決定は投稿者・権限・承認・時刻を記録する。
+## 5. 次のタスク：小さな単位で順番に進める
 
-### 5.3 作業イベントの例
+以下のIDはこの計画内の識別子。Beadsに登録済みのIssue IDではない。登録時は既存Issueと対応づけ、実装済みタスクを重複登録しない。
 
-```json
-{
-  "event_id": "evt_01",
-  "project_id": "example-web",
-  "issue_id": "bd-a1b2",
-  "run_id": "run_20261112_0001",
-  "actor": "antigravity",
-  "event_type": "test_failed",
-  "occurred_at": "2026-11-12T13:15:00+09:00",
-  "payload": {
-    "test_id": "weekly-reset.test.ts",
-    "reason_code": "timezone_mismatch",
-    "commit": "a1b2c3d",
-    "artifact_ref": "artifact://run_20261112_0001/test-report.json"
-  }
-}
-```
+### N0：記録・退避だけで区切る（仕上げ実装はしない）
 
-- イベントは原則**追記型**とし、訂正は別イベントで行う。
-- `schema_version`を各構造化イベントに付与し、将来の形式変更を可能にする（上記は説明簡略化のため省略）。
-- 実行DBとBeadsの間に分散トランザクションは存在しない。重要イベントは**DBに記録→未反映アウトボックス→Beadsに反映→反映済みマーク**の順に処理し、再送時はイベントIDで冪等化する。
-- コード変更はGit commit / diffへの参照を残す。Issueに全文を貼り付けない。
+**目的:** 中断差分と旧履歴を保全し、N1へ進める状態を作る。一度の保全作業で終了する。
 
-### 5.4 Issue完了条件
+1. 基準commit、対象4ファイルの差分、既存の試験結果とレビュー残件を記録する。差分は`state/archives/n0-日時/`等へ復元可能なパッチとして保存し、内容を照合する。全作業ツリーを一括stash / resetせず、計画文書や他の変更を巻き込まない。
+2. パッチの保全後、対象4ファイルの該当改修を本線から外し、確定済みの基準へ戻す。データを変更するマイグレーションや隔離保存ロジックの追加は行わない。保全した差分の採用可否はv0後に決める。
+3. 既存の検査一覧を使って旧Context 18件のIDを特定し、`state/contexts_legacy/退避日時/`へ元のディレクトリごと退避する。対象・件数・元パス・退避先とチェックサムを記録し、移動前後のファイルが一致することを確認する。別の新しいContextを巻き込まない。
+4. 旧履歴を通常の`state/contexts/`から除外する。内容ハッシュや原文を書き直さず、自動修復・旧形式の再生対応・専用の読取り経路を追加しない。旧IDの所在は退避一覧で辿れるようにする。
+5. 退避先は同じSSD内の保管でありバックアップではないこと、既存の通常バックアップには含まれないことを記録する。別の場所への保管は手動コピーの手順で扱い、世代管理を新規実装しない。
+6. launchd成功と、メイン全体バックアップ未完了を記録する。ソースを戻した後の稼働版の同期が必要なら、実行中Runがないことを確認して再起動する。
 
-`bd close`を直接AIに許可しない。Orchestratorが以下を確認してから閉じる。
+**完了:** 差分が復元可能で、18件の元バイトと所在が保全され、通常読取りから外れている。N0の完了は「旧履歴救済が成功した」「完全バックアップが完成した」という意味ではない。最終レビュー、世代間保存、メイン3プロジェクトの完全復元を追加の必須作業にせず、N1へ進む。
 
-1. 受け入れ条件が満たされた。
-2. 必須のLint/Build/Testが成功した。
-3. 変更差分とコミットの参照が存在する。
-4. Codexレビュー結果が`approved`（または人間が明示的に例外承認）。
-5. 必要な人間承認が完了している。
-6. 完了報告と引き継ぎ要約が保存されている。
+この節は次回の実施手順であり、本書の更新だけでN0を実施済みにはしない。
 
----
+### N1：日常実行の不具合を2点直す
 
-## 6. Context Builder：Issueを入口とするRAG設計
+**対象:** `process.py`、`worker.py`と必要な設定・試験。
 
-### 6.1 コンセプト
+- `capture()`の既定環境を許可リストへ統一し、CLIごとの必要な例外を明記する。認証ファイルを読む仕組みは作らない。
+- Workerの出力上限を設定可能にし、既定値をstdout / stderr合計10MiBとする。無制限の設定は設けず、保存バッファにも固定上限を設ける。
+- ログ保存は先頭と末尾、中間省略、打切り理由が分かる形にする。AIの構造化JSONは切れたら成功扱いにしない。
+- ログの保存上限とプロセスの出力上限を区別する。無制限出力を読み続けず、上限到達時の停止後に存在しない末尾を保証しない。
 
-独自インターフェース例：
+**完了:** 親のダミー秘密環境変数を子が受け取らない。上限内の長いログの末尾を追え、上限超過は停止・理由・保存ログが残る。通常の1件が従来通り動く。
 
-```bash
-aiops issue context example-web bd-a1b2 --mode standard --format markdown
-aiops issue context example-web bd-a1b2 --mode full --format markdown
-aiops issue context example-web bd-a1b2 --mode debug --format json
-```
+### N2：開いたら状況が分かる画面にする
 
-**`aiops`はこれから実装する仮称CLIであり、Beads標準コマンドではない。**
+**対象:** 既存Dashboard / Run Detail、必要なら小さなローカル起動コマンド。
 
-### 6.2 コンテキスト生成順序
+- 既存セッションを使い、ローカル起動からブラウザを開くまでを一つの導線にする。通常利用で接続コードのファイルを探す手間をなくす。
+- 最初の画面には、対象プロジェクト、実行中のIssue、待機理由と次の操作を表示する。進行表示は「実装（Antigravity）→テスト（Executor）→レビュー（Codex）→人間確認」の1本のステッパーとし、現在の担当をその中に示す。
+- 操作はIssue選択・実行・停止・結果確認を中心にする。運用・Provider設定は詳細側へ移し、stagingのボタンと確認導線はv0画面から外す。
+- 必要なコンポーネントだけ切り出し、既存の一覧・SSE・Run APIを先に使う。必要なデータが足りない場合のみAPIを足す。
 
-1. 対象IssueをBeadsから取得する（`bd show <id> --json`）。
-2. 親Issue・直接の依存Issue・関連Issueを取得する。検索深度を制限し循環参照を検出する。
-3. プロジェクトルール（`AGENTS.md`、採用済みADR、共通仕様）を取得する。
-4. Issueの**現在有効な要件**と承認済み決定を時系列ではなく優先順位付きで整理する。
-5. 最新の成功/失敗Run、未解決問題、次の作業を取得する。
-6. 関連するGit差分・テスト結果・成果物のメタデータを取得する。
-7. タスクとモデルに応じて必要な情報を選別し、トークン予算内へ圧縮する。
-8. **各節に出典ID**（Issue、コメント、ADR、commit、run、artifact）を残す。
-9. 生成物をスナップショットとして保存し、後から「その時AIが何を見たか」を再現できるようにする。
+**完了:** 実機ブラウザで1本のステッパーから現在地・担当・次の操作が分かり、通常の起動で手動のコード検索が不要。外部Origin・CSRFなしの変更要求を引き続き拒否する。大きなログイン設計変更が必要なら独立タスクに分け、他の画面改善を止めない。
 
-### 6.3 情報の優先順位
+### N3：1件のE2Eを通し、v0を使い始める
 
-1. 安全ポリシー・権限・データ分類（システムが強制する）
-2. 人間が承認した最新の仕様・意思決定
-3. 現在のIssueの受け入れ条件
-4. 現行プロジェクトの設計原則・ADR
-5. 関連Issueの参照情報
-6. 作業履歴・AIの仮説・失敗ログ
+- 隔離プロジェクトで小さな実装Issueを1件用意し、画面から実行→テスト→独立レビュー→結果確認まで進める。
+- 実際の差分・commit・テスト・CLI結果を照合する。合成fixtureのAIレビューを実モデルの承認として扱わない。
+- 途中停止とアプリ再起動を別に1回ずつ試し、勝手な再実行がないことを確認する。
+- Cadenda自身の小さな改善1件にも同じ経路を使い、不便な操作だけ次に直す。
 
-**AIの過去のコメントと人間の確定指示が矛盾した場合は人間の確定指示を優先**する。ただし、変更後の影響範囲は再評価する。
+**完了:** 第1節のチェックリストを満たす。使っていない機能の完成を待たず、ここから日常利用を開始する。
 
-### 6.4 取得モード
+### N4：表示の不足だけ補う（v0後、必要な時だけ）
 
-| mode | 内容 | 利用例 |
-|---|---|---|
-| `standard` | 要件、決定、現在状態、次の行動、根拠リンク | 通常実装 |
-| `debug` | 再現手順、失敗ログ、最近の変更、試した対処 | 不具合修正 |
-| `review` | 受け入れ条件、差分、テスト結果、設計との差異 | Codex最終レビュー |
-| `full` | すべての関連データへの到達手段と分割された詳細 | 監査、長期引継ぎ |
+- N2の1本のステッパーを継続し、4エージェントの常時監視カード・独立した監視API・Provider状態の定期問い合わせは作らない。fmは選択した任意操作の結果だけを表示する。
+- 工程は確認済みのRunイベントで更新し、未実施・不明・失敗を区別する。AI処理の進捗率を推測で埋めない。
+- 依存関係は必要ならブロッカーバッジとリンクを足す。専用グラフライブラリは導入しない。
+- 初期ログはコマンド開始・終了と保存ログでよい。実利用で必要になった場合のみ、出力制限と秘密マスクを保って公開CLIログを逐次表示する。内部思考の収集は行わない。
 
-`full`は「一回で無限長のテキストを出す」ことではない。レスポンスの分割、ページング、リンク先のオンデマンド展開をサポートする。**完全性＝取得可能性**、**効率＝必要な範囲だけ注入**とする。
+**完了:** 既存のステッパーとRun記録だけで困らないなら追加作業なしで終了する。
 
-### 6.5 Markdown返却フォーマット
+### N5：通知とコードを小さく保つ（実際の不便に応じて）
 
-```markdown
-# Issue Context
-- Project: example-web
-- Issue: bd-a1b2
-- Snapshot: ctx_0001
-- Generated: 2026-11-12T13:30:00+09:00
-- Sources: issue@rev42, ADR-004@sha256:..., run_0008
+- 新規Runの自動Beads通知を「開始」「最終結果」の2種類に限定する。通常完走は開始1件＋最終結果1件。最終結果はReview待ち・失敗・キャンセル・人間による復旧待ちを要約する。開始前に拒否した要求について、架空の開始・完了通知は作らない。
+- Worker内の中間Reviewと、独立レビューを終えた最終結果を区別する。同一Runで両方を完了通知にしない。修正試行で新しいRunを作った場合は、そのRunごとに扱う。
+- コマンド開始・終了、heartbeat、成果物保存等はSQLiteのRunイベントに残すが、新しいOutbox送信対象には登録しない。各段階でBeadsを読みに行く照合も行わない。
+- 2種類の通知には既存のevent IDによる重複防止を使う。配信失敗時の再試行はあり得るため、「必ず2回のCLI呼出しで配信が成功する」とは保証しない。Beadsの一時停止で実装・テスト結果を失わせない。
+- 既存Outboxの未配信データは保持し、旧世代の中間イベントを通常flushの対象から外す。送っていない行を配信済みと偽装せず、一括削除やスキーマの作り直しはしない。人間が入力するIssueコメント・正式な判断は、この自動Run通知の2件枠とは別で保持する。
+- 変更した関数のワンライナーを解消し、画面やルートを小単位で分割する。
+- worktreeはまず保有一覧と使用量を確認できるようにする。回収は未コミット差分・現行参照・履歴の保全を確認した明示操作に限定する。
 
-## Mission
-何を実現するか。
+**完了:** 通常完走RunでBeads通知が開始・最終結果の2件となり、中間イベントはSQLiteから確認できる。再配信しても同じ通知を重複追加せず、記録を失わずに失敗から復旧できる。通知対象の絞込みは独立した小変更とし、N1・N2の着手を待たせない。
 
-## Current approved requirements
-現在有効な仕様と根拠（コメントIDを付ける）。
+### 実施順と依存
 
-## Acceptance criteria
-機械的／人間的な完了判定。
-
-## Project constraints
-使用技術、禁止事項、権限、設計方針。
-
-## Current state
-既存の実装、成功・失敗したテスト、未解決。
-
-## Next recommended actions
-次の操作の提案（確定した操作ではない）。
-
-## Evidence and source links
-beads://... / git://... / artifact://...。
-```
-
-### 6.6 トークン予算と検索
-
-- 初期はキーワード検索＋明示的リンク＋依存関係グラフのみ。必要になるまで埋め込み検索を入れない。
-- モデル別の**コンテキスト上限設定**を持ち、実機測定値に基づいて調整する。
-- 例：`fm system`ではIssue要約＋小さな入力のみ、`fm pcc`では関連仕様と短い差分、Antigravity/Codexでは設計・履歴を広めに渡す。
-- リンク切れやトークン予算超過は明示的な警告を返す。重要な承認済み決定を黙って削らない。
-- Issue内や外部資料に含まれる「他の指示を無視せよ」等は**未信頼データ**と扱い、実行ポリシーには昇格させない（プロンプトインジェクション対策）。
-
-### 6.7 記憶の3階層
-
-1. **システム共通**：AIの責任分担、Git・承認・秘密情報の扱い（Control Plane）。
-2. **プロジェクト共通**：`AGENTS.md`、ADR、技術スタック、非機能要件、恒久的知識（Beads memory等）。
-3. **Issue固有**：要件、意思決定、作業の証跡、最新引継ぎ。
-
-プロジェクトの共通ルールへ昇格する変更は、Codex提案→人間承認→ADR/AGENTS.md更新→関連Issueへの影響検査の順で行う。
-
----
-
-## 7. Orchestratorと状態遷移
-
-### 7.1 標準ワークフロー
-
-```mermaid
-stateDiagram-v2
-    [*] --> Draft
-    Draft --> Ready: 仕様確定・依存解消
-    Ready --> Claimed: 安全にClaim
-    Claimed --> Running: 起動・事前検証OK
-    Running --> Verifying: AI出力取得
-    Verifying --> Review: テスト合格
-    Verifying --> RetryableFailure: テスト不合格
-    RetryableFailure --> Ready: 規定回数内・安全に再試行
-    RetryableFailure --> NeedsHuman: 回数超過・リスク上昇
-    Review --> Done: 承認・完了条件合格
-    Review --> Ready: 修正要求
-    Ready --> Blocked: 依存待ち
-    Blocked --> Ready: 依存解消
-    Running --> Interrupted: プロセス停止・通信断
-    Interrupted --> NeedsHuman: 状態不明・安全確認
-    NeedsHuman --> Ready: 明示的な再開
-    Done --> [*]
-```
-
-> 上記は**アプリ独自の工程状態**。Beadsの`open / in_progress / closed`等と1対1対応させず、ステータス同期用のマッピングを定義する。
-
-### 7.2 ジョブ実行シーケンス
-
-1. GUIまたはCodexがIssue作成・更新。
-2. `ready`判定と権限・依存関係の事前チェック。
-3. Claim取得。初期はOrchestratorだけがBeadsを更新。
-4. `run_id`発行・試行番号決定・リポジトリ固定・worktree作成。
-5. Context Builderでスナップショットを作成。入力内容のハッシュとソース参照を記録。
-6. RouterがAI・モード・利用制限・承認要否を判定。
-7. AI実行、stdout/stderrとイベント記録。途中でGUIへSSE配信。
-8. AI回答JSONの構文・スキーマ検証。権限不足、拒否、未実行を検知。
-9. Git差分・ビルド・Lint・テスト・セキュリティ検査を確定的なプログラムで実行。
-10. 失敗なら原因・成果物・再試行理由を記録。規定回数を超えたら人間へ。
-11. 成功ならCodexがレビュー。必要に応じて人間承認。
-12. Issueを完了、報告・証跡を保存、次のReady Issueを判定。
-
-### 7.3 重複実行防止と異常終了
-
-- `run_id`は一意。`(project_id, issue_id, active=true)`に対して重複アクティブRunを禁止する。
-- ジョブ取得は排他的なClaimとし、競合時は片方が失敗する。
-- `heartbeat_at`、`lease_expires_at`、`process_group_id`等を記録。
-- アプリ再起動時にRunを走査し、プロセス生存・worktree状態・テスト成果物を確認する。
-- lease切れ**だけで再実行しない**。古い実行が残存していないこと、Git状態が整合することを確認する。
-- 書き込み工程は冪等化キーを設け、同一イベントや同一外部操作を重複適用しない。
-- 自動再試行は原則最大2回。原因が権限不足・秘密情報欠如・仕様矛盾・デプロイ失敗の場合は人間へ。
-- 進行中の仕様変更は安全な境界で反映する。作業を中断する場合、まずプロセス停止・差分保全・状態記録する。
-
-### 7.4 コンカレンシー
-
-- **初期**：AI実装Runは最大1、重いビルドも原則1。同時にGUIや検索は利用可能。
-- **拡張**：2〜3並行Run。各Runは専用worktree。Dolt Serverモードを検証して移行する。
-- ファイル競合があるIssueは依存関係を付与するか、マージ専用の排他工程へ送る。
-- メモリ不足、CPU負荷、ディスク残量、クラウド利用枠に応じて新規Runを開始しない。
-
----
-
-## 8. AIアダプタとモデルルーティング
-
-### 8.1 役割契約
-
-| Role | 初期Provider | 原則の作業 | 禁止／制限 |
+| 順番 | タスク | 依存 | 1回の変更で目指す成果 |
 |---|---|---|---|
-| `architect` | Codex | 要件整理、Issue分解、影響評価、最終報告 | 無承認の本番操作 |
-| `developer` | Antigravity CLI | 複数ファイル変更、テスト設計、デバッグ | 許可外パス／秘密情報アクセス |
-| `worker_local` | `fm --model system` | 分類、抽出、定型的コード補助、短文変換 | 未検証コードの自動採用 |
-| `worker_cloud` | `fm --model pcc` | 中程度の関数・テスト補助、短めのリファクタ案 | 複雑なリポジトリ変更を無検証で実行 |
-| `executor` | Python/CLI | Lint、テスト、ビルド、限定スクリプト | 任意Shellの自由実行 |
-| `human` | GUI | 仕様確定・創作物制作・危険操作承認 | — |
+| 1 | N0 記録・退避 | なし | パッチと旧18件の所在を保全して、深追いを終了 |
+| 2 | N1 環境とログ | N0 | 現実のCLI出力でも原因を追える |
+| 3 | N2 起動導線・1本のステッパー | N1 | 手入力の検索をなくし、実装→テスト→レビューの現在地を表示 |
+| 4 | N3 実利用E2E | N1、N2 | v0を日常利用できる |
+| 5 | N4 表示の不足補完 | N3 | 必要が出たものだけ。独立したエージェント監視は作らない |
+| 6 | N5 通知2種類・整理 | N2 | 通知の絞込みだけならN2後に先行可能。全面整理はv0後 |
 
-### 8.2 CLI呼び出し例（まず実機で検証）
+実行順の本線は**N0 → N1 → N2 → N3**。N5の通知対象絞込みは小変更としてN2後に行え、N4の追加表示を待つ必要はない。N0で旧履歴の問題が残っても記録・退避で区切り、救済機能や完全復元試験を追加してN1・N2を止めない。
 
-```bash
-# Beads: 環境準備
-brew install beads
-cd ~/AIWorkspace/projects/example-web
-bd init --quiet
-bd setup codex
-bd doctor
-bd ready --json
+## 6. v0後まで保留するもの
 
-# Codex: 構造化出力（schemaは自作するJSON Schema）
-codex exec --output-schema ./schemas/architect-result.schema.json \
-  -o /tmp/architect-result.json \
-  "指定されたIssueの要件を分析し、実装タスクを構造化して返す"
-
-# Antigravity: 非対話実行
-agy -p "指定の受け入れ条件を満たす変更を作業用worktreeへ実装" \
-  --output-format json --print-timeout 20m
-
-# Apple fm: 利用可能性を先に確認
-fm models
-fm quota-usage
-fm respond --model system "次の文章を分類してください: ..."
-fm respond --model pcc "この関数の境界条件を検討してください: ..."
-```
-
-- 上記は**確認用の構文例**。認証、CLI版、対象ディレクトリ、スキーマ、プロンプト内容は実際の環境で適合させる。
-- `--output-format json`等があるからといって、AIが必要なファイル変更・テストを実行した保証にはならない。
-- `agy`のHeadlessモードでは、権限不足でツールがsoft-denyされても終了コード`0`になり得る。**stderrとJSONステータス、Git差分、独立したテスト実行**を必須確認にする。
-- `--dangerously-skip-permissions`は利用しない。許可する編集パス・コマンドを最小化し、サンドボックスの利用可能性を検証する。
-- 実運用ではShell文字列結合ではなく、Pythonの`subprocess`に**引数配列**として渡す。Runごとにcwd、env、timeout、出力サイズを制限する。
-
-### 8.3 `fm` Local / PCC固有の設計
-
-**Local**
-
-- 最初の用途：Issueの分類、単純なJSON抽出、命名候補、定型テキスト整理、軽微な型定義の案。
-- 出力をJSON Schemaで検証し、エラーなら原則人手不要の再試行を1回まで許可。
-- 生成コードは必ずビルド・テストを通す。
-
-**PCC**
-
-- 中程度のコード生成やテストケース設計・仕様整理に使う。
-- Apple Intelligence対応、ユーザー利用枠、モデル使用可否、利用規約、非対話起動の可否を事前検証。
-- `fm quota-usage`等の情報が取得できる場合は事前に利用枠を確認。エラー形式や再開タイミングは実測。
-- PCCは**日次の利用制限**がある。数値をハードコードせず取得可能なAPI/CLI情報と実測で管理する。
-- PCCをジョブ用バックグラウンドプロセスから起動できないケースに備え、`fm serve`によるローカル接続も検証する。ただしGUIログイン・Terminal起動条件が制約となる可能性を検証し、回避を保証しない。
-- ソースコードやIssue本文をPCCへ送信する前にデータ分類・秘密情報除去・顧客規約との整合を検査する。
-
-### 8.4 Task Router
-
-優先順位：
-
-1. **AI不要か？** → deterministic Executor（Formatter、Parser、テスト、Gitなど）
-2. **人間・専門サービスの作業か？** → `Needs Human`
-3. **機密・権限制約があるか？** → 使用可能モデルを制限
-4. **短く明確な定型作業か？** → fm Local
-5. **中程度の局所的作業でPCCが利用可か？** → fm PCC
-6. **複数ファイル・複雑な開発か？** → Antigravity
-7. **要件矛盾・上流判断・大規模な再計画か？** → Codex
-
-`fallback`はモデルの能力だけでなく、**利用枠・認証・許可データ範囲・コスト**を満たす場合に限る。PCCが使えないからといって無断で別のクラウドAIへ機密データを送らない。
-
-```yaml
-# config/routing.yaml （設計例。自作の設定フォーマット）
-routes:
-  - when: deterministic
-    provider: executor
-  - when: simple_and_non_sensitive
-    provider: fm_system
-    fallback: antigravity
-  - when: medium_and_cloud_allowed
-    provider: fm_pcc
-    fallback: antigravity
-  - when: complex_code
-    provider: antigravity
-    fallback: needs_human
-  - when: architecture_or_final_review
-    provider: codex
-limits:
-  max_auto_retries: 2
-  max_active_developer_runs: 1
-  max_parallel_fm_local: 1
-```
-
-### 8.5 Provider共通インターフェース
-
-```python
-from typing import Protocol
-
-class AgentAdapter(Protocol):
-    async def healthcheck(self) -> dict: ...
-    async def run(self, request: "AgentRunRequest") -> "AgentRunResult": ...
-    async def cancel(self, run_id: str) -> None: ...
-
-# requestに含むべきもの:
-# role, project_id, issue_id, run_id, worktree_path,
-# context_snapshot_path, output_schema_path, timeout_seconds,
-# allowed_paths, permitted_tools, data_classification
-
-# resultに含むべきもの:
-# provider, model_id, cli_version, process_exit_code,
-# structured_output, stdout_ref, stderr_ref, usage_if_available,
-# tool_denials, started_at, ended_at, outcome
-```
-
-機能差はAdapter内部で吸収し、Routerは`AgentRunResult`だけを評価する。機械判定不能な結果は成功にしない。
-
----
-
-## 9. Git・実装・テスト・レビューのワークフロー
-
-### 9.1 Worktree運用
-
-```bash
-# 例: 対象リポジトリ内で作業ブランチを作成
-# 実際のworktreeパスはOrchestratorの管理下で割り当てる
-git worktree add -b ai/bd-a1b2 \
-  ~/AIWorkspace/worktrees/example-web/bd-a1b2 HEAD
-```
-
-- 既存ブランチ衝突・汚れた作業木・未コミット差分を事前検査。
-- 1 Issue = 1 worktreeを基本とする。
-- AIが直接mainにコミットしない。必要ならPR/レビューを経由。
-- 成果物が完了するまでworktreeを保持し、Run履歴と結び付ける。
-
-### 9.2 検証ゲート
-
-各プロジェクトに`aiops.yaml`を置き、実行可能なコマンドを固定する。
-
-```yaml
-project_id: example-web
-root: /Users/USER/AIWorkspace/projects/example-web
-checks:
-  - id: lint
-    argv: ["npm", "run", "lint"]
-    timeout_seconds: 300
-  - id: typecheck
-    argv: ["npm", "run", "typecheck"]
-    timeout_seconds: 300
-  - id: unit_test
-    argv: ["npm", "test", "--", "--run"]
-    timeout_seconds: 600
-requires_approval:
-  - production_deploy
-  - destructive_migration
-```
-
-- AIが提出した任意Shellコマンドを許可なく実行しない。
-- テスト実行環境は本番アカウント・本番DBへ接続できない。
-- セキュリティスキャン、依存関係監査、ライセンスチェックは必要に応じて追加。
-- 受け入れ条件が自動判定できない場合は、スクリーンショット・動画・人間の目視確認を要求する。
-- ゲームではレンダリング・演出・音声など、人間の確認が必要な検証を明示して扱う。
-
-### 9.3 独立レビュー
-
-- Antigravityが実装した変更をCodexが**新しいコンテキスト**でレビューする。実装者の成功申告は評価根拠にしない。
-- レビューには要件・差分・テスト・エラーログ・設計ルールを渡す。
-- Codexの指摘はIssueへ`review_findings`イベントとして保存する。
-- 最大自動修正回数超過時は`Needs Human`へ変更。
-
----
-
-## 10. GUI設計（人間の操作を第一級に扱う）
-
-### 10.1 画面一覧
-
-| 画面 | 初期機能 | 後続機能 |
-|---|---|---|
-| Dashboard | プロジェクト一覧、稼働状況、停止中/承認待ち件数 | 使用量・推移・統計 |
-| Board | Ready/Running/Review/Blocked/Needs Human/Doneの工程別表示 | フィルタ・保存ビュー |
-| Issue Detail | 要件、受け入れ条件、依存、コメント、作業タイムライン、関連ソース | 差分プレビュー、履歴比較 |
-| Run Detail | 担当モデル、起動時刻、状態、ログ、Git差分、検証結果 | 解析と比較 |
-| Approval Inbox | 本番操作や仕様変更の承認・却下 | リスク別一括ビュー |
-| Context Inspector | `standard/debug/review/full`の出力確認、根拠リンク | 版比較・検索 |
-| Settings | プロジェクト登録、ルーティング、モデル健康状態 | 利用量閾値・通知先 |
-
-### 10.2 Issue Detailの操作
-
-- Issue作成・タイトル・説明変更
-- コメント投稿（`comment` / `decision_proposed` / `requirement_changed`の意図を明示）
-- 人間の方針確定／却下
-- 実行開始・一時停止・再実行・中断（権限と状態に基づいて制御）
-- 受け入れ条件・関連Issue・参照元データへ移動
-- ContextのMarkdown表示・コピー・ダウンロード
-- 「このIssueを初見のAIが受け取る場合」の入力プレビュー
-- 作業ログや秘密情報の露出を制御する閲覧権限
-
-### 10.3 API（初期案）
-
-```text
-GET    /api/projects
-GET    /api/projects/{project_id}/issues
-POST   /api/projects/{project_id}/issues
-GET    /api/projects/{project_id}/issues/{issue_id}
-POST   /api/projects/{project_id}/issues/{issue_id}/comments
-POST   /api/projects/{project_id}/issues/{issue_id}/decisions
-GET    /api/projects/{project_id}/issues/{issue_id}/context?mode=standard
-POST   /api/projects/{project_id}/issues/{issue_id}/runs
-GET    /api/runs/{run_id}
-POST   /api/runs/{run_id}/cancel
-GET    /api/runs/{run_id}/events
-GET    /api/events/stream
-GET    /api/approvals
-POST   /api/approvals/{approval_id}/approve
-POST   /api/approvals/{approval_id}/reject
-GET    /api/providers/health
-```
-
-APIは任意パス・任意コマンドの入力を受け付けない。Issue ID、Project ID、Run IDはバリデーションし、Path Traversalや認可回避を防ぐ。SSEで送信するログも秘密情報をマスクする。
-
----
-
-## 11. セキュリティ・プライバシー・権限管理
-
-### 11.1 実行権限の段階
-
-| レベル | 例 | 方針 |
-|---|---|---|
-| L0: Read Only | Issue閲覧、ソース調査、設計案 | 自動可 |
-| L1: Workspace Write | worktree内のコード編集、テストファイル作成 | 許可された作業領域のみ自動可 |
-| L2: Staging | 開発用DB・ステージング反映 | 事前定義されたコマンドと条件付き |
-| L3: Production | 本番デプロイ、DBマイグレーション、Secret更新 | 人間の承認必須 |
-| L4: Destructive | DB全削除、権限変更、決済・課金など | 初期は自動実行禁止 |
-
-- 承認は`operation_id + issue_id + 実行対象 + 差分/計画ハッシュ + 有効期限`に対して発行する。計画変更時には承認を無効化。
-- GUIの承認は認証済みユーザーに限定し、AIからの`approved`文字列を承認扱いしない。
-- 依存ライブラリやIssue本文を経由したプロンプトインジェクションは権限昇格につなげない。
-- AIへの入力には、機密区分と送信可能なProviderの許可リストを添付する。
-- `agy`/Codexのプロセスは可能な限りサンドボックスまたは最低権限で動作させる。
-
-### 11.2 秘密情報
-
-- `.env`、SSH秘密鍵、クラウドAPIトークン、セッションCookie等をIssue全文・ログ・LLM入力へ貼らない。
-- Git差分・stderr/stdoutを保存する前にSecret検出とマスキングを行う。ただしマスキングは万能ではないため、そもそも秘密をプロセスに渡さない設計を優先。
-- 本番デプロイ権限は専用RunnerまたはCI/CDに限定し、AIがSecretを読み取れないよう分離する。
-- PCCを含め**クラウドへ送る情報の境界**をProject単位で指定する。
-
-### 11.3 GUIネットワーク
-
-- MVPはlocalhostバインド。ネットワーク外部公開しない。
-- 外部から閲覧する場合、Tailscale・認証・HTTPS・CSRF対策・認可・監査ログを追加する。
-- WebSocket/SSE経由のログが他プロジェクトへ漏れないようProject単位の認可を施す。
-
----
-
-## 12. ローカル常駐・運用・バックアップ
-
-### 12.1 起動構成
-
-- GUI/API/OrchestratorはmacOS `launchd`で管理する。
-- サービスは`127.0.0.1`にバインドし、再起動・ログ出力・停止時シグナルを設定する。
-- GUIログインが必要なPCCやApple Intelligenceの条件がある場合、**LaunchAgent**とLaunchDaemonの実測差を記録し、適切な起動方式を採用する。
-- スリープ時は長時間ジョブが中断する可能性がある。電源設定とmacOS更新時の再起動ポリシーを決める。
-- 適切な排他制御を行い、launchdによる二重起動時に多重スケジューラが動かないようにする。
-
-### 12.2 バックアップ対象
-
-| 対象 | 方法 |
+| 項目 | 再開する条件 |
 |---|---|
-| Beads/Dolt | `bd backup`等、対象版が推奨する整合性のあるバックアップ／Dolt remote同期 |
-| リポジトリ | Git remote、追加のローカルバックアップ |
-| Orchestrator SQLite | SQLite Online Backup API / 安全なDBバックアップ |
-| Artifacts | 定期スナップショット／別ディスクまたはバックアップ媒体 |
-| Config・ADR | Gitによる版管理とバックアップ |
-| CLI認証情報 | 各社推奨の安全な管理。平文バックアップしない |
-
-`issues.jsonl`等のエクスポートだけをBeadsの完全なバックアップとみなさない。バックアップ後、別ディレクトリへ復元してIssue・履歴・参照が利用できるか定期確認する。
-
-### 12.3 健全性チェック
-
-- `bd doctor`、CLIバージョン、認証有無、`fm models`、PCC quota、Git状態。
-- 未完了Run・期限切れリース・長時間進捗なし・孤児プロセス。
-- ディスク空き、作業用worktree残留、バックアップの成功と復元可能性。
-- 無効なIssueリンク、Artifact欠損、Contextの版ズレ。
-- エラー時はデフォルトで**停止・通知**。無限リトライしない。
-
----
-
-## 13. 実装フェーズと詳細タスク
-
-工程は期間ではなく、**検証可能な完了ゲート**で区切る。先行工程が合格するまで、次工程に大量実装しない。
-
-### Phase 0 — 実機・CLIの適合性確認
-
-**目的**：想定したCLI・モデルがMac mini上で使えると証明する。
-
-- [ ] `sw_vers`, `uname -m`, `sysctl hw.memsize`で環境を記録。
-- [ ] Homebrew / Git / Python / Node / Xcode Command Line Toolsを確認。
-- [ ] Beadsを導入、`bd init`・`bd doctor`・Issue作成・依存・コメント・取得・closeを試す。
-- [ ] `codex --version`、対話認証、`codex exec`のJSONと構造化出力を確認。
-- [ ] `agy --version`、対話認証、Headless `-p`、JSON出力、sandbox、ツール許可、タイムアウトを確認。
-- [ ] `fm`の有無、OS・Apple Intelligence、`fm models`、`fm respond --model system`を確認。
-- [ ] `fm respond --model pcc`、`fm quota-usage`、非対話・GUIセッション・`fm serve`を実測。
-- [ ] 取得できる利用量・エラーフォーマット・権限不足時の挙動を記録。
-- [ ] `docs/compatibility-matrix.md`にCLI版・条件・合否を保存。
-
-**完了条件**：利用可能なProviderが特定され、実行方法・認証・制約が記録されている。PCCが使えなければ**PCCのみ保留**し、他工程へ進んでよい。
-
-### Phase 1 — BeadsとIssue引き継ぎの概念実証
-
-**目的**：Issueのみを手掛かりに作業引き継ぎできるか確かめる。
-
-- [ ] 試験リポジトリ（小規模TypeScript Webサービス）作成。
-- [ ] Epic、子Issue、依存、受け入れ条件を作成。
-- [ ] CodexにIssue分解案を作らせ、人間が確認してからBeadsへ登録。
-- [ ] Antigravityが1 Issueを実行し、Git commitとテスト結果を残す。
-- [ ] 途中終了を発生させ、別の新規セッションでIssue情報と成果物から再開。
-- [ ] 仕様変更コメントを追加し、古い指示と新しい指示の優先順位を検査。
-- [ ] 手作業で作るContext Markdownの必要項目を洗い出す。
-
-**完了条件**：新セッションが旧会話を読まずに、現状・次の作業・禁止事項を正しく説明し、続行可能と判断できる。
-
-### Phase 2 — Control Planeの基盤・Context Builder
-
-**目的**：Issueを唯一の入口にして必要なコンテキストを取得できるようにする。
-
-- [ ] Python構成・Pydanticスキーマ・設定ローダーを整備。
-- [ ] Project Registryとパス許可リストを実装。
-- [ ] `BeadsAdapter`（CLI JSON呼び出し、エラー分類）を実装。
-- [ ] `ContextBuilder`（Issue/親子/依存/ADR/Git/Run参照の結合）を実装。
-- [ ] `standard/debug/review/full`モードを実装。
-- [ ] 根拠ID、スナップショット、生成ハッシュ、未解決参照警告を実装。
-- [ ] 大きすぎるコンテキストの分割・予算制御・再取得機能を実装。
-- [ ] context CLI（仮称`aiops issue context`）を提供。
-- [ ] 正式決定と通常コメントを区別する仕組みを用意。
-
-**完了条件**：過去の停止Issueについて、Issue IDだけでAI向けMarkdownを再生成でき、記載内容の根拠を追える。
-
-### Phase 3 — Execution Recorder + 単一エージェントOrchestrator
-
-**目的**：安全なジョブ実行とテスト記録を自動化する。
-
-- [ ] SQLiteの`runs`、`run_events`、`artifacts`、`approvals`、`outbox`を実装。
-- [ ] `Ready → Claimed → Running → Verifying → Review`の工程を実装。
-- [ ] サブプロセス起動・PID追跡・中断・タイムアウト・stdout/stderr収集を実装。
-- [ ] worktree作成・差分保全・終了後クリーンアップ条件を実装。
-- [ ] Antigravity Adapterを実装。
-- [ ] プロジェクト指定コマンドによるLint/Build/Testを実装。
-- [ ] 権限soft-denyを含む失敗判定と再試行上限を実装。
-- [ ] Beads反映用Outbox・冪等化・再起動時リカバリーを実装。
-
-**完了条件**：ジョブ中断・再起動でも二重実行せず、失敗の証跡を残し、安全に再試行判断できる。
-
-### Phase 4 — Codex指揮・レビューとTask Router
-
-**目的**：分解・実装・検証・報告のAI分業を成立させる。
-
-- [ ] Codex Architect Adapter（Issue分解・構造化出力）を実装。
-- [ ] Codex Reviewer Adapter（差分・テスト・要件照合）を実装。
-- [ ] AI応答JSON Schemaと不正応答時の処理を実装。
-- [ ] Routerの初期ルールを設定。
-- [ ] 修正ループ上限・人間へのエスカレーションを実装。
-- [ ] Project共通方針への決定昇格フローを実装。
-- [ ] Issueが完了した際の人間向け報告テンプレートを実装。
-
-**完了条件**：新規要件から分解・実装・テスト・レビューまで、単一リポジトリで完走する。
-
-### Phase 5 — `fm system` / `fm pcc`の追加
-
-**目的**：小規模/中規模タスクをAppleモデルへ委譲する。
-
-- [ ] `fm`コマンドのAdapterを実装。
-- [ ] Localの対象タスクを3〜5種類に限定して実験。
-- [ ] PCC利用可能性・quota・非対話・利用枠超過時の挙動を実装上で確認。
-- [ ] 送信可能な情報範囲（データ分類）を実装。
-- [ ] Provider別入力サイズ・タイムアウト・フォールバックを実装。
-- [ ] コード生成結果のコンパイル・自動テスト検証を実装。
-- [ ] Antigravity単独との成功率・リトライ・処理時間を比較。
-
-**完了条件**：モデル割り当てを変更しても同じIssue履歴で再現・検証でき、未対応のPCC環境では安全に処理を保留できる。
-
-### Phase 6 — GUI
-
-**目的**：人間がIssueとAIチームの状態を理解し、安全に介入できるようにする。
-
-- [ ] FastAPIでRead API、Issue更新API、Run操作APIを作成。
-- [ ] ReactでDashboard / Board / Issue Detail / Run Detailを作成。
-- [ ] Context InspectorとMarkdownプレビューを実装。
-- [ ] コメント種別と人間の正式決定フローを実装。
-- [ ] Run開始・中断・再開の操作を実装。
-- [ ] SSEで状態変化・ログを表示。
-- [ ] Approvals画面と本人認証を実装。
-- [ ] スマートフォンでも読めるレスポンシブ画面を整備。
-
-**完了条件**：CLIを触らずにIssueの要件・履歴・進捗を確認し、方針変更、承認、停止ができる。
-
-### Phase 7 — 運用・複数プロジェクト・ステージング
-
-**目的**：継続稼働できる保守基盤へ発展させる。
-
-- [ ] launchdによるAPI/Workerの起動と復旧を構成。
-- [ ] バックアップ・復元手順と定期検証を整備。
-- [ ] BeadsのDolt Server移行要件を検証（必要な場合のみ実施）。
-- [ ] 複数プロジェクト登録・アクセス制御を実装。
-- [ ] CI/CD連携・ステージングへの限定デプロイを実装。
-- [ ] 本番デプロイ承認フローを設計し、別途リスク評価後に有効化。
-- [ ] ディスク・CLI認証切れ・quota・失敗Run監視を実装。
-
-**完了条件**：再起動・認証切れ・ネットワーク障害時に破壊的副作用がなく、人間が状態を確認・復旧できる。
-
----
-
-## 14. 初期バックログ案（Beads登録用）
-
-| ID（計画上の仮ID） | タスク | 依存 | 優先度 | 主担当 |
-|---|---|---|---|---|
-| M0-01 | Mac環境・CLI互換性マトリクス | なし | P0 | 人間＋Codex |
-| M0-02 | Beads試験リポジトリとIssue操作 | M0-01 | P0 | Codex |
-| M0-03 | Antigravity Headless権限/JSON検証 | M0-01 | P0 | Antigravity＋人間 |
-| M0-04 | fm Local/PCC利用条件・quota検証 | M0-01 | P1 | 人間＋Codex |
-| P1-01 | 新セッション引継ぎPoC | M0-02,M0-03 | P0 | Codex＋Antigravity |
-| P2-01 | Project Registry / BeadsAdapter | P1-01 | P0 | Antigravity |
-| P2-02 | Context Builder標準モード | P2-01 | P0 | Antigravity |
-| P2-03 | Debug/Review/Full、根拠リンク | P2-02 | P1 | Antigravity |
-| P3-01 | Run DB / Event / Artifact | P2-01 | P0 | Antigravity |
-| P3-02 | Worktree / Process Controller | P3-01 | P0 | Antigravity |
-| P3-03 | Test Executor / 成功判定 | P3-02 | P0 | Antigravity |
-| P3-04 | Outbox / 再開・重複防止 | P3-01,P3-03 | P0 | Antigravity |
-| P4-01 | Codex Architect Adapter | P2-02 | P0 | Antigravity |
-| P4-02 | Codex Reviewer Adapter | P3-03,P4-01 | P0 | Antigravity |
-| P4-03 | Router・エスカレーション | P4-01,P4-02 | P1 | Antigravity |
-| P5-01 | fm Local Adapter | M0-04,P3-01 | P1 | Antigravity |
-| P5-02 | fm PCC Adapter | M0-04,P5-01 | P1 | Antigravity |
-| P5-03 | モデル評価ベンチ | P5-01,P5-02 | P2 | Codex＋Antigravity |
-| P6-01 | API / SSE | P3-01,P2-02 | P0 | Antigravity |
-| P6-02 | Issue Board / Detail | P6-01 | P0 | Antigravity |
-| P6-03 | コメント・正式決定・承認 | P6-02,P4-03 | P0 | Antigravity |
-| P6-04 | Context Inspector / Run画面 | P6-01,P2-03 | P1 | Antigravity |
-| P7-01 | launchd / 健全性監視 | P3-04 | P1 | Antigravity |
-| P7-02 | バックアップ・復元演習 | P7-01 | P0 | 人間＋Antigravity |
-| P7-03 | ステージングデプロイ | P6-03,P7-02 | P1 | Antigravity＋人間 |
-
-> ここに挙げた`M0-01`等は作業計画用の仮ID。Beadsに登録すると実際にはハッシュ型のIDが割り当てられる。実IDはOrchestratorまたは別のマッピングで保持する。
-
----
-
-## 15. 検証シナリオ・受け入れテスト
-
-| ID | シナリオ | 合格条件 |
-|---|---|---|
-| AT-01 | CodexがEpicを分割 | 実行可能な子Issueと依存関係が生成され、人間が確認できる |
-| AT-02 | 初見AIへの引継ぎ | 新しいセッションが旧会話無しで要件・決定・現在状態を説明できる |
-| AT-03 | 実行中クラッシュ | 途中の差分・ログが残り、無断二重実行されない |
-| AT-04 | Issueの仕様変更 | 新しい確定仕様が優先され、再計画が起動し、古い指示は履歴に残る |
-| AT-05 | Antigravity権限soft-deny | 終了コード`0`でも実行未完了を検出し成功扱いにしない |
-| AT-06 | Unit Test失敗 | IssueがDoneにならず、エラーログと再試行が紐付く |
-| AT-07 | PCC quota到達 | 危険な自動フォールバックをせず、Issueへ理由を記録する |
-| AT-08 | Localで誤ったコード生成 | Schema/コンパイル/テストで棄却する |
-| AT-09 | 同じIssueへ重複Run要求 | 排他処理により1 Runのみ有効 |
-| AT-10 | AIによる承認偽装 | 人間の本人認証・承認イベントが無い限り実行を拒否 |
-| AT-11 | プロンプトインジェクション | Issueやログの悪意ある文章で実行ポリシーが変更されない |
-| AT-12 | アーティファクト破損・欠損 | Context出力に欠損警告が出て誤った完了判定をしない |
-| AT-13 | GUIからの中断 | 子プロセスを停止し、差分保全・状態遷移が一貫する |
-| AT-14 | 再起動 | GUI/Orchestratorが復旧し、孤児Runを安全に検査する |
-| AT-15 | バックアップ復元 | 別の場所でIssue・Run・根拠リンク・Artifactsを復元できる |
-| AT-16 | 本番操作の承認 | 承認対象と実行内容のハッシュが一致しない場合は拒否 |
-| AT-17 | 親Issueブロック | 依存が残る子Issueは誤って実行されない |
-| AT-18 | 参照元の追跡 | AI向け要約の各重要事実から元コメント・commit・ログへ辿れる |
-
-### 15.1 最重要E2Eテスト：セッションを捨てた引継ぎ
-
-1. Codexが「週間ランキング機能」をEpicと子Issueへ分解。
-2. Antigravityが実装を開始。コミット・テスト実行後に**意図的に停止**。
-3. Issueに対して「JSTの月曜00:00を基準」と人間が正式決定を投稿。
-4. 完全に新しいAIセッションへ`issue_id`とContext Builderの生成結果だけを渡す。
-5. 新AIが未解決点、最新仕様、既存成果物、禁止事項を説明する。
-6. 新AIがテスト修正を完了してRun履歴を書き戻す。
-7. 別のCodexレビューで受け入れ条件との一致を検査。
-8. GUIから「誰が、なぜ、どの変更をしたか」を追跡できる。
-
-**このテストが通るまで、24時間自律運転や複数AI並列化を最適化しない。**
-
----
-
-## 16. 主要リスクと軽減策
-
-| リスク | 影響 | 軽減策 |
-|---|---|---|
-| CLI仕様・利用枠の変更 | 自動処理停止 | バージョン固定、Adapter境界、互換性テスト |
-| PCCの非対話制限 | Worker不可 | 実機検証、Local/Antigravityへ条件付き切替、保留状態 |
-| Beads Embeddedの同時書込み | 競合・データ不整合 | 単一ライター、必要ならDolt Server |
-| AIが未実行を成功と報告 | 品質・障害 | stderr/JSON/差分/独立テストによる検証 |
-| Context肥大化 | コスト・読み落とし | 取得モード、優先順位、スナップショット、分割 |
-| 要約の誤り | 誤判断 | 元のイベント保存、根拠リンク、人間の確定指示優先 |
-| 再試行ループ | 利用枠浪費・破壊 | 最大回数、停止条件、原因分類 |
-| 複数AIのGit衝突 | 上書き・手戻り | worktree、依存関係、マージゲート |
-| Secret混入 | 情報漏えい | プロンプト投入前マスキング、アクセス分離、送信ポリシー |
-| ラップトップ的電源管理・OS更新 | ジョブ中断 | launchd、電源設定、復旧手順、状態永続化 |
-| 本番事故 | サービス停止・データ喪失 | 本番ゲート、限定CI/CD、ロールバック計画 |
-| GUIへの過信 | 無権限操作・監査欠落 | API認可、監査ログ、明示的な承認オブジェクト |
-
----
-
-## 17. 実装時の意思決定事項（最初に確定する）
-
-実装前の暫定決定と、実機検証後に確定する項目を分ける。
-
-| 項目 | 推奨初期値 | 確定条件 |
-|---|---|---|
-| Control Plane言語 | Python + FastAPI | 初期実装で固定 |
-| GUI | React + TypeScript | 初期実装で固定 |
-| Beads | Embedded / 単一ライター | 同時書込みが必要になればServer再検討 |
-| 自動Run同時数 | 1 | メモリ・CPU・Git衝突試験で増加 |
-| 自動修正回数 | 最大2 | ログと成功率から調整 |
-| PCC | Opt-in・未検証扱い | macOS/認証/バックグラウンド実行/利用枠の実測で有効化 |
-| 本番デプロイ | 手動承認必須 | 初期から変更しない |
-| Beadsのカスタム変更 | しない | Adapterでは対応不能な要件が判明した場合のみ検討 |
-| ベクトル検索 | 導入しない | 検索の再現率・精度に課題が出たら判断 |
-| 外部アクセス | localhostのみ | 安全なリモート閲覧が必要になれば認証付きで追加 |
-
----
-
-## 18. 初回セットアップ手順（検証専用）
-
-> 実際のCLIはバージョンで機能が変わり得る。以下は読み替え可能な最短の検証手順。**本番リポジトリではなく試験リポジトリで実施**すること。
-
-```bash
-# 1. 環境を確認
-sw_vers
-uname -m
-python3 --version
-node --version
-git --version
-
-# 2. ワークスペースを作成
-mkdir -p ~/AIWorkspace/projects ~/AIWorkspace/worktrees ~/AIWorkspace/state
-mkdir -p ~/AIWorkspace/projects/aiops-poc
-cd ~/AIWorkspace/projects/aiops-poc
-git init
-
-# 3. Beads導入（Homebrewが使用可能な場合）
-brew install beads
-bd --version
-bd init --quiet
-bd setup codex
-bd doctor
-
-# 4. テストIssueを作成
-bd create "AI引継ぎ試験: TypeScriptの関数とテストを実装" \
-  -t task -p 1 \
-  --description "入力仕様・受け入れ条件・完了判定を記録し、停止後に別AIへ引継ぐ"
-bd ready --json
-
-# 5. 利用可能なCLIを確認
-codex --version
-agy --version
-fm --help
-fm models
-fm quota-usage
-
-# 6. エージェントごとのヘルプと認証を確認
-codex exec --help
-agy --help
-fm respond --help
-```
-
-注意：`bd init`や`bd setup codex`は`AGENTS.md`やフック設定を変更する可能性があるため、既存プロジェクトへ適用する前に差分を確認する。CLI認証は対話的に実施する。`fm`が存在しない場合、macOSの条件を確認し、無理に代替コマンドを作らずPhase 5を保留する。
-
----
-
-## 19. 最初に作る成果物と開発開始指示
-
-### 19.1 Phase 0終了時の成果物
-
-- `docs/compatibility-matrix.md` — OS・CLI・モデル・権限・quotaの検証結果
-- `docs/risks.md` — 未解決制約と回避案
-- `docs/issue-handoff-poc.md` — 引継ぎPoCの結果・失敗条件
-- `schemas/` — Agent出力やイベントのJSON Schema雛形
-- `AGENTS.md` — AI向けの最小作業規約
-
-### 19.2 開発エージェントへ渡す最初のプロンプト案
-
-```text
-あなたはMac mini AI開発基盤の実装担当です。
-まず、この実装計画書に従ってPhase 0の互換性確認と
-Phase 1のIssue引継ぎPoCだけを行ってください。
-
-条件:
-- BeadsをIssueの正本とします。
-- ソースの変更は試験用リポジトリのworktree内に限定します。
-- CLIの仕様はバージョンとヘルプを確認し、未検証の機能を実装前提にしません。
-- 本番システム、外部課金、秘密情報にはアクセスしません。
-- 作業ごとにIssueへ実施事項・結果・失敗・次の作業を追記してください。
-- 動作確認できない機能は「未検証」または「ブロック」と報告してください。
-- 重要な判断が必要な場合はIssueを人間待ちにしてください。
-
-完了時は、実施したコマンド、CLIバージョン、試験結果、
-作成・変更ファイル、Issue ID、未解決事項をMarkdownで提出してください。
-```
-
-### 19.3 開発着手の優先順位
-
-1. **CLI実機検証を先に行う。** 特に`fm PCC`とAntigravity権限モデル。
-2. **Beadsだけで引継ぎを実証する。** ここがシステム成立の判断点。
-3. **Context Builderを作る。** Issueから初見AI用の文書を生成する。
-4. **単一Runの実行・記録・復旧を完成させる。**
-5. **Codexレビューとfm二段階ルーティングを追加する。**
-6. **GUIと常駐運用を仕上げる。**
-
----
-
-## 20. 参考資料・検証元
-
-公開ドキュメントを2026-11-12に確認。CLIとライセンスの詳細は常に実機の`--help`と最新公式ドキュメントを優先する。
-
-- [Beads公式GitHub / README](https://github.com/gastownhall/beads)
-- [Beads Quickstart](https://github.com/gastownhall/beads/blob/main/docs/getting-started/quickstart.md)
-- [Beads Agent Coordination](https://github.com/gastownhall/beads/blob/main/docs/multi-agent/coordination.md)
-- [Beads FAQ（Embedded / Server）](https://github.com/gastownhall/beads/blob/main/docs/reference/faq.md)
-- [Codex 非対話モード（公式）](https://learn.chatgpt.com/docs/non-interactive-mode)
-- [Antigravity CLI Headless（公式）](https://antigravity.google/docs/cli/headless/)
-- [Antigravity CLI Reference（公式）](https://antigravity.google/docs/cli/reference)
-- [Apple WWDC26: fm CLI / Python SDK](https://developer.apple.com/jp/videos/play/wwdc2026/334/)
-- [Apple Foundation Models / PCC](https://developer.apple.com/documentation/FoundationModels/adding-server-side-intelligence-with-private-cloud-compute/)
-- [fm(1) マニュアルの公開ミラー（公式サイトではない）](https://keith.github.io/xcode-man-pages/fm.1.html)
-
----
-
-## 付録A. 変更履歴
-
-| 版 | 日付 | 内容 |
-|---|---|---|
-| v1.0 | 2026-11-12 | 初版。Beads中心のIssue駆動構成、Context Builder、Codex/Antigravity/fm、GUI、セキュリティ、段階導入、受け入れテストを定義 |
-
-## 付録B. 定義集
-
-- **Issue**：要件と決定と作業の連結点。ユーザーとAIが共通に参照する単位。
-- **Context Snapshot**：ある時点でAIに実際に渡した情報の再現可能な保存版。
-- **Run**：AIまたはExecutorによる1回の実行。複数Runが1 Issueに紐づく。
-- **Artifact**：テストレポート、実行ログ、差分、画像等の成果物。
-- **Decision**：権限を持つ人間が確定した有効な方針。単なるコメントと異なる。
-- **Handoff**：次セッションに必要な状態・失敗・継続タスクの要約。
-- **Claim / Lease**：競合実行を抑止する担当取得・期限付き排他。
-- **PCC**：AppleのPrivate Cloud Compute。`fm --model pcc`の対象となるクラウドモデル。
-- **Executor**：AIに依存しない、事前定義された検証済みの実行処理。
+| PCC / 新しいProvider / 汎用AI基底クラス | 現行の固定経路で不足が実測され、利用条件と許可が確認できる |
+| 4エージェント常時監視・独立監視API | 1本のステッパーで解決できない実利用上の必要性がある |
+| 旧Contextの形式救済・世代間保存の専用実装 | v0後に必要な履歴が特定され、手動アーカイブでは不足する |
+| 自動タスク分解・AI並列実装・自動再計画 | 単一Runの日常利用が安定し、具体的な待ち時間の問題がある |
+| リモート接続・複数ユーザー・権限ロール | 実際に別端末・他者から使う必要がある |
+| Dolt Server・分散DB・ベクトル検索 | Embeddedや現在の検索で解決できない問題がある |
+| 外部CI、staging拡張、本番deploy、自動merge | 具体的な対象・運用責任・別の承認範囲を定義する |
+| 定時バックアップ・世代自動削除・自動worktree回収 | 手動の保存・復元・保全手順が実用上安定する |
+| 全面リファクタリング・TypeScript全面移行 | 通常経路の改善とは別の、測定可能な必要性がある |
+| 全OS再起動・ログアウト・認証失効の網羅試験 | 日常利用の区切りで計画する。作業中のMacを検証のために再起動しない |
+
+既存の保留機能は通常の操作経路から切り離し、追加実装・検証をv0の前提にしない。`staging.py`は保存するが、v0の起動・実装・テスト・レビューでは呼ばず、staging用の追加チェックや承認を要求しない。既存のCLI明示コマンドや専用APIを残す場合も、独立した任意機能として扱う。
+
+現行の`pipeline.py`と`worker.py`は`staging.py`を呼んでいない。Git操作名の`candidate-stage`や`stage`はインデックスを作る処理であり、限定デプロイのstagingとは別物なので削除しない。追加の「バイパス用分岐」を基本経路へ増やす必要はない。staging除外を理由に独立レビューや候補treeの検証もスキップしない。
+
+## 7. 検証と作業の進め方
+
+- 各タスクを「通常操作の改善1点」と「必要な回帰試験」に収める。既存の試験を再利用する。
+- コードを変えたら、変更箇所の試験と必要な全体チェックを実施する。文書だけの整理ではアプリ全体を再実行しない。
+- UIは実ブラウザで基本操作と表示を確認する。エラー、停止中、担当不明も表示する。
+- プロセス停止・Outbox・承認に触れる変更では、関係する競合試験を維持する。抽象的な脅威だけを理由に新しい防御層を増設しない。
+- 独立レビューはまとまった動作差分と具体的な証跡に対して行う。同じ差分の反復レビューや無関係な機能要求で作業を膨らませない。
+- 実装自身の検証にも`aiops issue context`、`aiops run check`、Run履歴を利用する。文書編集のためだけにAI実装パイプラインを起動しない。
+- クラウド利用は既存のcadenda / worker-pocの許可範囲を維持する。秘密情報、本番操作、PCCは従来どおり対象外。
+- 本書のタスク整理は計画更新であり、既存Issueの一括close・新規Issue大量登録・未コミットコードの一括コミットは行わない。
+
+変更の受け入れ時は「何が使いやすくなったか」「何を実測したか」「未確認は何か」を短く記録する。最初の次アクションは**N0の差分パッチと旧18件を保全・退避して区切り、直ちにN1の環境変数と10MiBログ対応、続いてN2の起動導線と1本のステッパーへ進むこと**である。
+
+## 8. 履歴・参照
+
+- [初期計画v1](archive/macmini_ai_development_implementation_plan_v1.md)：当初の構想とPhase 0〜7。今後の必須実装一覧ではない。
+- [Phase 2](phase2-results.md)、[Phase 3](phase3-results.md)、[Phase 4](phase4-results.md)、[Phase 5](phase5-results.md)、[Phase 6](phase6-results.md)、[Phase 7初回記録](phase7-results.md)：過去の結果と証跡。
+- [互換性](compatibility-matrix.md)、[実行手順](execution.md)、[制約](risks.md)：実装変更の確定時に更新する。
+
+v1.0（2026-11-12）の初期構想から、v2.0（2026-11-13）のローカル単一オーナー向け実用計画へ変更。v2.1（同日）は追加レビューを反映し、N0を単純な退避に限定、表示を1本のステッパーへ集約、stagingを基本経路から除外、自動Beads通知を2種類に限定した。Origin / Host / CSRF、候補tree照合、PGID停止、単一Run排他を維持する。
