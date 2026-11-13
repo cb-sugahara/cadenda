@@ -26,3 +26,5 @@ projects:
     fm_local_enabled: false
     # Local artifact placement only; separate GUI owner confirmation is required.
     staging_enabled: false
+    # Combined stdout/stderr process cap. Stored logs retain bounded head/tail.
+    max_output_bytes: 10485760

@@ -116,7 +116,7 @@ def test_output_limit_and_clean_environment(recorder,tmp_path):
     os.environ['CADENDA_TEST_PRODUCTION_SECRET']='must-not-inherit'
     out,_=execute(recorder,key,owner,'env',[sys.executable,'-c','import os;print(os.environ.get("CADENDA_TEST_PRODUCTION_SECRET","absent"))'],tmp_path)
     assert out.strip()=='absent'
-    with pytest.raises(CadendaError) as exc:execute(recorder,key,owner,'flood',[sys.executable,'-c','print("x"*2000000)'],tmp_path)
+    with pytest.raises(CadendaError) as exc:execute(recorder,key,owner,'flood',[sys.executable,'-c','print("x"*2000000)'],tmp_path,max_output_bytes=1_048_576)
     assert exc.value.code=='OUTPUT_LIMIT'
 
 
@@ -256,3 +256,27 @@ def test_gui_job_admission_binds_claim_atomically_and_rejects_wrong_target(recor
     with recorder.connect() as db:
         row=db.execute('SELECT * FROM gui_jobs WHERE job_id=?',('job_test',)).fetchone()
         assert row['replacement_run_id']==key and row['worker_pid']==os.getpid()
+
+
+def test_large_output_preserves_complete_response_and_head_tail_logs(recorder,tmp_path):
+    key,owner=recorder.claim('p','large');recorder.transition(key,owner,'Running')
+    script='import sys;sys.stdout.write("HEAD"+"x"*2_000_000+"TAIL");sys.stderr.write("FINAL_ERROR_CONTEXT")'
+    out,err=execute(recorder,key,owner,'large',[sys.executable,'-c',script],tmp_path)
+    assert len(out)==2_000_008 and out.startswith('HEAD') and out.endswith('TAIL')
+    assert err=='FINAL_ERROR_CONTEXT'
+    history=recorder.history(key);artifact=next(a for a in history['artifacts'] if a['artifact_id']=='large-stdout')
+    log=Path(artifact['path']).read_text()
+    assert log.startswith('HEAD') and log.endswith('TAIL') and 'TRUNCATED' in log
+    assert len(log)<1_049_000
+    event=next(e for e in history['events'] if e['event_type']=='command_finished')
+    assert event['payload']['log_truncated']['stdout'] and event['payload']['output_limit_bytes']==10_485_760
+
+
+def test_output_cap_stops_and_retains_last_observed_failure_context(recorder,tmp_path):
+    key,owner=recorder.claim('p','cap');recorder.transition(key,owner,'Running')
+    with pytest.raises(CadendaError) as exc:
+        execute(recorder,key,owner,'cap',[sys.executable,'-c','import sys;sys.stdout.write("x"*1_100_000);sys.stdout.flush();sys.stderr.write("STOP_CONTEXT");sys.stderr.flush();sys.stdout.write("y"*2_000_000)'],tmp_path,max_output_bytes=2_000_000)
+    assert exc.value.code=='OUTPUT_LIMIT'
+    history=recorder.history(key)
+    assert next(e for e in history['events'] if e['event_type']=='command_finished')['payload']['reason']=='OUTPUT_LIMIT'
+    assert all(Path(a['path']).stat().st_size<1_049_000 for a in history['artifacts'])

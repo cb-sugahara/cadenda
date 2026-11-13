@@ -124,3 +124,13 @@ def test_timeout_when_parent_exits_but_child_holds_pipe(tmp_path):
         capture([sys.executable, "-c", code], tmp_path, timeout=0.2)
     assert exc.value.code == "TIMEOUT"
     assert time.monotonic() - started < 5
+
+
+def test_capture_default_environment_does_not_inherit_secrets(tmp_path,monkeypatch):
+    import sys
+    from cadenda.process import capture
+    monkeypatch.setenv('CADENDA_TEST_PRIVATE','synthetic-do-not-forward')
+    code,out,err=capture([sys.executable,'-c','import os;print("CADENDA_TEST_PRIVATE" in os.environ)'],tmp_path)
+    assert code==0 and out.strip()=='False'
+    code,out,err=capture([sys.executable,'-c','import os;print(os.environ["EXPLICIT_FLAG"])'],tmp_path,env={'EXPLICIT_FLAG':'owned'})
+    assert code==0 and out.strip()=='owned'

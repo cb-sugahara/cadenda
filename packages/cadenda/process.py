@@ -16,7 +16,7 @@ def capture(argv: list[str], cwd: Path, *, timeout: float = 20, max_bytes: int =
     try:
         process = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True,
-            env=(os.environ if env is None else env) | {"NO_COLOR": "1", "GIT_TERMINAL_PROMPT": "0", "GIT_OPTIONAL_LOCKS": "0"})
+            env=({k:v for k,v in os.environ.items() if k in {'PATH','HOME','LANG','LC_ALL','TMPDIR','SYSTEMROOT'}} if env is None else env) | {"NO_COLOR": "1", "GIT_TERMINAL_PROMPT": "0", "GIT_OPTIONAL_LOCKS": "0"})
     except FileNotFoundError as exc:
         raise CadendaError("CLI_MISSING", f"Executable not found: {argv[0]}") from exc
     except OSError as exc:

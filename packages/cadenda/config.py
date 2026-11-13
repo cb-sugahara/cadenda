@@ -53,6 +53,7 @@ class Project(StrictModel):
     cloud_enabled: bool = False
     fm_local_enabled: bool = False
     staging_enabled: bool = False
+    max_output_bytes: int = Field(default=10_485_760, ge=65_536, le=67_108_864)
 
     @field_validator("root", "worktree_roots", "artifact_roots", "evidence_catalog")
     @classmethod
