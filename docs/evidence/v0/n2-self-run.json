@@ -1,0 +1,20 @@
+{
+  "run_id": "run_15f65225b26d4bfba60b667fc078cef3",
+  "project_id": "cadenda",
+  "issue_id": "cadenda-aru",
+  "state": "Review",
+  "active": 0,
+  "provider": "executor",
+  "attempt": 1,
+  "created_at": 1794552821.475352,
+  "updated_at": 1794552842.891047,
+  "heartbeat_at": 1794552842.827588,
+  "lease_expires_at": 1794552872.827589,
+  "worker_pid": 57416,
+  "pgid": null,
+  "cancel_requested": 0,
+  "worktree": "/Users/m4pro/Desktop/cadenda",
+  "base_commit": null,
+  "commit_id": null,
+  "snapshot_id": null
+}

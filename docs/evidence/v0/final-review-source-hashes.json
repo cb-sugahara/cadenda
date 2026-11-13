@@ -1,0 +1,6 @@
+{
+  "packages/cadenda/server.py": "f70d146ae89fec14c6ef9ea52821efbf83719ec20d231ba5f4cc06f05b8da683",
+  "web/src/main.jsx": "40a63dea3f36b986e096a432dca96c76062e902e2e5e72984c1c8d22ac42b3a9",
+  "web/src/pipeline-state.js": "ecea2462357e28806aa8d357054e0a6649318f1ea8ff35064f65d81f2d075eaf",
+  "tests/test_server.py": "5ac8756eed68921404d07654cfec5592592e2b97d4dc18cacc2b114ff9d95814"
+}

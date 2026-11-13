@@ -39,4 +39,4 @@ python3 scripts/probe_environment.py --agents --fm-local
 PCCは現在の実行コンテキストでは利用できないため保留。グローバル認証・権限設定は変更せず、実装試験は個別許可とsandboxを利用する。
 詳細は互換性表を参照。スクリプトの終了0はProviderや実装の合格と同義ではない。
 
-GUIは `.venv/bin/aiops serve` で起動し、`http://127.0.0.1:8765`を開く。接続コードは起動時に案内されるローカルファイルで確認する。
+起動済みGUIは `.venv/bin/aiops open` で自動接続して開く。停止中は別ターミナルで `.venv/bin/aiops serve` を起動する。手動ペアリングもフォールバックとして保持する。詳細は [v0進捗・使い方](docs/v0-progress.md)。

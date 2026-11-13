@@ -27,3 +27,23 @@ DashboardとRun詳細は「実装→テスト→レビュー→人間確認」�
 170件のPython試験、10件のフロントエンド状態シナリオ、Chromeの実ブラウザ試験に成功。単回接続、再起動した別instanceへのticket拒否、外部Origin・CSRFなしの変更拒否、不正UTF-8出力の保存後サイズ・成果物閲覧・承認プレビュー、CLIチェックの大小設定上限を確認。独立Codexレビューapproved。実ブラウザはクラウド無効の隔離GUIでIssueを作成し、固定チェックの停止と再開を実行した。
 
 ブラウザの認証操作は新規の試験セッションで行い、既存OS/CLI認証情報と手動ペアリングファイルの中身は収集していない。物理再起動・外部公開・PCCは未実施。
+
+## N3: 実AIによる1件の完走
+
+メインGUIから許可済みworker-pocの`worker-7bc`を実行した。実Antigravityが`answer.txt`だけを追加し、その内容が`CADENDA_OK`と末尾改行に一致することをGitのcommitから検証した。既存`check.py`は変更されず終了0、実Codexの独立レビューもapproved。Runは`run_7eec05d4b7e246828b229386f3104176`、commitは`7ed26256a231865adfc0ce0f3be64d021dc30846`。
+
+同じRunの結果確認画面まで実Chromeで確認した。成果物の採用はpendingのままとし、merge・deploy・Issueの自動closeはしていない。試験中に見つかった中間Reviewの古い承認依頼の重複表示を修正し、inactiveなReview Runの最新依頼だけを表示する。独立レビューapproved、最終171テスト通過。
+
+Cadenda自身のN1/N2/N3チェックは`aiops issue context`と`aiops run check`で実行し、Recorderへ保存した。実行中の仕事がないことを確認してLaunchAgentを正常再起動し、最終GUIを反映した。隔離GUIでは停止→再開を実行し、元のRunと新Runの証跡を保持している。
+
+本体を対象にした追加のAI編集試験は、作業中に存在した未追跡`howto.md`によりclean-repository条件を満たさないため未実施。ファイルを勝手に無視・移動・コミットして条件を迂回していない。したがってN3全体は引き続き進行中として、この残件と実ユーザーによる採用判断を区別する。
+
+## 現在の使い方
+
+常駐GUIを開くには、リポジトリで`.venv/bin/aiops open`を実行する。接続コードの手動検索は不要。停止中は別ターミナルで`.venv/bin/aiops serve`を起動してからopenする。URLは`http://127.0.0.1:8765`。
+
+試験成果物はworker-pocの`worker-7bc`から、または承認インボックスの同Issueから確認できる。通常の結果確認は自動merge・deployを起こさない。
+
+N0・N1・N2は完了。N3は上記の実AI完走・UI確認が成功し、本体への追加AI編集が残る。N4の4エージェント監視は追加しない。N5の自動Beads通知2種類への限定は未実施で、既存Outboxを削除していない。
+
+証跡: [最終試験](evidence/v0/final-tests.txt)、[実AI結果](evidence/v0/real-pipeline-result.json)、[最終差分レビュー](evidence/v0/final-review-result.json)、[結果確認画面](evidence/v0/real-result-confirmation.png)。

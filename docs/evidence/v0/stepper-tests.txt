@@ -1,0 +1,2 @@
+6 pipeline state scenarios passed
+Additional review, rejection, local and active-run cases passed

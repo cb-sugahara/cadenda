@@ -4,7 +4,7 @@ import Markdown from 'react-markdown';
 import {LayoutDashboard,Columns3,ShieldCheck,Settings,ArrowUpRight,ArrowLeft,Plus,Play,Square,RefreshCw,ChevronRight,Activity,Terminal,FileText,Check,LogOut,Lock,Layers,Copy,Download,X,Clock,Search} from 'lucide-react';
 import './style.css';
 import PipelineStepper from './PipelineStepper.jsx';
-import {selectCurrentRun} from './pipeline-state.js';
+import {selectCurrentRun,initialProject} from './pipeline-state.js';
 
 let csrf='';
 async function api(path,method='GET',data){const r=await fetch('/api'+path,{method,headers:method==='GET'?{}:{'Content-Type':'application/json','X-Cadenda-CSRF':csrf},body:method==='GET'?undefined:JSON.stringify(data??{})});const value=await r.json();if(!r.ok)throw Error(value.error?.message||value.error?.code||'操作できませんでした');return value;}
@@ -34,7 +34,7 @@ function App(){
  api('/runs/'+target.run_id).then(h=>live&&setActiveHistory(h)).catch(()=>live&&setActiveHistory(null));
  return()=>{live=false};
  },[session,data.runs,project,tick]);
- useEffect(()=>{if(!session)return;let live=true;api('/projects').then(v=>{if(!live)return;setData(v);setCursor(c=>c??v.cursor);setProject(p=>p||v.projects[0]?.project_id||'');}).catch(e=>setError(e.message));api('/approvals').then(v=>live&&setApprovals(v.approvals)).catch(e=>setError(e.message));return()=>{live=false};},[session,tick]);
+ useEffect(()=>{if(!session)return;let live=true;api('/projects').then(v=>{if(!live)return;setData(v);setCursor(c=>c??v.cursor);setProject(p=>p||initialProject(v));}).catch(e=>setError(e.message));api('/approvals').then(v=>live&&setApprovals(v.approvals)).catch(e=>setError(e.message));return()=>{live=false};},[session,tick]);
  useEffect(()=>{if(!session||cursor===null)return;let timer;const events=new EventSource('/api/events/stream?after='+cursor);events.onopen=()=>setConnected(true);events.onerror=()=>setConnected(false);events.onmessage=()=>{clearTimeout(timer);timer=setTimeout(refresh,350)};events.addEventListener('refresh',()=>{clearTimeout(timer);timer=setTimeout(refresh,350)});return()=>{clearTimeout(timer);events.close();setConnected(false)}},[session,cursor]);
  useEffect(()=>{if(!session||!project)return;let live=true;api(`/projects/${project}/issues`).then(v=>live&&setIssues(v.issues)).catch(e=>setError(e.message));return()=>{live=false}},[session,project,tick]);
  useEffect(()=>{if(!selected||!project)return;const request=++detailRequest.current;api(`/projects/${project}/issues/${selected}`).then(v=>{if(request===detailRequest.current)setDetail(v)}).catch(e=>setError(e.message));return()=>{detailRequest.current++}},[selected,project,tick]);

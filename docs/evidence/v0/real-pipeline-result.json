@@ -1,0 +1,15 @@
+{
+  "project_id": "worker-poc",
+  "issue_id": "worker-7bc",
+  "run_id": "run_7eec05d4b7e246828b229386f3104176",
+  "commit": "7ed26256a231865adfc0ce0f3be64d021dc30846",
+  "worktree": "/Users/m4pro/Desktop/cadenda/state/worktrees/worker-poc/run_7eec05d4b7e246828b229386f3104176",
+  "actual_ai_implementation": true,
+  "only_answer_txt_changed": true,
+  "fixed_check_exit": 0,
+  "independent_review": "approved",
+  "human_confirmation_preview_visible": true,
+  "owner_adoption": "pending",
+  "merge_or_deploy": false,
+  "page_errors": []
+}

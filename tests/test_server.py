@@ -515,3 +515,12 @@ def test_local_open_ticket_cannot_cross_server_restart(gui):
     app,c,fake,reg,_=gui;code='synthetic-old-instance'
     atomic(reg.settings.state_root/'gui-open-ticket.json',{'sha256':hashlib.sha256(code.encode()).hexdigest(),'expires':time.time()+60,'instance':'old-server-instance'})
     assert c.post('/api/session/login',json={'code':code}).status_code==401
+
+
+def test_approval_inbox_shows_only_latest_request_for_review_ready_run(gui):
+    app,c,fake,reg,_=gui;login(c);r=app.state.recorder;key,old=review_run(r)
+    latest=r.request_approval(key,{'synthetic_latest':True})
+    items=c.get('/api/approvals').json()['approvals']
+    assert [a['approval_id'] for a in items]==[latest]
+    with r.transaction() as db:db.execute("UPDATE runs SET state='Verifying',active=1 WHERE run_id=?",(key,))
+    assert not c.get('/api/approvals').json()['approvals']

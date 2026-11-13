@@ -1,3 +1,6 @@
+export function initialProject(data) {
+ return data.runs.find(r=>r.active)?.project_id||data.runs[0]?.project_id||data.projects[0]?.project_id||'';
+}
 export function selectCurrentRun(runs,project) {
  return runs.find(r=>r.active)||runs.find(r=>r.project_id===project);
 }

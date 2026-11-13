@@ -1,0 +1,13 @@
+{
+  "health": {
+    "protocol": 1,
+    "workspace": "4c113a4e0a5c33c6896eb03d21f827e5ac638702d92638e518f3c08191f92d03",
+    "instance": "aba7aa84d9c850a9a8ae609ed82dfde6"
+  },
+  "service": {
+    "at": 1794553454.211506,
+    "pid": 66111,
+    "state": "running"
+  },
+  "graceful_restart": true
+}

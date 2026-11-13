@@ -521,7 +521,7 @@ def create_app(registry,*,pairing_code,port=8765,instance=None,adapter_factory=B
     @app.get('/api/approvals')
     def approvals():
         with closing(recorder.connect()) as db:
-            rows=[dict(r) for r in db.execute('SELECT a.approval_id,a.run_id,a.action_hash,a.status,r.project_id,r.issue_id,r.updated_at FROM approvals a JOIN runs r USING(run_id) WHERE a.status=\'pending\' ORDER BY r.updated_at DESC LIMIT 200')]
+            rows=[dict(r) for r in db.execute('SELECT a.approval_id,a.run_id,a.action_hash,a.status,r.project_id,r.issue_id,r.updated_at FROM approvals a JOIN runs r USING(run_id) WHERE a.status=\'pending\' AND r.state=\'Review\' AND r.active=0 AND a.approval_id=(SELECT json_extract(e.payload,\'$.approval_id\') FROM run_events e WHERE e.run_id=r.run_id AND e.event_type=\'approval_requested\' ORDER BY e.rowid DESC LIMIT 1) AND (r.provider!=\'antigravity+executor\' OR EXISTS(SELECT 1 FROM artifacts x WHERE x.run_id=r.run_id AND x.artifact_id LIKE \'bound-review-%\')) ORDER BY r.updated_at DESC LIMIT 200')]
         return {'approvals':[r for r in rows if r['project_id'] in project_ids]}
 
     @app.get('/api/approvals/{approval_id}')

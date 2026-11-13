@@ -61,3 +61,7 @@ FastAPI 0.162.5 / Uvicorn 0.54.0 / httpx 0.28.1、React/Viteの確定版は`web/
 ## Phase 7追加実測（2026-11-13 JST）
 
 Dolt native backup init/sync/restoreと2プロジェクトの別場所復元を確認。bd initは--jsonを無視し、未初期化repoの-Cを拒否するため、cwdを指定した別の一時repoで初期化する。Beadsの祖先探索を避けるため全通常呼出しはBEADS_DIRとembedded実パスを検証する。Git bundleはHEAD・Recorderのcommit/base_commit・旧カタログのcommit/base_commitを明示保存する。158件のPythonテスト（実Beads Context再生を含む）、API停止3回と明示reset、合成所有者の別承認によるローカルstagingを確認。実launchd登録は成功したがAPI応答未確認、物理再起動・ログイン後のCLI認証継続は未確認。詳細は[Phase 7記録](phase7-results.md)。
+
+## v0 N1/N2追加実測（2026-11-13）
+
+環境許可リスト、既定10MiB出力と保存ログの先頭/末尾、単回ローカル接続、1本の進行表示を実装。171 Python試験・Node状態試験・Chromeの停止/再開と実AIパイプラインに成功。OS所有者の起動ticketは60秒・server instance結合、Host/Origin/CSRFは維持。CLI依存の追加はない。詳細は[v0進捗](v0-progress.md)。

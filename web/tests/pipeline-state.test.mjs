@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {pipelineState,selectCurrentRun} from '../src/pipeline-state.js';
+import {pipelineState,selectCurrentRun,initialProject} from '../src/pipeline-state.js';
 const event=(type,payload)=>({event_type:type,payload});
 const begin=name=>event('command_started',{name});
 const end=(name,exit_code=0)=>event('command_finished',{name,exit_code});
@@ -19,3 +19,6 @@ assert.equal(pipelineState(history('Review',[event('human_review_decided',{verdi
 assert.equal(pipelineState(history('Review',[end('names-0')],'fm-system'))[0].status,'complete');
 assert.equal(selectCurrentRun([{run_id:'new',project_id:'p',active:0},{run_id:'blocked',project_id:'p',active:1}],'p').run_id,'blocked');
 console.log('Additional review, rejection, local and active-run cases passed');
+
+assert.equal(initialProject({projects:[{project_id:'old'}],runs:[{project_id:'recent',active:0}]}),'recent');
+assert.equal(initialProject({projects:[],runs:[{project_id:'new',active:0},{project_id:'active',active:1}]}),'active');
